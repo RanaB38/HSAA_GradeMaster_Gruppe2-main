@@ -1,0 +1,30 @@
+@use "@angular/material" as mat;
+
+mat-toolbar.mat-primary {
+  position: fixed;
+  top: 0;
+  z-index: 1000;
+}
+
+.small-spacer {
+  padding: 8pt;
+}
+
+.spacer {
+  flex: 1 1 auto;
+}
+
+.header-title {
+  cursor: pointer;
+}
+
+.shadow {
+  @include mat.elevation(4);
+}
+
+.navitems-container {
+  display: flex;
+  flex-flow: row;
+  gap: 16px;
+  // padding: 0 16 0 16;
+}

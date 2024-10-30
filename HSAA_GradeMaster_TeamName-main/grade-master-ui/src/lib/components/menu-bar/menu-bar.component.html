@@ -1,0 +1,28 @@
+<mat-toolbar color="primary" class="shadow">
+  <span class="header-title" [routerLink]="'/'">{{ title }}</span>
+  <span class="spacer"></span>
+
+  <div *ngFor="let item of menuBarItems" class="navitems-container">
+    <ng-container *ngIf="item.visible | async as visibleItem">
+      <button
+        *ngIf="!item.highlighted && visibleItem"
+        mat-button
+        color="accent"
+        (click)="routeTo(item.routePath)"
+        [matTooltip]="item.name"
+      >
+        {{ item.name }}
+      </button>
+
+      <button
+        *ngIf="item.highlighted && item.icon && visibleItem"
+        mat-icon-button
+        [color]="item.name === 'Login' ? 'accent' : 'warn'"
+        (click)="routeTo(item.routePath)"
+        [matTooltip]="item.name"
+      >
+        <mat-icon>{{ item.icon }}</mat-icon>
+      </button>
+    </ng-container>
+  </div>
+</mat-toolbar>
