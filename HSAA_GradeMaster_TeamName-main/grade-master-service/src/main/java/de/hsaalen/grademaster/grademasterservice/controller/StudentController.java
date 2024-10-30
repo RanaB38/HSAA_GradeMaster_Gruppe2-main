@@ -30,7 +30,8 @@ public class StudentController {
     @PostMapping
     public ResponseEntity<String> registerNewStudent(@RequestBody Student student) {
         // Überprüfen auf leere Felder, damit Name und Email vorhanden sind
-        if (student.getName() == null || student.getName().isEmpty() ||
+        if (student.getId() == null || student.getId().describeConstable().isEmpty() ||
+                student.getName() == null || student.getName().isEmpty() ||
                 student.getEmail() == null || student.getEmail().isEmpty()) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST)
                     .body("Name and email are required and cannot be empty.");
