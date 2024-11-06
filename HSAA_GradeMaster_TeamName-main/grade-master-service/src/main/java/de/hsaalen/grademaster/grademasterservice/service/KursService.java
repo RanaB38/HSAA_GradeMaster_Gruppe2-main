@@ -40,13 +40,13 @@ public class KursService {
 
     }
 
-    //Methode, um einen Kurs anhand des Namens zu Löschen
-    public void deleteKurs(String kursName) {
-        boolean exists = kursRepository.existsByName(kursName);
+    //Methode, um einen Kurs anhand der Id zu Löschen
+    public void deleteKurs(Long kursId) {
+        boolean exists = kursRepository.existsById(kursId);
         if(!exists) {                                                                           //Überprüft, ob ein Kurs mit demselben
-            throw new IllegalStateException("Kurs with Name " + kursName + " does not exist");  //Namen schon existiert
+            throw new IllegalStateException("Kurs with Id " + kursId + " does not exist");  //Namen schon existiert
         }                                                                                       //Wenn nein, dann Fehler
-        kursRepository.deleteByName(kursName);                                                  //Wenn ja, dann löschen aus der DB
+        kursRepository.deleteById(kursId);                                                  //Wenn ja, dann löschen aus der DB
     }
 
     //Methode, um Kurse anhand ID zu suchen, und wenn nicht vorhanden Fehlermeldung

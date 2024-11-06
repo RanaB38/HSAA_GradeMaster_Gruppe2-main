@@ -32,11 +32,10 @@ public class KursController {
     //Fehlerbehandlung für das Hinzufügen eines neuen Kurses mit doppeltem Namen
     @PostMapping
     public ResponseEntity<String> registerNewKurs(@RequestBody Kurs kurs) {
-        // Überprüfen auf leere Felder, damit Name und Description vorhanden sind
-        if (kurs.getName() == null || kurs.getName().isEmpty() ||
-                kurs.getDescription() == null || kurs.getDescription().isEmpty()) {
+        // Überprüfen auf leere Felder, damit Name  vorhanden ist
+        if (kurs.getName() == null || kurs.getName().isEmpty()) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST)
-                    .body("Name and description are required and cannot be empty.");
+                    .body("Name is required and cannot be empty.");
         }
 
         try {
@@ -47,16 +46,17 @@ public class KursController {
         }
     }
 
-    //Fehlerbehandlung für das Löschen eines Kurses mit nicht vorhandenem Namen
-    @DeleteMapping(path = "{kursName}")
-    public ResponseEntity<String> deleteKurs(@PathVariable("kursName") String kursName) {
+    //Fehlerbehandlung für das Löschen eines Kurses mit nicht vorhandener Id
+    @DeleteMapping(path = "{kursId}")
+    public ResponseEntity<String> deleteKurs(@PathVariable("kursId") Long kursId) {
         try {
-            kursService.deleteKurs(kursName);       //Versucht den Kurs anhand des Namens zu löschen
+            kursService.deleteKurs(kursId);       //Versucht den Kurs anhand der Id zu löschen
             return ResponseEntity.status(HttpStatus.NO_CONTENT).body("Kurs deleted successfully.");
         } catch (IllegalStateException e) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage()); // 404 wenn der Name nicht existiert
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage()); // 404 wenn die Id nicht existiert
         }
     }
+
 
     //Kurs nach ID finden
     @GetMapping(path = "{kursId}")

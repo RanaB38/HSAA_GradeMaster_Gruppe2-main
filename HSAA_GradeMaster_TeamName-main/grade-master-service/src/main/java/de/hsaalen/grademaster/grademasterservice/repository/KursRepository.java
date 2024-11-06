@@ -19,5 +19,5 @@ public interface KursRepository
     boolean existsByName(String kursName);
 
     //Methode, um einen Kurs anhand des Namens zu löschen
-    void deleteByName(String kursName);
+    void deleteById(Long kursId);
 }
