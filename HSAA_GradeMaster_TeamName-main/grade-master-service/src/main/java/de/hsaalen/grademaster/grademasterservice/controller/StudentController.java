@@ -62,6 +62,16 @@ public class StudentController {
         return ResponseEntity.ok(student);          //200 bei gefundenem Kurs
     }
 
+    @PutMapping(path = "{studentId}")
+    public ResponseEntity<String> updateStudent(@PathVariable("studentId") Long studentId, @RequestBody Student student) {
+        try {
+            studentService.updateStudent(studentId, student);
+            return ResponseEntity.status(HttpStatus.OK).body("Student updated successfully.");
+        }
+        catch (IllegalStateException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
+        }
+    }
 }
 
 
