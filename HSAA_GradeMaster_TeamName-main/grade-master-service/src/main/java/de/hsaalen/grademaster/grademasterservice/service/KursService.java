@@ -87,6 +87,8 @@ public class KursService {
         if (!exists) {
             throw new IllegalStateException("Kursid" + kursId + " does not exist");
         }
+        // ID setzen damit kein neuer Kurs erstellt wird
+        kurs.setId(kursId);
         kursRepository.save(kurs);
     }
 }
