@@ -86,4 +86,14 @@ public class KursController {
         return ResponseEntity.ok(students);                                                 // Gibt die Liste der Studenten zurück
     }
 
+    @PutMapping(path = "{kursId}")
+    public ResponseEntity<String> updateKurs(@PathVariable("kursId") Long kursId, @RequestBody Kurs kurs) {
+        try {
+            kursService.updateKurs(kursId, kurs);
+            return ResponseEntity.status(HttpStatus.OK).body("Kurs updated successfully.");
+        }
+        catch (IllegalStateException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
+        }
+    }
 }
