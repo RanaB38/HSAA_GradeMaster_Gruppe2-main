@@ -51,4 +51,13 @@ public class StudentService {
                 .orElseThrow(() -> new ResponseStatusException(
                         HttpStatus.NOT_FOUND, "Student with ID " + studentId + " not found"));      //Fehler, wenn ID nicht existiert
     }
+
+    public void updateStudent(Long studentId, Student student) {
+
+        boolean exists = studentRepository.existsById(studentId);
+        if (!exists) {
+            throw new IllegalStateException("student with id" + studentId + " does not exist");
+        }
+        studentRepository.save(student);
+    }
 }
