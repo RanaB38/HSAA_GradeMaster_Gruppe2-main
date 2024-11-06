@@ -62,6 +62,7 @@ public class StudentController {
         return ResponseEntity.ok(student);          //200 bei gefundenem Kurs
     }
 
+    //Daten eines Studenten aktualisieren
     @PutMapping(path = "{studentId}")
     public ResponseEntity<String> updateStudent(@PathVariable("studentId") Long studentId, @RequestBody Student student) {
         try {

@@ -26,7 +26,7 @@ public class Kurs {
     //Many-to-Many-Beziehung zu Student
     @ManyToMany
     @JoinTable(
-            name = "Assignment Kurs-Student",                                  //Tabelle zur Verknüpfung von kurs und student
+            name = "Assignment Kurs-Student",                        //Tabelle zur Verknüpfung von kurs und student
             joinColumns = @JoinColumn(name = "kurs_id"),            // Spalte für Kurs ID
             inverseJoinColumns = @JoinColumn(name = "student_id")   // Spalte für Student ID
     )
