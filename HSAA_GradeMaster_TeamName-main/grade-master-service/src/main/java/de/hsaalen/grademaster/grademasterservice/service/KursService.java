@@ -82,5 +82,11 @@ public class KursService {
         return kurs.getStudents();                                      // Gibt alle Studenten des Kurses zurück
     }
 
-
+    public void updateKurs(Long kursId, Kurs kurs) {
+        boolean exists = kursRepository.existsById(kursId);
+        if (!exists) {
+            throw new IllegalStateException("Kursid" + kursId + " does not exist");
+        }
+        kursRepository.save(kurs);
+    }
 }
