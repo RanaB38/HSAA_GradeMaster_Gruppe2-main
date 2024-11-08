@@ -1,6 +1,6 @@
 package de.hsaalen.grademaster.grademasterservice.domain;
 
-import de.hsaalen.grademaster.grademasterservice.domain.Kurs;
+import de.hsaalen.grademaster.grademasterservice.domain.Course;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.ManyToMany;
@@ -28,6 +28,6 @@ public class Student {
 
     //Many-to-Many-Beziehung zu Kurs
     @ManyToMany(mappedBy = "students")                      // Verknüpfung zu Kurs - keine eigene Tabelle
-    private List<Kurs> kurse = new ArrayList<>();           // Liste der Kurse, die der Student belegt
+    private List<Course> courses = new ArrayList<>();           // Liste der Kurse, die der Student belegt
 
 }

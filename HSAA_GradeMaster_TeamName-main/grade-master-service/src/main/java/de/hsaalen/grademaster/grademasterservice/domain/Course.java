@@ -1,6 +1,5 @@
 package de.hsaalen.grademaster.grademasterservice.domain;
 
-import de.hsaalen.grademaster.grademasterservice.domain.Student;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -12,9 +11,9 @@ import java.util.List;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-@Entity(name = "Kurs")
+@Entity(name = "Course")
 @Table                      // Erstellt automatisch eine Tabelle mit Kurs in der Datenbank
-public class Kurs {
+public class Course {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)     //ID wird automatisch generiert
     private Long id;
@@ -26,8 +25,8 @@ public class Kurs {
     //Many-to-Many-Beziehung zu Student
     @ManyToMany
     @JoinTable(
-            name = "Assignment Kurs-Student",                                  //Tabelle zur Verknüpfung von kurs und student
-            joinColumns = @JoinColumn(name = "kurs_id"),            // Spalte für Kurs ID
+            name = "Assignment_Course_Student",                     //Tabelle zur Verknüpfung von kurs und student
+            joinColumns = @JoinColumn(name = "course_id"),          // Spalte für Kurs ID
             inverseJoinColumns = @JoinColumn(name = "student_id")   // Spalte für Student ID
     )
     private List<Student> students = new ArrayList<>();             // Liste der Studenten, die den Kurs belegen
@@ -36,7 +35,7 @@ public class Kurs {
     public void addStudent(Student student) {
         if (!students.contains(student)) {                          // Verhindern der doppelten Zuweisung
             students.add(student);
-            student.getKurse().add(this);
+            student.getCourses().add(this);
         }
     }
 }
