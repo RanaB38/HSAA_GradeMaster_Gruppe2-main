@@ -16,8 +16,6 @@ public interface CourseRepository
     Optional<Course> findCourseByName(String name);
 
     //Methode, um zu prüfen, ob ein Kurs mit einem bestimmten Namen existiert
-    boolean existsByName(String courseName);
+   // boolean existsByName(String courseName);
 
-    //Methode, um einen Kurs anhand des Namens zu löschen
-    void deleteById(Long courseId);
 }

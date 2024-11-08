@@ -1,6 +1,5 @@
 package de.hsaalen.grademaster.grademasterservice.domain;
 
-import de.hsaalen.grademaster.grademasterservice.domain.Course;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.ManyToMany;
