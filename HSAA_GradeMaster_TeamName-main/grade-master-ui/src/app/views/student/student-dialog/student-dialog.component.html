@@ -1,0 +1,27 @@
+<h2 mat-dialog-title>Formular</h2>
+
+<div class="form-container">
+  <form [formGroup]="form">
+    <mat-form-field appearance="fill" style="width: 100%; margin-bottom: 20px">
+      <mat-label>Name</mat-label>
+      <input matInput formControlName="name" />
+    </mat-form-field>
+
+    <mat-form-field appearance="fill" style="width: 100%; margin-bottom: 20px">
+      <mat-label>E-Mail</mat-label>
+      <input matInput formControlName="email" />
+    </mat-form-field>
+
+    <div mat-dialog-actions align="end">
+      <button mat-button mat-dialog-close>Abbrechen</button>
+      <button
+        mat-button
+        (click)="onSubmit()"
+        [mat-dialog-close]="form.value"
+        [disabled]="form.invalid"
+      >
+        OK
+      </button>
+    </div>
+  </form>
+</div>

@@ -29,9 +29,20 @@ export class AppComponent {
 
   public menuItems: MenuBarItem[] = [
     {
+      name: 'Kurse',
+      routePath: 'courses',
+      visible: of(true),
+    },    
+    {
+      name: 'Studenten',
+      routePath: 'students',
+      visible: of(true),
+    },
+
+    {
       name: 'Impressum',
       routePath: 'impressum',
-            visible: of(true),
+      visible: of(true),
     },
     {
       name: 'Login',

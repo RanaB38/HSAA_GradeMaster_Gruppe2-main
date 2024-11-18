@@ -1,0 +1,49 @@
+:host {
+  margin: 32px;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+mat-card {
+  margin: 16px;
+  width: 300px;
+}
+
+mat-card-actions button {
+  background-color: #1976d2; /* Blaue Farbe */
+  color: white;
+  font-weight: bold;
+  margin-right: 8px; /* Abstand zwischen den Buttons */
+  padding: 8px 16px;
+  border-radius: 4px;
+}
+
+mat-card-actions button:hover {
+  background-color: #145a8d; /* Dunklerer Farbton beim Hover */
+}
+
+.actions-container {
+  display: flex;
+  flex-flow: row;
+  position: fixed;
+  align-items: center;
+  gap: 16px;
+  bottom: 20px;
+  right: 20px;
+}
+
+.add-button {
+  z-index: 1000; /* Sicherstellen, dass der Button über anderen Elementen liegt */
+  background-color: #1976d2;
+  color: white;
+
+  &-dialog {
+    background-color: rgb(204, 0, 255);
+  }
+}
+
+.add-button:hover {
+  background-color: #145a8d;
+}

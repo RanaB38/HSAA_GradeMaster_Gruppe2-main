@@ -29,7 +29,10 @@ export class MenuBarComponent {
   @Input() title: string = '';
   @Input() menuBarItems: MenuBarItem[] = [];
 
-  constructor(private router: Router, private activatedRoute: ActivatedRoute) {}
+  constructor(
+    private router: Router, 
+    private activatedRoute: ActivatedRoute
+  ) {}
 
   routerHome() {
     this.router.navigateByUrl('');

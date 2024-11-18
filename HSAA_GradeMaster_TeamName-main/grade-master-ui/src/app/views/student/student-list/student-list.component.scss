@@ -1,0 +1,20 @@
+:host {
+  margin: 32px;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.add-button {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  z-index: 1000; /* Sicherstellen, dass der Button über anderen Elementen liegt */
+  background-color: #1976d2;
+  color: white;
+}
+
+.add-button:hover {
+  background-color: #145a8d;
+}
