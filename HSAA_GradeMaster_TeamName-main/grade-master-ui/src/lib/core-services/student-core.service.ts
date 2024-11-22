@@ -18,7 +18,7 @@ export class StudentCoreService {
     this.providerService.createStudent({...newStudent, id: 0}); // Workaround um neues object zu generieren
   }
 
-  // 
+  //
   getStudent(id: number): Student | undefined {
     return this.providerService.getStudentById(id);
   }
