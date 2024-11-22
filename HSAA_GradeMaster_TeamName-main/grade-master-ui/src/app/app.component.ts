@@ -13,8 +13,8 @@ import { MenuBarItem } from '../lib/components/menu-bar/menu-bar.interfaces';
   selector: 'app-root',
   standalone: true,
   imports: [
-    RouterOutlet, 
-    MenuBarComponent,    
+    RouterOutlet,
+    MenuBarComponent,
     MatToolbarModule,
     MatButtonModule,
     MatIconModule,
@@ -32,7 +32,7 @@ export class AppComponent {
       name: 'Kurse',
       routePath: 'courses',
       visible: of(true),
-    },    
+    },
     {
       name: 'Studenten',
       routePath: 'students',
@@ -50,6 +50,6 @@ export class AppComponent {
             visible: of(true),
       highlighted: true,
       icon: 'login',
-    }, 
+    },
    ]
 }

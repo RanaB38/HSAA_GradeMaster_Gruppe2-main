@@ -8,6 +8,7 @@ import { Observable } from 'rxjs';
 import { StudentCoreService } from '../../../../lib/core-services/student-core.service';
 import { Student } from '../../../../lib/domain/student.interfaces';
 import { StudentDialogComponent } from '../student-dialog/student-dialog.component';
+import {HttpClient, HttpClientModule, provideHttpClient} from "@angular/common/http";
 
 @Component({
   selector: 'app-student-list',
@@ -17,6 +18,7 @@ import { StudentDialogComponent } from '../student-dialog/student-dialog.compone
     MatTableModule,
     MatButtonModule,
     RouterModule,
+    HttpClientModule,
   ],
   templateUrl: './student-list.component.html',
   styleUrl: './student-list.component.scss'
@@ -24,21 +26,24 @@ import { StudentDialogComponent } from '../student-dialog/student-dialog.compone
 export class StudentListComponent {
 
   // "$" als inoffizielle Coding-Konvention um Observables zu markieren
-  public dataSource$!: Observable<Student[]>; // "!" oder "... | undefined"  
+  public dataSource$!: Observable<Student[]>; // "!" oder "... | undefined"
   public displayedColumns: string[] = ['id', 'name', 'email'];
-  
-  constructor(
-    private dialog: MatDialog, 
-    private studentCoreService: StudentCoreService,
-    private router: Router
-  ) { 
 
+  constructor(
+    private dialog: MatDialog,
+    private studentCoreService: StudentCoreService,
+    private router: Router,
+    private http: HttpClient,
+  ) {
+  this.http.get("localhost:8080/students").subscribe(s =>
+  { console.log(s);}
+  );
     this.dataSource$ = this.studentCoreService.getStudents();
   }
-  
+
   public addStudent(): void {
     const dialogRef = this.dialog.open(StudentDialogComponent, {
-      width: '400px',      
+      width: '400px',
     });
 
     dialogRef.afterClosed().subscribe(result => {

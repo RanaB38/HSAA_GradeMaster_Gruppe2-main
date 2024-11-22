@@ -2,7 +2,7 @@ import { Routes } from '@angular/router';
 import { CourseDialogHandlerComponent } from './views/course/course-dialog/course-dialog-handler/course-dialog-handler.component';
 
 export const routes: Routes = [
-  
+
     {
         path: '',
         loadComponent: () =>
@@ -28,7 +28,7 @@ export const routes: Routes = [
                 path: '',
                 pathMatch: 'full',
                 redirectTo: 'overview'
-            },  
+            },
             {
                 path: 'overview',
                 loadComponent: () =>
@@ -37,8 +37,8 @@ export const routes: Routes = [
                 ).then((mod) => mod.CourseOverviewComponent),
 
             },
-            { 
-                path: ':id/details', 
+            {
+                path: ':id/details',
                 loadComponent: () =>
                     import(
                         './views/course/course-detail/course-detail.component'
@@ -58,7 +58,7 @@ export const routes: Routes = [
                 path: '',
                 pathMatch: 'full',
                 redirectTo: 'list'
-            },  
+            },
             {
                 path: 'list',
                 loadComponent: () =>
@@ -67,8 +67,8 @@ export const routes: Routes = [
                 ).then((mod) => mod.StudentListComponent),
 
             },
-            { 
-                path: ':id/details', 
+            {
+                path: ':id/details',
                 loadComponent: () =>
                     import(
                         './views/student/student-detail/student-detail.component'
@@ -76,7 +76,7 @@ export const routes: Routes = [
             },
         ]
     },
-    
+
     {
         path: 'impressum',
         loadComponent: () =>
@@ -84,17 +84,17 @@ export const routes: Routes = [
             './views/impressum/impressum.component'
         ).then((mod) => mod.ImpressumComponent),
         children: [
-            { 
-                path: 'error', 
+            {
+                path: 'error',
                 loadComponent: () =>
                     import(
                         '../lib/components/four-zero-four/four-zero-four.component'
                     ).then((mod) => mod.FourZeroFourComponent),
-            
-            }    
+
+            }
         ]
     },
-    
+
     {
         path: '**',
         loadComponent: () =>

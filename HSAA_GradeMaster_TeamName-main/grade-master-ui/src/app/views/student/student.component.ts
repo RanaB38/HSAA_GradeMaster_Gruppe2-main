@@ -17,6 +17,7 @@ import { MaterialColor } from '../../../lib/enums/material-color';
 })
 export class StudentComponent {
 
+  private baseUrl= "localhost:8080/api/v1/student"
     public title = 'Studenten';
     public color: MaterialColor = 'accent';
 

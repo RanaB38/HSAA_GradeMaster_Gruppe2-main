@@ -1,3 +1,31 @@
+/* Allgemeines Layout */
+
+/* Stil für die Toolbar */
 mat-toolbar {
-  margin-top: 16px;
+  background-color: #19ef12; /* Ein kräftiger Lila-Ton */
+  color: #0b0b0c; /* Weiße Schriftfarbe */
+  padding: 16px 32px; /* Etwas mehr Abstand für das Layout */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Weiche Schatten für die Toolbar */
+  border-radius: 8px; /* Abgerundete Ecken für die Toolbar */
+  margin-top: 16px; /* Abstand zum oberen Rand */
+}
+
+/* Styling für den Inhalt im <router-outlet> */
+router-outlet {
+  display: block;
+  padding: 32px; /* Genügend Abstand für den Inhalt */
+}
+
+/* Optional: Schönerer Scrollbalken */
+body::-webkit-scrollbar {
+  width: 8px;
+}
+
+body::-webkit-scrollbar-thumb {
+  background-color: rgba(0, 0, 0, 0.3);
+  border-radius: 10px;
+}
+
+body::-webkit-scrollbar-track {
+  background-color: #f4f4f9;
 }

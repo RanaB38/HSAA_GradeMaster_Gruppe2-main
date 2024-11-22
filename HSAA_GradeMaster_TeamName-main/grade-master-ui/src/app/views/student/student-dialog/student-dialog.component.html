@@ -1,21 +1,27 @@
-<h2 mat-dialog-title>Formular</h2>
+<h2 mat-dialog-title class="dialog-title">Neuer Student</h2>
 
 <div class="form-container">
   <form [formGroup]="form">
-    <mat-form-field appearance="fill" style="width: 100%; margin-bottom: 20px">
-      <mat-label>Name</mat-label>
-      <input matInput formControlName="name" />
+    <mat-form-field appearance="outline" class="form-field">
+      <mat-label>ID*</mat-label>
+      <input matInput formControlName="id" placeholder="z.B. 12345" />
     </mat-form-field>
 
-    <mat-form-field appearance="fill" style="width: 100%; margin-bottom: 20px">
+    <mat-form-field appearance="outline" class="form-field">
+      <mat-label>Name</mat-label>
+      <input matInput formControlName="name" placeholder="z.B. Max Mustermann" />
+    </mat-form-field>
+
+    <mat-form-field appearance="outline" class="form-field">
       <mat-label>E-Mail</mat-label>
-      <input matInput formControlName="email" />
+      <input matInput formControlName="email" placeholder="z.B. max@domain.com" />
     </mat-form-field>
 
     <div mat-dialog-actions align="end">
-      <button mat-button mat-dialog-close>Abbrechen</button>
+      <button mat-button mat-dialog-close class="cancel-button">Abbrechen</button>
       <button
-        mat-button
+        mat-raised-button
+        color="primary"
         (click)="onSubmit()"
         [mat-dialog-close]="form.value"
         [disabled]="form.invalid"
@@ -25,3 +31,4 @@
     </div>
   </form>
 </div>
+

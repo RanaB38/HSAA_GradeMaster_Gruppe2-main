@@ -1,21 +1,58 @@
 :host {
-  padding-left: 8px;
+  display: block;
+  padding-left: 16px;
+  padding-right: 16px; /* Gleicher Abstand auf beiden Seiten */
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; /* Modernere Schriftart */
+  text-align: center; /* Text zentrieren */
 }
 
 .impressum-container {
-  margin: 20px auto;
-  font-family: "Arial", sans-serif;
+  margin: 40px auto; /* Abstand oben, rechts und unten */
+  margin-top: 60px; /* Größerer Abstand von oben */
+  max-width: 900px; /* Maximalbreite des Containers für bessere Lesbarkeit */
+  padding: 20px;
+  background-color: #f9f9f9; /* Heller Hintergrund für den Container */
+  border-radius: 10px; /* Abgerundete Ecken */
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); /* Sanfter Schatten */
 }
+
+
 
 h2,
 h3 {
-  color: #333;
+  color: #444; /* Dunkleres Grau für bessere Lesbarkeit */
+  font-weight: 600; /* Fettgedruckte Überschriften */
+  margin-bottom: 20px; /* Mehr Abstand unter den Überschriften */
+}
+
+h2 {
+  font-size: 2.2em; /* Größere Schrift für Hauptüberschrift */
+}
+
+h3 {
+  font-size: 1.8em; /* Etwas kleinere Schrift für Unterüberschriften */
+  margin-top: 30px; /* Abstand nach oben für bessere Gliederung */
 }
 
 p {
-  line-height: 1.6;
+  color: #666; /* Helleres Grau für den Text */
+  line-height: 1.8; /* Größerer Zeilenabstand für bessere Lesbarkeit */
+  margin-bottom: 20px; /* Abstand zwischen den Absätzen */
+  font-size: 1em; /* Angemessene Schriftgröße für den Text */
+}
+
+a {
+  color: #007BFF; /* Blau für Links */
+  text-decoration: none; /* Entfernt die Standard-Unterstreichung */
+}
+
+a:hover {
+  text-decoration: underline; /* Unterstreicht den Link beim Hover */
 }
 
 .container {
-  padding-left: 8px;
+  padding-top: 52px; /* Kein zusätzliches Padding für den Container */
+  padding-left: 0; /* Kein zusätzliches Padding für den Container */
+  padding-right: 0; /* Kein zusätzliches Padding für den Container */
+  text-align: center; /* Zentriert den gesamten Text innerhalb der Container-Klasse */
 }
