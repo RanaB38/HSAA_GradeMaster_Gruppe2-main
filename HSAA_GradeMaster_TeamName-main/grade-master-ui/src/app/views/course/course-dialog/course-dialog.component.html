@@ -16,8 +16,17 @@
         rows="5"
       ></textarea>
     </mat-form-field>
-    <button>
+    <div mat-dialog-actions align="end">
+      <button mat-button mat-dialog-close class="cancel-button">Abbrechen</button>
+      <button
+        mat-raised-button
+        color="primary"
+        (click)="onSubmit()"
+        [mat-dialog-close]="form.value"
+        [disabled]="form.invalid"
+      >
         OK
-      </button>
+     </button>
+    </div>
   </form>
 </div>

@@ -2,8 +2,11 @@ import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
 import { MatCardModule } from '@angular/material/card';
 import { Router, RouterModule } from '@angular/router';
-import { Card } from '../../../../lib/components/card/card.interfaces';
 import { MatButtonModule } from '@angular/material/button';
+import {Observable} from "rxjs";
+import {Course} from "../../../../lib/domain/course.interfaces";
+import {CourseCoreService} from "../../../../lib/core-services/course-core.service";
+import {HttpClient} from "@angular/common/http";
 
 @Component({
   selector: 'app-course-overview',
@@ -19,50 +22,19 @@ import { MatButtonModule } from '@angular/material/button';
 })
 export class CourseOverviewComponent {
 
+  public dataSource$!: Observable<Course[]>; // "!" oder "... | undefined"
 
-  public cards: Card[] = [ // aus lib
-    {
-      id: 1,
-      title: 'Kurs 1',
-      subtitle: 'Erste Kachel',
-      content: 'Dies ist der Inhalt der ersten Kachel.',
-      imageUrl: 'https://via.placeholder.com/150'
-    },
-    {
-      id: 2,
-      title: 'Kurs 2',
-      subtitle: 'Zweite Kachel',
-      content: 'Dies ist der Inhalt der zweiten Kachel.',
-      imageUrl: 'https://via.placeholder.com/150'
-    },
-    {
-      id: 3,
-      title: 'Kurs 3',
-      subtitle: 'Dritte Kachel',
-      content: 'Dies ist der Inhalt der dritten Kachel.',
-      imageUrl: 'https://via.placeholder.com/150'
-    },
-    {
-      id: 4,
-      title: 'Kurs 4',
-      subtitle: 'Vierte Kachel',
-      content: 'Dies ist der Inhalt der vierten Kachel.',
-      imageUrl: 'https://via.placeholder.com/150'
-    }
-  ];
+  constructor(private router: Router,
+              private courseCoreService: CourseCoreService,
+              private http: HttpClient,) {
 
-  constructor(private router: Router) {}
+    this.http.get("http://localhost:8080/api/v1/course").subscribe(s =>
+      { console.log(s);}
+    );
+    this.dataSource$ = this.courseCoreService.getCourses();
+    console.log(this.dataSource$);
 
-    public addCard(): void {
-      this.cards.push({ // push um hier das hinzufügen und den Aufruf einer "Add"-Methode zu simulieren
-        id: 0, // --> muss durch die API generiert werden
-        title: 'Neue Karte',
-        subtitle: 'Zusätzliche Karte',
-        content: 'Inhalt der neuen Karte.',
-        imageUrl: 'https://via.placeholder.com/150'
-      });
-    }
-
+  }
 
     public addCourse() {
       // Öffnen einer unabhängigen route, die auf jeder Seite angezeigt werden könnte.

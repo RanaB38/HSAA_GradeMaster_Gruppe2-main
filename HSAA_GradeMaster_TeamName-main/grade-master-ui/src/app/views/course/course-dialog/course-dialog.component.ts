@@ -5,6 +5,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { MAT_DIALOG_DATA, MatDialogModule, MatDialogRef } from '@angular/material/dialog';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
+import {CourseCoreService} from "../../../../lib/core-services/course-core.service";
 
 @Component({
   selector: 'app-course-dialog',
@@ -27,6 +28,7 @@ export class CourseDialogComponent {
   constructor(
     private fb: FormBuilder,
     private dialogRef: MatDialogRef<CourseDialogComponent>,
+    private coreService: CourseCoreService,
     @Inject(MAT_DIALOG_DATA) public data: any
   ) {
 
@@ -34,13 +36,22 @@ export class CourseDialogComponent {
       name: ['', Validators.required],
       description: ['']
     });
-  
+
   }
 
   onSubmit() {
+    // Prüfen ob Formular in einem "valid" state is
     if (this.form.valid) {
-      // Submit Logik
-      console.log('OK')
+      // Daten verarbeiten
+      const formData = this.form.value;
+      console.log('Formulardaten verarbeitet:', formData);
+
+      this.coreService.addCourse(formData);
+
+      // Dialog schließen und Daten zurückgeben
+      this.dialogRef.close(formData);
+    } else {
+      console.log('Formular ungültig');
     }
   }
 
