@@ -14,11 +14,10 @@ export class StudentCoreService {
     return this.providerService.getAllStudents();
   }
 
-  addStudent(newStudent = { name: '', email: '' }) {
-    this.providerService.createStudent({...newStudent, id: 0}); // Workaround um neues object zu generieren
+  addStudent(newStudent = {id: 0, name: '', email: '' }) {
+    this.providerService.createStudent({...newStudent}); // Workaround um neues object zu generieren
   }
 
-  //
   getStudent(id: number): Student | undefined {
     return this.providerService.getStudentById(id);
   }

@@ -33,10 +33,11 @@ export class StudentDialogComponent {
 
     // Erstellen der Formulardaten -> "form" wird dann im template verknüpft
     this.form = this.fb.group({
+      id: ['', Validators.required],
       name: ['', Validators.required],
       email: ['', [Validators.required, Validators.email]]
     });
-  
+
   }
 
   onSubmit() {
