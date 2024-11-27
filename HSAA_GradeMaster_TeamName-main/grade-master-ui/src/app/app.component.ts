@@ -29,6 +29,12 @@ export class AppComponent {
 
   public menuItems: MenuBarItem[] = [
     {
+      name: 'Home',
+      routePath: '/',
+      visible: of(true),
+      icon: 'home',
+    },
+    {
       name: 'Kurse',
       routePath: 'courses',
       visible: of(true),
@@ -38,24 +44,11 @@ export class AppComponent {
       routePath: 'students',
       visible: of(true),
     },
-
-    {
-      name: 'Kontakt',
-      routePath: 'kontakt',
-      visible: of(true),
-    },
-
     {
       name: 'Impressum',
       routePath: 'impressum',
       visible: of(true),
     },
-    {
-      name: 'Login',
-      routePath: 'login',
-            visible: of(true),
-      highlighted: true,
-      icon: 'login',
-    },
-   ]
+
+  ]
 }

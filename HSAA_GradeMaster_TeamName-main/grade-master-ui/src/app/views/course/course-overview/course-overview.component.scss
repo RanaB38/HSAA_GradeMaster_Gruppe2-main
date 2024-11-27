@@ -1,27 +1,83 @@
 :host {
-  margin: 32px;
+  margin: 40px;
   display: flex;
   justify-content: space-around;
   align-items: center;
   flex-wrap: wrap;
+
 }
 
 mat-card {
   margin: 16px;
-  width: 300px;
+  width: 320px; /* Etwas breitere Karte, um den breiteren Button zu berücksichtigen */
+  background-color: #eaf3ef;
+  border: 2px solid #ccc; /* Hinzufügen eines Rahmens für bessere Struktur */
+  border-radius: 12px; /* Abgerundete Ecken */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Leichter Schatten für mehr Tiefe */
+  padding: 20px; /* Mehr Polsterung für bessere Balance mit dem breiten Button */
+  transition: transform 0.3s ease-in-out; /* Animation für Hover-Effekt */
+}
+
+mat-card:hover {
+  transform: scale(1.05); /* Vergrößert die Karte beim Hover für einen interaktiven Effekt */
+}
+
+mat-card-title {
+  font-size: 24px; /* Größere Schrift für den Titel */
+  font-weight: bold; /* Fettere Schrift für den Titel */
+  color: #0e0909; /* Dunklere Farbe für besseren Kontrast */
+}
+
+mat-card-content {
+  font-size: 16px; /* Größere Schrift für die Beschreibung */
+  font-weight: 500; /* Etwas dickere Schrift für die Beschreibung */
+  color: #050404; /* Etwas hellere Farbe für die Beschreibung */
+  margin-top: 20px;
+
+  /* Um Text nach 2 Zeilen abzuschneiden */
+  display: -webkit-box; /* Wichtige Einstellung für line-clamp */
+  -webkit-line-clamp: 2; /* Maximal 2 Zeilen anzeigen */
+  -webkit-box-orient: vertical; /* Vertikale Ausrichtung für den Clamping-Effekt */
+  overflow: hidden; /* Verhindert, dass Text überläuft */
+  text-overflow: ellipsis; /* Fügt "..." hinzu, wenn der Text abgeschnitten wird */
+}
+
+mat-card-subtitle {
+  font-size: 20px; /* Größere Schrift für die zweite Überschrift */
+  font-weight: bold; /* Fettere Schrift für die zweite Überschrift */
+  color: #0b0b0c; /* Dunklere Farbe für bessere Sichtbarkeit */
+  margin-top: 10px;
+}
+
+mat-card-actions {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 20px;
+  gap: 10px; /* Mehr Abstand zwischen den Buttons, um den breiteren Button auszugleichen */
 }
 
 mat-card-actions button {
-  background-color: #19d29a; /* Blaue Farbe */
+  background-color: #527cc5; /* Helle grüne Farbe */
   color: #000000;
   font-weight: bold;
-  margin-right: 10px; /* Abstand zwischen den Buttons */
-  padding: 8px 16px;
-  border-radius: 8px;
+  padding: 2px 20px; /* Breiterer Button durch vergrößertes Padding */
+  border-radius: 20px;
+  border: none; /* Entfernen des Standardrahmens */
+  transition: background-color 0.3s ease, transform 0.2s ease; /* Sanfte Übergänge bei Hover */
 }
 
 mat-card-actions button:hover {
-  background-color: #145a8d; /* Dunklerer Farbton beim Hover */
+  background-color: #040505; /* Dunklerer Farbton beim Hover */
+  cursor: pointer; /* Zeiger-Cursor für bessere Interaktivität */
+  transform: scale(1.05); /* Vergrößert den Button beim Hover */
+}
+
+mat-card img {
+  border: 4px solid #070303; /* Rahmen um das Bild */
+  border-radius: 8px; /* Abgerundete Ecken des Rahmens */
+  max-width: 100%; /* Bild passt sich der Kartenbreite an */
+  height: Auto; /* Verhindert Verformung des Bildes */
+  margin-top: 20px;
 }
 
 .actions-container {
@@ -35,15 +91,31 @@ mat-card-actions button:hover {
 }
 
 .add-button {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
   z-index: 1000; /* Sicherstellen, dass der Button über anderen Elementen liegt */
-  background-color: #1976d2;
-  color: white;
-
-  &-dialog {
-    background-color: rgb(22, 51, 239);
-  }
+  background: linear-gradient(135deg, #1bf8d7, #14d5a2); /* Farbverlauf für dynamischen Effekt */
+  color: #0e0707;
+  font-size: 18px;
+  font-weight: bold;
+  border: 2px solid #010201;
+  border-radius: 12px; /* Leicht abgerundete Ecken */
+  padding: 40px 30px; /* Angenehmes Padding für bessere Proportionen */
+  box-shadow: 0 5px 10px rgba(0, 0, 0, 0.3); /* Schatteneffekt */
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  transition: transform 0.3s ease, box-shadow 0.3s ease, background-color 0.3s ease;
 }
 
-.add-button {
-  background-color: #145a8d;
+.add-button:hover {
+  background-color: #ff5722; /* Kräftige, auffällige Farbe beim Hover */
+  border-color: #e64a19;
+  color: #050404;
+  box-shadow: 0 8px 15px rgba(255, 87, 34, 0.5); /* Intensiverer Schatten */
+  transform: scale(1.1); /* Vergrößerung beim Hover */
+}
+
+.add-button-dialog {
+  background-color: rgb(22, 51, 239);
 }

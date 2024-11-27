@@ -1,7 +1,7 @@
 <div class="actions-container">
   <button
     mat-fab
-    class="add-button-dialog"
+    class="add-button"
     aria-label="Add"
     (click)="addCourse()"
   >
@@ -17,7 +17,7 @@
       <mat-card-subtitle>{{ card.name }}</mat-card-subtitle>
     </mat-card-header>
 
-    <img mat-card-image [src]="'https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png'" alt="{{ card.name }}" />
+    <img mat-card-image [src]="'https://cdn-icons-png.flaticon.com/512/5351/5351078.png'" alt="{{ card.name }}" />
 
     <mat-card-content>
       <p>{{ card.description }}</p>
@@ -35,7 +35,7 @@
       </button>
 
       <!-- Löschen Button -->
-      <button mat-button (click)="(card.id)">
+      <button mat-button (click)="deleteCourse(card.id)">
         Löschen
       </button>
     </mat-card-actions>
