@@ -1,7 +1,31 @@
 :host {
-  margin: 32px;
+  margin: 0; /* Entfernt den Standard-Außenabstand */
   display: flex;
-  justify-content: space-around;
-  align-items: center;
-  flex-wrap: wrap;
+  justify-content: center; /* Zentriert den Inhalt horizontal */
+  align-items: center; /* Zentriert den Inhalt vertikal */
+  text-align: center; /* Zentriert den Text innerhalb des Host-Elements */
+
+  background-color: #f0f4f8; /* Heller, subtiler Hintergrund ohne Bilder */
+  padding: 30px; /* Abstand innerhalb des Containers für ein luftigeres Layout */
+  border-radius: 15px; /* Abgerundete Ecken für ein weicheres Design */
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15); /* Sanfterer, tieferer Schatten für einen eleganteren Effekt */
+
+  width: 85%; /* Breitere Fensterbreite für mehr Raum */
+  max-width: 700px; /* Größere maximale Breite */
+  height: auto; /* Automatische Höhe je nach Inhalt */
+
+  position: absolute; /* Ermöglicht es, das Fenster im Viewport zu positionieren */
+  top: 50%; /* Setzt das Fenster vertikal in der Mitte */
+  left: 50%; /* Setzt das Fenster horizontal in der Mitte */
+  transform: translate(-50%, -50%); /* Korrigiert die Position, sodass das Fenster wirklich in der Mitte ist */
+
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; /* Sanfte, moderne Schriftart */
+  color: #333; /* Dunklerer Text für besseren Kontrast und Lesbarkeit */
+
+  transition: transform 0.3s ease-out, box-shadow 0.3s ease; /* Sanfte Übergänge bei Veränderung */
+}
+
+:host(:hover) {
+  transform: translate(-50%, -50%) scale(1.05); /* Sanfte Vergrößerung bei Hover für einen interaktiven Effekt */
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.2); /* Deutlich stärkerer Schatten bei Hover für Tiefe */
 }

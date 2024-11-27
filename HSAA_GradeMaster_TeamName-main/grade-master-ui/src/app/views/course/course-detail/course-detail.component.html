@@ -1,1 +1,82 @@
-<p>YEAHHHHHHHH</p>
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Kursdetails</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      line-height: 1.6;
+      margin: 20px;
+      padding: 0;
+      background-color: #f4f4f4;
+    }
+    .container {
+      max-width: 800px;
+      margin: 0 auto;
+      background: #fff;
+      padding: 20px;
+      border-radius: 8px;
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    }
+    h1, h2 {
+      color: #333;
+    }
+    .course-header {
+      text-align: center;
+      margin-bottom: 20px;
+    }
+    .course-header h1 {
+      margin-bottom: 10px;
+    }
+    .course-info {
+      margin-bottom: 20px;
+    }
+    .btn {
+      display: inline-block;
+      padding: 10px 20px;
+      color: #fff;
+      background: #dfe5ec;
+      border: none;
+      border-radius: 5px;
+      text-decoration: none;
+      text-align: center;
+    }
+    .btn:hover {
+      background: #e4e4e4;
+    }
+  </style>
+</head>
+<body>
+<div class="container">
+  <div class="course-header">
+    <h1>Kursname: <span id="course-name">[Kursname]</span></h1>
+  </div>
+
+  <div class="course-info">
+    <h2>Kursbeschreibung</h2>
+    <p id="course-description">[Detaillierte Beschreibung des Kurses]</p>
+
+    <h2>Kursdetails</h2>
+    <ul>
+      <li><strong>Kursleiter:</strong> <span id="instructor">[Name des Kursleiters]</span></li>
+      <li><strong>Dauer:</strong> <span id="duration">[Dauer des Kurses]</span></li>
+      <li><strong>Startdatum:</strong> <span id="start-date">[Startdatum]</span></li>
+      <li><strong>Ort:</strong> <span id="location">[Ort oder Online]</span></li>
+
+    </ul>
+
+    <h2>Was Sie lernen werden</h2>
+    <ul id="learning-outcomes">
+      <li>[Lernziel 1]</li>
+      <li>[Lernziel 2]</li>
+      <li>[Lernziel 3]</li>
+      <!-- Weitere Lernziele -->
+    </ul>
+  </div>
+
+
+</div>
+</body>
+</html>

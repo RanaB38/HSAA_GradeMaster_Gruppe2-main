@@ -1,1 +1,14 @@
-<p>Hallo! Willkommen zu deiner Anwendung.</p>
+<div class="home-container">
+  <h1>Hochschule Aalen</h1>
+  <img
+    src="https://www.hs-aalen.de/uploads/mediapool/media/file/10245/image_678_Burren_S_dseite.jpg"
+    alt="Hochschule Aalen Gebäude"
+    class="background-image" />
+
+  <!-- Buttons mit routerLink für Navigation -->
+  <div class="button-container">
+    <!-- routerLink bleibt, aber jetzt auch eine Methode für programmgesteuerte Navigation verfügbar -->
+    <button (click)="navigateToCourses()" class="action-button">Kurse</button>
+    <button (click)="navigateToStudents()" class="action-button">Studenten</button>
+  </div>
+</div>

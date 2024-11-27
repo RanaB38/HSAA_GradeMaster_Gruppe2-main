@@ -22,7 +22,7 @@ export class StudentProviderService {
     this.loadStudents();
     /* Initialisierung im Konstruktor, wäre in "ngOnInit()" ebenfalls möglich
     const initialStudents: Student[] = [
-      { id: 1, name: 'Emre', email: 'hans@test.de' },
+      { id: 1, name: 'Hans', email: 'hans@test.de' },
       { id: 2, name: 'Helmut', email: 'helmut@test.de' },
       { id: 3, name: 'Friedrich', email: 'friedrich@test.de' },
       { id: 4, name: 'Josef', email: 'josef@test.de' },

@@ -1,21 +1,19 @@
-<h2 mat-dialog-title>Formular</h2>
+<h2 mat-dialog-title class="dialog-title">Kurs anlegen</h2>
 
 <div class="form-container">
   <form [formGroup]="form">
-    <mat-form-field appearance="fill" style="width: 100%; margin-bottom: 20px">
-      <mat-label>Name</mat-label>
-      <input matInput formControlName="name" />
+    <mat-form-field appearance="outline" class="form-field">
+      <mat-label>Kurse Name*</mat-label>
+      <input matInput formControlName="id" placeholder="z.B. Projektseminar Programmierprojekt" />
     </mat-form-field>
 
-    <mat-form-field appearance="fill" style="width: 100%; margin-bottom: 20px">
+    <mat-form-field appearance="outline" class="form-field">
       <mat-label>Beschreibung</mat-label>
-      <textarea
-        matInput
-        formControlName="description"
-        placeholder="Gib hier eine Beschreibung ein"
-        rows="5"
-      ></textarea>
+      <input matInput formControlName="name" placeholder="Kurs Beschreibung" />
     </mat-form-field>
+
+
+
     <div mat-dialog-actions align="end">
       <button mat-button mat-dialog-close class="cancel-button">Abbrechen</button>
       <button
@@ -26,7 +24,8 @@
         [disabled]="form.invalid"
       >
         OK
-     </button>
+      </button>
     </div>
   </form>
 </div>
+

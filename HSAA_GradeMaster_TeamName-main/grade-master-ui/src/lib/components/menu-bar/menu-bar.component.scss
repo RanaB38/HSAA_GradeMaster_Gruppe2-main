@@ -4,6 +4,11 @@ mat-toolbar.mat-primary {
   position: fixed;
   top: 0;
   z-index: 1000;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: #105281; /* Primärfarbe für die Toolbar */
+  padding: 0 16px; /* Abstand an den Seiten der Toolbar */
 }
 
 .small-spacer {
@@ -16,7 +21,8 @@ mat-toolbar.mat-primary {
 
 .header-title {
   cursor: pointer;
-  color: black; // Schwarze Schrift
+  color: #040202; // Schwarze Schrift für den Titel
+  font-size: 24px;
 }
 
 .shadow {
@@ -27,6 +33,45 @@ mat-toolbar.mat-primary {
   display: flex;
   flex-flow: row;
   gap: 16px;
-  color: black; // Schwarze Schrift
-  // padding: 0 16 0 16;
+  color: black; // Schwarze Schrift für die Navigationselemente
+}
+
+button[mat-button] {
+  position: relative;
+  font-size: 16px;
+  padding: 10px 20px;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  border: none;
+  background-color: transparent;
+  color: #090505;
+  transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+
+  &:hover {
+    color: #fff;
+    background-color: #6200ea; /* Lila Hover-Effekt */
+    transform: scale(1.1); /* Vergrößerung beim Hover */
+  }
+
+  &.highlighted {
+    font-weight: bold;
+    color: #ff4081; /* Beispiel für hervorgehobene Farbe */
+  }
+
+  mat-icon {
+    margin-right: 8px;
+  }
+
+  /* Tooltip-Style bei Hover */
+  &:hover {
+    cursor: pointer;
+    text-decoration: underline;
+  }
+
+  /* Textschattierung bei Hover */
+  &:hover span {
+    text-shadow: 2px 2px 10px rgba(255, 255, 255, 0.5);
+  }
 }

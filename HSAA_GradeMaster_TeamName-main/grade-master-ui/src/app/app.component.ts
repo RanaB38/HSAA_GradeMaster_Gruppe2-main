@@ -40,6 +40,12 @@ export class AppComponent {
     },
 
     {
+      name: 'Kontakt',
+      routePath: 'kontakt',
+      visible: of(true),
+    },
+
+    {
       name: 'Impressum',
       routePath: 'impressum',
       visible: of(true),

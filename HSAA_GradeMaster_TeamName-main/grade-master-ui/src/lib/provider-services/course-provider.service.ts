@@ -35,9 +35,20 @@ export class CourseProviderService {
     return this.courses$;
   }
 
+  // DELETE KURS
+  public deleteCourse(courseId: string): void {
+      console.log('>>> Deleting course with ID: ', courseId);
+      // Hier könnte Logik zum Löschen des Kurses hinzugefügt werden, z.B.:
+      // this.courseService.delete(courseId);
+    }
+
+
+
   // POST Kurs
   public createCourse(course: Course): void {
     console.log('>>> ', course);
+
+
 
     // POST Kurs
     this.httpClient.post<Course>(this.baseUrl, course).subscribe({

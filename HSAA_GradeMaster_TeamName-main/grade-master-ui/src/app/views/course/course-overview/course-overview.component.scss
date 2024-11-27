@@ -12,12 +12,12 @@ mat-card {
 }
 
 mat-card-actions button {
-  background-color: #1976d2; /* Blaue Farbe */
-  color: white;
+  background-color: #19d29a; /* Blaue Farbe */
+  color: #000000;
   font-weight: bold;
-  margin-right: 8px; /* Abstand zwischen den Buttons */
+  margin-right: 10px; /* Abstand zwischen den Buttons */
   padding: 8px 16px;
-  border-radius: 4px;
+  border-radius: 8px;
 }
 
 mat-card-actions button:hover {
@@ -40,10 +40,10 @@ mat-card-actions button:hover {
   color: white;
 
   &-dialog {
-    background-color: rgb(204, 0, 255);
+    background-color: rgb(22, 51, 239);
   }
 }
 
-.add-button:hover {
+.add-button {
   background-color: #145a8d;
 }

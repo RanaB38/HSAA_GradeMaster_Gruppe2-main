@@ -14,8 +14,8 @@ import { MatToolbarModule } from '@angular/material/toolbar';
   selector: 'app-four-zero-four',
   standalone: true,
   imports: [
-    CommonModule, 
-    RouterModule,     
+    CommonModule,
+    RouterModule,
     MatToolbarModule,
     MatButtonModule,
     MatIconModule,

@@ -1,3 +1,10 @@
 mat-toolbar {
-  margin-top: 16px;
+  margin-top: 20px; /* Abstand von oben */
+  background-color: #18eab9; /* Helles Grau als Hintergrundfarbe */
+  color: #333; /* Dunkle Textfarbe für guten Kontrast */
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Dezenter Schatten für mehr Tiefe */
+  font-weight: bold;
+  font-size: 16px;
+  padding: 0 16px; /* Angenehmes Padding für Innenabstand */
+  border-bottom: 1px solid #e0e0e0; /* Dünner Rand für Struktur */
 }

@@ -30,7 +30,7 @@ export class MenuBarComponent {
   @Input() menuBarItems: MenuBarItem[] = [];
 
   constructor(
-    private router: Router, 
+    private router: Router,
     private activatedRoute: ActivatedRoute
   ) {}
 

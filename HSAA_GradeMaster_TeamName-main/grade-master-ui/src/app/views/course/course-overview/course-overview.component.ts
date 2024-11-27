@@ -35,7 +35,6 @@ export class CourseOverviewComponent {
     console.log(this.dataSource$);
 
   }
-
     public addCourse() {
       // Öffnen einer unabhängigen route, die auf jeder Seite angezeigt werden könnte.
       this.router.navigate([{ outlets: { dialog: ['dialog'] } }]);

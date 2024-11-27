@@ -7,7 +7,7 @@
       <button
         *ngIf="!item.highlighted && visibleItem"
         mat-button
-        color="accent"
+        color="blue"
         (click)="routeTo(item.routePath)"
         [matTooltip]="item.name"
       >
@@ -17,7 +17,7 @@
       <button
         *ngIf="item.highlighted && item.icon && visibleItem"
         mat-icon-button
-        [color]="item.name === 'Login' ? 'accent' : 'warn'"
+        [color]="item.name === 'Login' ? 'green' : 'warn'"
         (click)="routeTo(item.routePath)"
         [matTooltip]="item.name"
       >

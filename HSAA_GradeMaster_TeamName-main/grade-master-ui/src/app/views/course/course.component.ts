@@ -18,6 +18,6 @@ import { RouterModule } from '@angular/router';
 export class CourseComponent {
 
     public title = 'Kurse';
-    public color: MaterialColor = 'accent';
+    public color: MaterialColor = 'warn';
 
 }

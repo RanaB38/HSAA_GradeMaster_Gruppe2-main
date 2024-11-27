@@ -8,27 +8,36 @@
     +
   </button>
 </div>
-@if(dataSource$ | async; as courses) {
-<mat-card *ngFor="let card of courses">
-  <mat-card-header>
-    <mat-card-title>Kurs {{ card.id }}</mat-card-title>
-    <mat-card-subtitle>{{ card.name }}</mat-card-subtitle>
-  </mat-card-header>
 
-  <img mat-card-image [src]="'https://via.placeholder.com/150'" alt="{{ card.name }}" />
+<!-- Anzeige der Kurse -->
+<ng-container *ngIf="dataSource$ | async as courses">
+  <mat-card *ngFor="let card of courses">
+    <mat-card-header>
+      <mat-card-title>Kurs {{ card.id }}</mat-card-title>
+      <mat-card-subtitle>{{ card.name }}</mat-card-subtitle>
+    </mat-card-header>
 
-  <mat-card-content>
-    <p>{{ card.description }}</p>
-  </mat-card-content>
+    <img mat-card-image [src]="'https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png'" alt="{{ card.name }}" />
 
-  <mat-card-actions>
-    <button mat-button [routerLink]="['../', card.id, 'details']">
-      Details
-    </button>
-    <!-- <aux>    </aux> -->
-    <button mat-button [routerLink]="[{ outlets: { dialog: ['dialog'] } }]">
-      Bearbeiten
-    </button>
-  </mat-card-actions>
-</mat-card>
-}
+    <mat-card-content>
+      <p>{{ card.description }}</p>
+    </mat-card-content>
+
+    <mat-card-actions>
+      <!-- Details Button -->
+      <button mat-button [routerLink]="['../', card.id, 'details']">
+        Details
+      </button>
+
+      <!-- Bearbeiten Button -->
+      <button mat-button [routerLink]="[{ outlets: { dialog: ['dialog'] } }]">
+        Bearbeiten
+      </button>
+
+      <!-- Löschen Button -->
+      <button mat-button (click)="(card.id)">
+        Löschen
+      </button>
+    </mat-card-actions>
+  </mat-card>
+</ng-container>

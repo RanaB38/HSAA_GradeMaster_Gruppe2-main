@@ -11,10 +11,30 @@
   bottom: 20px;
   right: 20px;
   z-index: 1000; /* Sicherstellen, dass der Button über anderen Elementen liegt */
-  background-color: #1976d2;
-  color: white;
+  background: linear-gradient(135deg, #38ef10, #49ed0a); /* Farbverlauf für dynamischen Effekt */
+  color: #000000;
+  font-size: 18px;
+  font-weight: bold;
+  border: 2px solid #010201;
+  border-radius: 12px; /* Leicht abgerundete Ecken */
+  padding: 12px 24px; /* Angenehmes Padding für bessere Proportionen */
+  box-shadow: 0 5px 10px rgba(0, 0, 0, 0.3); /* Schatteneffekt */
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  transition: transform 0.3s ease, box-shadow 0.3s ease, background-color 0.3s ease;
 }
 
 .add-button:hover {
-  background-color: #145a8d;
+  background-color: #ff5722; /* Kräftige, auffällige Farbe beim Hover */
+  border-color: #e64a19;
+  color: #050404;
+  box-shadow: 0 8px 15px rgba(255, 87, 34, 0.5); /* Intensiverer Schatten */
+  transform: scale(1.1); /* Vergrößerung beim Hover */
+}
+
+.add-button:active {
+  transform: scale(0.95); /* Leichte Verkleinerung bei Klick */
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2); /* Weniger Schatten */
+
+
 }
