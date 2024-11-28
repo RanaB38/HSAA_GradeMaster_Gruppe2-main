@@ -18,4 +18,6 @@ import {Course} from "../../../../lib/domain/course.interfaces";
 export class CourseDetailComponent {
   public dataSource$!: Observable<Course[]>; // "!" oder "... | undefined"
 
+
+
 }
