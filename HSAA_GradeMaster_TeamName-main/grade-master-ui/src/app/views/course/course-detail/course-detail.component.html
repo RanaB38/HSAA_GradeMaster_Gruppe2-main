@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="de">
+<mat-toolbar [color]="color">{{ title }}</mat-toolbar>
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -49,27 +50,26 @@
   </style>
 </head>
 <body>
-<div class="form-container">
+<div class="form-container" *ngIf="dataSource$ as course">
   <div class="course-header">
-    <h1>Kursname: <span id="course-name">[........]</span></h1>
+    <h1>Kursname: <span>{{ course.name }}</span></h1>
   </div>
 
-  <h3>Kurs ID: </h3>
+  <h3>Kurs ID: <span>{{ course.id }}</span></h3>
 
   <div class="course-info">
     <h2>Kursbeschreibung: </h2>
-    <p id="course-description">[...........]</p>
+    <p coursedescription="description">{{course.description}}</p>
 
 
     <h2>Kursdetails: </h2>
 
-      <p id="course-description">[...........]</p>
+
 
 
     <h3>Tabelle der Studenten: </h3>
 
   </div>
-
 
 </div>
 </body>
