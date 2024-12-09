@@ -1,45 +1,51 @@
 import { Component } from '@angular/core';
-import {AsyncPipe, NgForOf, NgIf} from "@angular/common";
-import {MatCardContent} from "@angular/material/card";
+import {MatDialog, MatDialogModule} from '@angular/material/dialog';
+import { ReactiveFormsModule } from '@angular/forms';
+import { AddStudentDialogComponent } from '../add-student-dialog/add-student-dialog.component';
 import {Course} from "../../../../lib/domain/course.interfaces";
-import {ActivatedRoute} from "@angular/router";
-import {HttpClient} from "@angular/common/http";
-import {CourseCoreService} from "../../../../lib/core-services/course-core.service";
 import {MaterialColor} from "../../../../lib/enums/material-color";
-import {MatToolbar} from "@angular/material/toolbar";
 import {Observable} from "rxjs";
 import {Student} from "../../../../lib/domain/student.interfaces";
-import {ReactiveFormsModule} from "@angular/forms";
-import {MatFormField} from "@angular/material/form-field";
-import {MatDialogClose} from "@angular/material/dialog";
+import {CourseCoreService} from "../../../../lib/core-services/course-core.service";
+import {ActivatedRoute} from "@angular/router";
+import {HttpClient} from "@angular/common/http";
+import { MatToolbarModule } from '@angular/material/toolbar';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
+import {AsyncPipe, NgForOf, NgIf} from "@angular/common";
+import {MatButton} from "@angular/material/button";
+
 
 @Component({
   selector: 'app-course-detail',
   standalone: true,
   imports: [
+    MatDialogModule,
+    ReactiveFormsModule,
+    AddStudentDialogComponent,
+    MatToolbarModule,
+    MatFormFieldModule,
+    MatInputModule,
     AsyncPipe,
     NgIf,
-    MatCardContent,
-    MatToolbar,
     NgForOf,
-    ReactiveFormsModule,
-    MatFormField,
-    MatDialogClose
+    MatButton,
   ],
   templateUrl: './course-detail.component.html',
-  styleUrl: './course-detail.component.scss'
+  styleUrls: ['./course-detail.component.scss']
 })
 export class CourseDetailComponent {
-  public dataSource$!: Course | undefined; // "!" oder "... | undefined"
+  public dataSource$!: Course | undefined;
   public title = 'Kurs Details';
   public color: MaterialColor = 'accent';
   public courseId!: number;
-  public students$!: Observable<Student[]>; //neu
+  public students$!: Observable<Student[]>;
 
   constructor(
     private courseCoreService: CourseCoreService,
     private route: ActivatedRoute,
     private http: HttpClient,
+    private dialog: MatDialog
   ) {
     this.ngOnInit()
     this.http.get("http://localhost:8080/api/v1/course/"+this.courseId).subscribe(c =>
@@ -50,7 +56,7 @@ export class CourseDetailComponent {
     this.route.paramMap.subscribe(params => {
       this.courseId = parseInt(<string>params.get('id'));
       this.loadCourseDetails();
-      this.loadStudents();  //neu
+      this.loadStudents();
     });
   }
 
@@ -60,6 +66,22 @@ export class CourseDetailComponent {
 
   loadStudents(): void {
     this.students$ = this.http.get<Student[]>(`http://localhost:8080/api/v1/course/${this.courseId}/students`);
+    console.log("Load students...");
   }
+
+  // Methode, um den Dialog zu öffnen, Sprint 3 Aufgabe 10
+  openAddStudentDialog(): void {
+    const dialogRef = this.dialog.open(AddStudentDialogComponent, {
+      width: '400px',
+      data: { courseId: this.courseId }  // KursId wird an den Dialog übergeben
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+        this.loadStudents();  // Wenn der Dialog mit "Hinzufügen" geschlossen wurde, Studenten neu laden
+      }
+    });
+  }
+
 
 }

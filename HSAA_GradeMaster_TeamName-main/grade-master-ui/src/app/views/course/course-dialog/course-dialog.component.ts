@@ -6,6 +6,16 @@ import { MAT_DIALOG_DATA, MatDialogModule, MatDialogRef } from '@angular/materia
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import {CourseCoreService} from "../../../../lib/core-services/course-core.service";
+import {
+    MatCard,
+    MatCardActions,
+    MatCardContent,
+    MatCardHeader,
+    MatCardImage,
+    MatCardSubtitle, MatCardTitle
+} from "@angular/material/card";
+import {RouterLink} from "@angular/router";
+import {Observable} from "rxjs";
 
 @Component({
   selector: 'app-course-dialog',
@@ -17,6 +27,14 @@ import {CourseCoreService} from "../../../../lib/core-services/course-core.servi
     MatInputModule,
     MatButtonModule,
     ReactiveFormsModule,
+    MatCard,
+    MatCardActions,
+    MatCardContent,
+    MatCardHeader,
+    MatCardImage,
+    MatCardSubtitle,
+    MatCardTitle,
+    RouterLink,
   ],
   templateUrl: './course-dialog.component.html',
   styleUrl: './course-dialog.component.scss'
@@ -24,7 +42,6 @@ import {CourseCoreService} from "../../../../lib/core-services/course-core.servi
 export class CourseDialogComponent {
 
   form: FormGroup;
-
   constructor(
     private fb: FormBuilder,
     private dialogRef: MatDialogRef<CourseDialogComponent>,
