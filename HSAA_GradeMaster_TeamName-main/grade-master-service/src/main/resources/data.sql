@@ -6,4 +6,7 @@ INSERT INTO STUDENT (id, name, email) VALUES ('83128', 'Emre Tülü', '83128@stu
 INSERT INTO STUDENT (id, name, email) VALUES ('83061', 'Evren Kacar', '83061@studmail.htw-aalen.de');
 
 INSERT INTO COURSE ( name, description) VALUES ( 'Projektseminar Programmierprojekt', 'Ein Projekt welches in Gruppenarbeit absolviert
-wird. Jede Gruppe lernt die Tools kennen, um eine Webanwendung zu programmieren.')
+wird. Jede Gruppe lernt die Tools kennen, um eine Webanwendung zu programmieren.');
+
+INSERT INTO Assignment_Course_Student (course_id, student_id) VALUES (1, 85905);
+INSERT INTO Assignment_Course_Student (course_id, student_id) VALUES (1, 85910);
