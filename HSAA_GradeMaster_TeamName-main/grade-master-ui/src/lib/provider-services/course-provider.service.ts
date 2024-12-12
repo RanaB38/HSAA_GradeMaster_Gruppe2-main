@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
-import {BehaviorSubject, Observable} from "rxjs";
-import {Course} from "../domain/course.interfaces";
-import {HttpClient} from "@angular/common/http";
+import { BehaviorSubject, Observable } from "rxjs";
+import { Course } from "../domain/course.interfaces";
+import { HttpClient } from "@angular/common/http";
 
 @Injectable({
   providedIn: 'root'
@@ -9,8 +9,6 @@ import {HttpClient} from "@angular/common/http";
 export class CourseProviderService {
 
   private coursesSubject: BehaviorSubject<Course[]> = new BehaviorSubject<Course[]>([]);
-
-
   public courses$: Observable<Course[]> = this.coursesSubject.asObservable();
 
   private baseUrl = 'http://localhost:8080/api/v1/course';
@@ -37,20 +35,14 @@ export class CourseProviderService {
 
   // DELETE KURS
   public deleteCourse(courseId: string): void {
-      console.log('>>> Deleting course with ID: ', courseId);
-      // Hier könnte Logik zum Löschen des Kurses hinzugefügt werden, z.B.:
-      // this.courseService.delete(courseId);
-    }
-
-
+    console.log('>>> Deleting course with ID: ', courseId);
+    // Hier könnte Logik zum Löschen des Kurses hinzugefügt werden
+  }
 
   // POST Kurs
   public createCourse(course: Course): void {
     console.log('>>> ', course);
 
-
-
-    // POST Kurs
     this.httpClient.post<Course>(this.baseUrl, course).subscribe({
       next: (createdCourse) => {
         const currentCourses = this.coursesSubject.value;
@@ -60,7 +52,12 @@ export class CourseProviderService {
         console.log('Aktualisierte Kursliste:', updatedCourses);
       },
       error: (err) => {
-        console.error('Fehler beim Erstellen des Kurses:', err);
+        if (err.status === 409) { // Konfliktstatus
+          console.error('Kurs existiert bereits:', err);
+          alert('Dieser Kurs existiert bereits!');
+        } else {
+          console.error('Fehler beim Erstellen des Kurses:', err);
+        }
       }
     });
   }

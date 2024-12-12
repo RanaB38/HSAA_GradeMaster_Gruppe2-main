@@ -64,25 +64,10 @@
 
     <h2>Kursdetails: </h2>
 
-    <h3>Tabelle der Studenten:</h3>
-    <table>
-      <thead>
-      <tr>
-        <th>ID</th>
-        <th>Name</th>
-        <th>E-Mail</th>
-      </tr>
-      </thead>
-      <tbody>
-      <tr *ngFor="let student of students$ | async">
-        <td>{{ student.id }}</td>
-        <td>{{ student.name }}</td>
-        <td>{{ student.email }}</td>
-      </tr>
-      </tbody>
-    </table>
 
-    <button mat-raised-button (click)="openAddStudentDialog()">Student zum Kurs hinzufügen</button>
+
+
+    <h3>Tabelle der Studenten: </h3>
 
   </div>
 
