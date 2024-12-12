@@ -67,11 +67,12 @@ export class AddStudentDialogComponent {
     const studentId = this.form.get('studentId')?.value;
 
     // Anfrage, um den Studenten hinzuzufügen
-    this.http.post(`http://localhost:8080/api/v1/course/${this.data.courseId}/student/${studentId}`, {})
+    this.http.post(`http://localhost:8080/api/v1/course/${this.data.courseId}/student/${studentId}`, {}, { responseType: 'text' })
       .subscribe({
-        next: (response: any) => {
+        next: (response: string) => {
           // Student erfolgreich hinzugefügt
           console.log('Student erfolgreich hinzugefügt:', response);
+          this.successMessage = response;
 
         },
         error: (err) => {
@@ -86,7 +87,7 @@ export class AddStudentDialogComponent {
           } else if (err.status === 400) {
             this.error = 'Ungültige Eingabe';
           } else {
-            this.successMessage = 'Student erfolgreich hinzugefügt!';
+            this.error = 'Unbekannter Fehler ist aufgetreten';
           }
 
         }
