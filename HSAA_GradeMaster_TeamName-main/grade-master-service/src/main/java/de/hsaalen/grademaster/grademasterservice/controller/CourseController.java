@@ -2,6 +2,8 @@ package de.hsaalen.grademaster.grademasterservice.controller;
 
 import de.hsaalen.grademaster.grademasterservice.domain.Course;
 import de.hsaalen.grademaster.grademasterservice.domain.Student;
+import de.hsaalen.grademaster.grademasterservice.dto.CourseDTO;
+import de.hsaalen.grademaster.grademasterservice.dto.StudentDTO;
 import de.hsaalen.grademaster.grademasterservice.service.CourseService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -9,6 +11,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @RestController                             //RestController - verarbeitet HTTP-Anfragen
@@ -24,8 +27,20 @@ public class CourseController {
 
     //Liste aller Kurse aus der DB
     @GetMapping
-    public List<Course> getCourse() {
-        return courseService.getCourses();
+    public List<CourseDTO> getCourse() {
+        List<Course> courses = courseService.getCourses();
+        List<CourseDTO> coursesDTO = new ArrayList<>();
+        for (Course course : courses) {
+            List<StudentDTO> studentsDTO = new ArrayList<>();
+            for (Student student : course.getStudents()) {
+                StudentDTO studentDTO = new StudentDTO(student.getId(), student.getName(),student.getEmail());
+                studentsDTO.add(studentDTO);
+            }
+            CourseDTO courseDTO = new CourseDTO(course.getId(), course.getName(), course.getDescription(), studentsDTO);
+            coursesDTO.add(courseDTO);
+        }
+
+        return ResponseEntity.ok(coursesDTO).getBody();
     }
 
 

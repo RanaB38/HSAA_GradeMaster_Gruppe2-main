@@ -1,12 +1,14 @@
 package de.hsaalen.grademaster.grademasterservice.controller;
 
 import de.hsaalen.grademaster.grademasterservice.domain.Student;
+import de.hsaalen.grademaster.grademasterservice.dto.StudentDTO;
 import de.hsaalen.grademaster.grademasterservice.service.StudentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -22,8 +24,14 @@ public class StudentController {
 
     //Liste aller Studenten aus der DB
     @GetMapping
-    public List<Student> getStudents() {
-        return studentService.getStudents();
+    public List<StudentDTO> getStudents() {
+        List<Student> students = studentService.getStudents();
+        List<StudentDTO>studentsDTO = new ArrayList<>();
+        for (Student student : students) {
+            StudentDTO studentDTO = new StudentDTO(student.getId(), student.getName(),student.getEmail());
+            studentsDTO.add(studentDTO);
+        }
+        return ResponseEntity.ok(studentsDTO).getBody();
     }
 
     //Fehlerbehandlung für das Hinzufügen eines Studenten mit doppelter ID
