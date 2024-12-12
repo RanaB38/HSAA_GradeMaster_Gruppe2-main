@@ -45,7 +45,7 @@ export class StudentProviderService {
       },
       error: (err) => {
         if (err.status === 409) { // 409 Conflict
-          this.snackBar.open('Fehler: Dieser Student existiert bereits!', 'Schließen', {
+          this.snackBar.open('Dieser Student existiert bereits!', 'Schließen', {
             duration: 3000,
           });
         } else {
