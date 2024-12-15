@@ -25,29 +25,41 @@ public class StudentController {
     //Liste aller Studenten aus der DB
     @GetMapping
     public List<StudentDTO> getStudents() {
-        List<Student> students = studentService.getStudents();
-        List<StudentDTO>studentsDTO = new ArrayList<>();
+
+        List<Student> students = studentService.getStudents();  //Liste aller studenten holen
+        List<StudentDTO>studentsDTO = new ArrayList<>();        //Leere liste für DTO
+
+        //Liste der Studenten in die leere liste von StudetenDTO übergeben mit den benötigten parametern
         for (Student student : students) {
             StudentDTO studentDTO = new StudentDTO(student.getId(), student.getName(),student.getEmail());
             studentsDTO.add(studentDTO);
         }
+
+        //Liste zurückgeben mit HTTP 200 als antwort
         return ResponseEntity.ok(studentsDTO).getBody();
     }
 
     //Fehlerbehandlung für das Hinzufügen eines Studenten mit doppelter ID
     @PostMapping
     public ResponseEntity<String> registerNewStudent(@RequestBody Student student) {
+
         // Überprüfen auf leere Felder, damit Name und Email vorhanden sind
         if (student.getId() == null || student.getId().describeConstable().isEmpty() ||
                 student.getName() == null || student.getName().isEmpty() ||
                 student.getEmail() == null || student.getEmail().isEmpty()) {
+
+            //HTTP 400 zurückgeben wenn was fehlt
             return ResponseEntity.status(HttpStatus.BAD_REQUEST)
                     .body("Name and email are required and cannot be empty.");
         }
+
         try {
-            studentService.addNewStudent(student);          //Versucht den neuen Student hinzuzufügen
+            //Versucht den neuen Student hinzuzufügen
+            studentService.addNewStudent(student);
             return ResponseEntity.status(HttpStatus.CREATED).body("Student created successfully.");
+
         } catch (IllegalStateException e) {
+
             return ResponseEntity.status(HttpStatus.CONFLICT).body(e.getMessage()); // 409 bei doppelter ID
         }
     }
@@ -55,10 +67,13 @@ public class StudentController {
     //Fehlerbehandlung für das Löschen eines Studenten mit nicht vorhandener ID
     @DeleteMapping(path = "{studentId}")
     public ResponseEntity<String> deleteStudent(@PathVariable("studentId") Long studentId) {
+
         try {
-            studentService.deleteStudent(studentId);         //Versucht den Student anhand der ID zu löschen
+            studentService.deleteStudent(studentId); //Versucht den Student anhand der ID zu löschen
             return ResponseEntity.status(HttpStatus.NO_CONTENT).body("Student deleted successfully.");
+
         } catch (IllegalStateException e) {
+
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage()); // 404 wenn die ID nicht existiert
         }
     }
@@ -66,18 +81,22 @@ public class StudentController {
     //Student nach ID finden
     @GetMapping(path = "{studentId}")
     public ResponseEntity<Student> getStudentById(@PathVariable("studentId") Long studentId) {
-        Student student = studentService.getStudentById(studentId);
-        return ResponseEntity.ok(student);          //200 bei gefundenem Kurs
+
+        Student student = studentService.getStudentById(studentId); //Studenten mit der ID holen
+        return ResponseEntity.ok(student);                          //200 bei gefundenem Kurs
     }
 
     //Daten eines Studenten aktualisieren
     @PutMapping(path = "{studentId}")
     public ResponseEntity<String> updateStudent(@PathVariable("studentId") Long studentId, @RequestBody Student student) {
+
         try {
-            studentService.updateStudent(studentId, student);
+            studentService.updateStudent(studentId, student); //Die Daten des Studenten aktualisieren
             return ResponseEntity.status(HttpStatus.OK).body("Student updated successfully.");
         }
+
         catch (IllegalStateException e) {
+            //Fehler HTTP 404 wenn er nicht gefunden wurde
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
         }
     }

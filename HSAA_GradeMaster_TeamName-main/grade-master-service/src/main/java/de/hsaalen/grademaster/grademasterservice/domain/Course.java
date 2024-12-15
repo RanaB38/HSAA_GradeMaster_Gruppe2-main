@@ -1,7 +1,7 @@
 package de.hsaalen.grademaster.grademasterservice.domain;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
+
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -31,7 +31,7 @@ public class Course {
             joinColumns = @JoinColumn(name = "course_id"),          // Spalte für Kurs ID
             inverseJoinColumns = @JoinColumn(name = "student_id")   // Spalte für Student ID
     )
-   // @JsonManagedReference
+
     @JsonIgnore
     private List<Student> students = new ArrayList<>();             // Liste der Studenten, die den Kurs belegen
 

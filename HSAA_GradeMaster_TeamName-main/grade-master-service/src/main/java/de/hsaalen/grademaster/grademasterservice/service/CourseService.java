@@ -16,12 +16,12 @@ import java.util.Optional;
 public class CourseService {
 
     private final CourseRepository courseRepository;
-    private final StudentRepository studentRepository;          //für die Aufgabe 03
+    private final StudentRepository studentRepository;
 
     @Autowired
     public CourseService(CourseRepository courseRepository, StudentRepository studentRepository) {
         this.courseRepository = courseRepository;
-        this.studentRepository = studentRepository;             //für die Aufgabe 03
+        this.studentRepository = studentRepository;
     }
 
     //Methode, um alle Kurse aus der DB zu holen
@@ -31,8 +31,8 @@ public class CourseService {
 
     //Methode, um einen neuen Kurs hinzuzufügen, mit Fehlerbehandlung für doppelten Namen
     public void addNewCourse(Course course) {
-        Optional<Course> courseOptional = courseRepository.findCourseByName(course.getName());                //Überprüft, ob ein Kurs mit demselben
-        if(courseOptional.isPresent()) {                                                              //Namen schon existiert
+        Optional<Course> courseOptional = courseRepository.findCourseByName(course.getName());          //Überprüft, ob ein Kurs mit demselben
+        if(courseOptional.isPresent()) {                                                                //Namen schon existiert
             throw new ResponseStatusException(
                     HttpStatus.CONFLICT, "Course with Name " + course.getName() + " already exists");   //Wenn ja, dann Fehler
         }
@@ -53,14 +53,12 @@ public class CourseService {
     public Course getCourseById(Long courseId) {
         return courseRepository.findById(courseId)
                 .orElseThrow(() -> new ResponseStatusException(
-                        HttpStatus.NOT_FOUND, "Course with ID " + courseId + " not found"));       //Fehler, wenn ID nicht existiert
+                        HttpStatus.NOT_FOUND, "Course with ID " + courseId + " not found"));    //Fehler, wenn ID nicht existiert
     }
-
-
-    //Aufgabe 03 - Zuweisung
 
     // Methode zur Zuweisung eines Studenten zu einem Kurs
     public void assignStudent(Long courseId, Long studentId) {
+        //Kurs mit der ID finden und übergeben, wenn der Kurs nicht gefunden wurde fehler
         Course course = courseRepository.findById(courseId)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Course not found."));
         Student student = studentRepository.findById(studentId)
@@ -71,8 +69,8 @@ public class CourseService {
             throw new ResponseStatusException(HttpStatus.CONFLICT, "Student is already assigned in this course.");  //409, wenn ja
         }
 
-        course.addStudent(student);                                       // Student hinzufügen, wenn noch nicht vorhanden
-        courseRepository.save(course);                                      // Kurs mit aktualisierter Studentenliste speichern
+        course.addStudent(student);     // Student hinzufügen, wenn noch nicht vorhanden
+        courseRepository.save(course);  // Kurs mit aktualisierter Studentenliste speichern
     }
 
     // Methode, um alle Studenten eines Kurses abzurufen

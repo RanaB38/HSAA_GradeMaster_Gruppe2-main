@@ -1,6 +1,6 @@
 package de.hsaalen.grademaster.grademasterservice.domain;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
+
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
@@ -29,7 +29,7 @@ public class Student {
 
     //Many-to-Many-Beziehung zu Kurs
     @ManyToMany(mappedBy = "students")                      // Verknüpfung zu Kurs - keine eigene Tabelle
-    //@JsonBackReference
+
     @JsonIgnore
     private List<Course> courses = new ArrayList<>();           // Liste der Kurse, die der Student belegt
 
