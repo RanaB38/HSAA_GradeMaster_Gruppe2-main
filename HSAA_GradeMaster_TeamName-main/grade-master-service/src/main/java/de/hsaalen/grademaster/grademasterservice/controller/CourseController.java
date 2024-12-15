@@ -28,18 +28,26 @@ public class CourseController {
     //Liste aller Kurse aus der DB
     @GetMapping
     public List<CourseDTO> getCourse() {
-        List<Course> courses = courseService.getCourses();
-        List<CourseDTO> coursesDTO = new ArrayList<>();
+
+        List<Course> courses = courseService.getCourses();  //Alle kurse holen in die Liste
+        List<CourseDTO> coursesDTO = new ArrayList<>();     //Leere Liste für CourseDTO
+
+        //Liste der Kurse in Liste von CourseDTO übergeben
         for (Course course : courses) {
-            List<StudentDTO> studentsDTO = new ArrayList<>();
+
+            List<StudentDTO> studentsDTO = new ArrayList<>(); //Leere liste für StudentenDTO um die Studenten zu übergeben
+
+            //Studenten in die Liste von StudentDTO übergeben
             for (Student student : course.getStudents()) {
+
                 StudentDTO studentDTO = new StudentDTO(student.getId(), student.getName(),student.getEmail());
                 studentsDTO.add(studentDTO);
             }
+
             CourseDTO courseDTO = new CourseDTO(course.getId(), course.getName(), course.getDescription(), studentsDTO);
             coursesDTO.add(courseDTO);
         }
-
+        //Liste der Kurse mit einem HTTP 200 zurückgeben
         return ResponseEntity.ok(coursesDTO).getBody();
     }
 
@@ -49,6 +57,7 @@ public class CourseController {
     public ResponseEntity<String> registerNewCourse(@RequestBody Course course) {
         // Überprüfen auf leere Felder, damit Name  vorhanden ist
         if (course.getName() == null || course.getName().isEmpty()) {
+            //Wenn der Name fehlt HTTP 400 zurückgeben
             return ResponseEntity.status(HttpStatus.BAD_REQUEST)
                     .body("Name is required and cannot be empty.");
         }
@@ -56,7 +65,9 @@ public class CourseController {
         try {
             courseService.addNewCourse(course);       //Versucht den neuen Kurs hinzuzufügen
             return ResponseEntity.status(HttpStatus.CREATED).body("Course created successfully.");
-        } catch (IllegalStateException e) {
+        }
+
+        catch (IllegalStateException e) {
             return ResponseEntity.status(HttpStatus.CONFLICT).body(e.getMessage()); // 409 bei doppeltem Name
         }
     }
@@ -64,10 +75,13 @@ public class CourseController {
     //Fehlerbehandlung für das Löschen eines Kurses mit nicht vorhandener Id
     @DeleteMapping(path = "{courseId}")
     public ResponseEntity<String> deleteCourse(@PathVariable("courseId") Long courseId) {
+
         try {
             courseService.deleteCourse(courseId);       //Versucht den Kurs anhand der Id zu löschen
             return ResponseEntity.status(HttpStatus.NO_CONTENT).body("Course deleted successfully.");
-        } catch (IllegalStateException e) {
+        }
+        catch (IllegalStateException e) {
+
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage()); // 404 wenn die Id nicht existiert
         }
     }
@@ -76,8 +90,9 @@ public class CourseController {
     //Kurs nach ID finden
     @GetMapping(path = "{courseId}")
     public ResponseEntity<Course> getCourseById(@PathVariable("courseId") Long courseId) {
-        Course course = courseService.getCourseById(courseId);
-        return ResponseEntity.ok(course);     //200 bei gefundenem Kurs
+
+        Course course = courseService.getCourseById(courseId);  //Kurs mit ID holen
+        return ResponseEntity.ok(course);                       //200 bei gefundenem Kurs
     }
 
 
@@ -87,27 +102,31 @@ public class CourseController {
     @PostMapping("/{courseId}/student/{studentId}")
     public ResponseEntity<String> assignStudentToCourse(@PathVariable Long courseId, @PathVariable Long studentId) {
         try {
+            //Studenten dem Kurs hinzufügen
             courseService.assignStudent(courseId, studentId);
             return ResponseEntity.status(HttpStatus.CREATED).body("Student assigned successfully.");
         } catch (ResponseStatusException e) {
-            return ResponseEntity.status(e.getStatusCode()).body(e.getReason());            // 409 wenn doppelt
+            return ResponseEntity.status(e.getStatusCode()).body(e.getReason()); // 409 wenn doppelt
         }
     }
 
     // GET-Endpunkt, um alle Studenten eines bestimmten Kurses zu erhalten
     @GetMapping("/{courseId}/students")
     public ResponseEntity<List<Student>> getStudentsInCourse(@PathVariable Long courseId) {
-        List<Student> students = courseService.getStudentsInCourse(courseId);
-        return ResponseEntity.ok(students);                                                 // Gibt die Liste der Studenten zurück
+
+        List<Student> students = courseService.getStudentsInCourse(courseId);   //Studenten des Kurses holen
+        return ResponseEntity.ok(students);                                     // Gibt die Liste der Studenten zurück
     }
 
     @PutMapping(path = "{courseId}")
     public ResponseEntity<String> updateCourse(@PathVariable("courseId") Long courseId, @RequestBody Course course) {
         try {
+            //Kurs aktualisieren
             courseService.updateCourse(courseId, course);
             return ResponseEntity.status(HttpStatus.OK).body("Course updated successfully.");
         }
         catch (IllegalStateException e) {
+            //Bei fehler HTTP 404 zurückgeben
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
         }
     }

@@ -53,11 +53,13 @@ public class StudentService {
     }
 
     public void updateStudent(Long studentId, Student student) {
-
+        //Überprüfen ob der student mit der ID schon existiert
         boolean exists = studentRepository.existsById(studentId);
+        //Falls er nicht existiert fehler
         if (!exists) {
             throw new IllegalStateException("student with id" + studentId + " does not exist");
         }
+        //Wenn der Student existiert wird er aktualisiert in der DB gespeichert
         studentRepository.save(student);
     }
 }
