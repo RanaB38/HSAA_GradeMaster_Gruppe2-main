@@ -6,15 +6,23 @@
   <h2 mat-dialog-title class="dialog-title">Gruppe hinzufügen</h2>
 
   <form [formGroup]="form" class="group-form">
+    <!-- Eingabefeld für Gruppennamen -->
     <mat-form-field appearance="fill" class="group-name-field">
       <mat-label>Gruppenname</mat-label>
       <input matInput formControlName="groupName" placeholder="Geben Sie einen Gruppennamen ein">
     </mat-form-field>
 
-    <div *ngIf="errorMessage" class="error-message">
-      {{ errorMessage }}
-    </div>
+    <!-- Fehlermeldung für leeren Namen -->
+    <p *ngIf="form.get('groupName')?.hasError('required') && form.get('groupName')?.touched" class="error-message">
+      Name darf nicht leer sein
+    </p>
 
+    <!-- Allgemeine Fehlernachricht -->
+    <p *ngIf="errorMessage" class="error-message">
+      {{ errorMessage }}
+    </p>
+
+    <!-- Dialog-Aktionen -->
     <div mat-dialog-actions class="dialog-actions">
       <button mat-button (click)="dialogRef.close()" class="cancel-button">Abbrechen</button>
       <button mat-raised-button color="accent" (click)="addGroup()" [disabled]="form.invalid" class="add-button">Hinzufügen</button>

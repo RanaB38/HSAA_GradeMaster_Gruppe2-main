@@ -39,6 +39,12 @@ export class AddGroupDialogComponent {
   }
 
   addGroup(): void {
+
+    if (this.form.invalid) {
+      this.errorMessage = 'Name darf nicht leer sein';
+      return;
+    }
+
     const groupName = this.form.get('groupName')?.value;
 
     this.errorMessage = null; // Vorherige Fehlermeldung zurücksetzen
