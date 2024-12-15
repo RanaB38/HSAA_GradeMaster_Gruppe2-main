@@ -72,7 +72,7 @@ export class AddStudentDialogComponent {
         next: (response: string) => {
           // Student erfolgreich hinzugefügt
           console.log('Student erfolgreich hinzugefügt:', response);
-          this.successMessage = response;
+          this.successMessage = "Student wurde erfolgreich Hinzugefügt";
 
         },
         error: (err) => {
