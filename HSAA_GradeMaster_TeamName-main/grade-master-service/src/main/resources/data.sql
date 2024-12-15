@@ -8,5 +8,17 @@ INSERT INTO STUDENT (id, name, email) VALUES ('83061', 'Evren Kacar', '83061@stu
 INSERT INTO COURSE ( name, description) VALUES ( 'Projektseminar Programmierprojekt', 'Ein Projekt welches in Gruppenarbeit absolviert
 wird. Jede Gruppe lernt die Tools kennen, um eine Webanwendung zu programmieren.');
 
+INSERT INTO Course_Group (id, name, course_id)
+VALUES (1, 'Gruppe A', 1),
+       (2, 'Gruppe B', 1);
+
 INSERT INTO Assignment_Course_Student (course_id, student_id) VALUES (1, 85905);
 INSERT INTO Assignment_Course_Student (course_id, student_id) VALUES (1, 85910);
+INSERT INTO Assignment_Course_Student (course_id, student_id) VALUES (1, 83061);
+
+INSERT INTO Assignment_Group_Student (group_id, student_id)
+VALUES (1, 85905),
+       (1, 85910);
+
+
+

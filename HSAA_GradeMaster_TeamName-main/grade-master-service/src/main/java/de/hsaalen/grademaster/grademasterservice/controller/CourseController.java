@@ -1,6 +1,7 @@
 package de.hsaalen.grademaster.grademasterservice.controller;
 
 import de.hsaalen.grademaster.grademasterservice.domain.Course;
+import de.hsaalen.grademaster.grademasterservice.domain.Group;
 import de.hsaalen.grademaster.grademasterservice.domain.Student;
 import de.hsaalen.grademaster.grademasterservice.dto.CourseDTO;
 import de.hsaalen.grademaster.grademasterservice.dto.StudentDTO;
@@ -130,4 +131,5 @@ public class CourseController {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
         }
     }
+
 }

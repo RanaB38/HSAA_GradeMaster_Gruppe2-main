@@ -33,4 +33,25 @@ public class Student {
     @JsonIgnore
     private List<Course> courses = new ArrayList<>();           // Liste der Kurse, die der Student belegt
 
+    // Many-to-Many-Beziehung zu Gruppen
+    @ManyToMany(mappedBy = "students") // Bidirektionale Zuordnung
+    @JsonIgnore
+    private List<Group> groups = new ArrayList<>();
+
+    // Methode, um eine Gruppe hinzuzufügen
+    public void addGroup(Group group) {
+        if (!groups.contains(group)) {
+            groups.add(group);
+            group.getStudents().add(this); // Bidirektionale Zuordnung
+        }
+    }
+
+    // Methode, um eine Gruppe zu entfernen
+    public void removeGroup(Group group) {
+        if (groups.contains(group)) {
+            groups.remove(group);
+            group.getStudents().remove(this); // Entfernen aus der bidirektionalen Zuordnung
+        }
+    }
+
 }

@@ -89,4 +89,17 @@ public class CourseService {
         course.setId(courseId);
         courseRepository.save(course);
     }
+
+    //Sprint 3 - Aufgabe 11
+    // Studenten in einen Kurs einschreiben
+    public void enrollStudent(Long courseId, Long studentId) {
+        Course course = courseRepository.findById(courseId)
+                .orElseThrow(() -> new IllegalArgumentException("Course not found."));
+        Student student = studentRepository.findById(studentId)
+                .orElseThrow(() -> new IllegalArgumentException("Student not found."));
+        course.addStudent(student); // Bidirektionale Zuordnung
+        courseRepository.save(course);
+    }
+
+
 }

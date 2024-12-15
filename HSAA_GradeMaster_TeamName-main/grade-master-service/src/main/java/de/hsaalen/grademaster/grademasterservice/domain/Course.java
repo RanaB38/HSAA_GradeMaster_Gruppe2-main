@@ -35,11 +35,20 @@ public class Course {
     @JsonIgnore
     private List<Student> students = new ArrayList<>();             // Liste der Studenten, die den Kurs belegen
 
+
     // Methode, um einen Studenten hinzuzufügen, falls dieser nicht schon vorhanden ist
     public void addStudent(Student student) {
         if (!students.contains(student)) {                          // Verhindern der doppelten Zuweisung
             students.add(student);
             student.getCourses().add(this);
+        }
+    }
+
+    // Methode, um einen Studenten zu entfernen
+    public void removeStudent(Student student) {
+        if (students.contains(student)) {
+            students.remove(student);
+            student.getCourses().remove(this); // Entfernen aus der bidirektionalen Zuordnung
         }
     }
 }
