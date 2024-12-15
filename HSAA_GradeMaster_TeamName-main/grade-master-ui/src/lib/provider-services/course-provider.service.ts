@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable } from "rxjs";
 import { Course } from "../domain/course.interfaces";
 import { HttpClient } from "@angular/common/http";
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Injectable({
   providedIn: 'root'
@@ -13,7 +14,7 @@ export class CourseProviderService {
 
   private baseUrl = 'http://localhost:8080/api/v1/course';
 
-  constructor(private httpClient: HttpClient) {
+  constructor(private httpClient: HttpClient, private snackBar: MatSnackBar) {
     this.loadCourses();
   }
 
@@ -24,22 +25,17 @@ export class CourseProviderService {
       },
       error: (err) => {
         console.error('Fehler beim Laden der Kurse:', err);
+        this.snackBar.open('Fehler beim Laden der Kurse', 'Schließen', {
+          duration: 3000,
+        });
       }
     });
   }
 
-  // GET Kurse
   public getAllCourses(): Observable<Course[]> {
     return this.courses$;
   }
 
-  // DELETE KURS
-  public deleteCourse(courseId: string): void {
-    console.log('>>> Deleting course with ID: ', courseId);
-    // Hier könnte Logik zum Löschen des Kurses hinzugefügt werden
-  }
-
-  // POST Kurs
   public createCourse(course: Course): void {
     console.log('>>> ', course);
 
@@ -50,16 +46,24 @@ export class CourseProviderService {
         this.coursesSubject.next(updatedCourses);
 
         console.log('Aktualisierte Kursliste:', updatedCourses);
+        this.snackBar.open('Kurs erfolgreich erstellt!', 'Schließen', {
+          duration: 3000,
+        });
       },
       error: (err) => {
         if (err.status === 409) { // Konfliktstatus
           console.error('Kurs existiert bereits:', err);
-          alert('Dieser Kurs existiert bereits!');
-        } else {
-          console.error('Fehler beim Erstellen des Kurses:', err);
+          this.snackBar.open('Dieser Kurs existiert bereits!', 'Schließen', {
+            duration: 3000,
+          });
         }
       }
     });
+  }
+
+  public deleteCourse(courseId: string): void {
+    console.log('>>> Deleting course with ID: ', courseId);
+    // Hier könnte Logik zum Löschen des Kurses hinzugefügt werden
   }
 
   public getCourseById(id: number): Course | undefined {

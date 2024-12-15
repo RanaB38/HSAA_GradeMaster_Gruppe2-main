@@ -48,8 +48,6 @@ export class StudentProviderService {
           this.snackBar.open('Dieser Student existiert bereits!', 'Schließen', {
             duration: 3000,
           });
-        } else {
-          console.error('Fehler beim Erstellen des Studenten:', err);
         }
       }
     });
