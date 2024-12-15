@@ -3,6 +3,7 @@ package de.hsaalen.grademaster.grademasterservice.controller;
 import de.hsaalen.grademaster.grademasterservice.domain.Group;
 import de.hsaalen.grademaster.grademasterservice.service.GroupService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -19,32 +20,35 @@ public class GroupController {
         this.groupService = groupService;
     }
 
-    // POST: Gruppe zu einem Kurs hinzufügen
+    //Gruppe zu einem Kurs hinzufügen
     @PostMapping("/course/{courseId}")
     public ResponseEntity<String> createGroup(@PathVariable Long courseId, @RequestBody Group group) {
         try {
             groupService.createGroup(courseId, group);
-            return ResponseEntity.ok("Group created successfully.");
+            return ResponseEntity.status(HttpStatus.CREATED).body("Group created successfully.");
         } catch (IllegalArgumentException e) {
-            return ResponseEntity.badRequest().body(e.getMessage());
+            if (e.getMessage().contains("already exists")) {
+                return ResponseEntity.status(HttpStatus.CONFLICT).body("Group already exists.");
+            }
+            return ResponseEntity.badRequest().body("Invalid group name.");
         }
     }
 
-    // GET: Alle Gruppen eines Kurses abrufen
+    //Alle Gruppen eines Kurses abrufen
     @GetMapping("/course/{courseId}")
     public ResponseEntity<List<Group>> getGroupsByCourse(@PathVariable Long courseId) {
         List<Group> groups = groupService.getGroupsByCourse(courseId);
         return ResponseEntity.ok(groups);
     }
 
-    // POST: Studenten zu einer Gruppe hinzufügen
+    //Studenten zu einer Gruppe hinzufügen
     @PostMapping("/{groupId}/add-student/{studentId}")
     public ResponseEntity<String> addStudentToGroup(@PathVariable Long groupId, @PathVariable Long studentId) {
         groupService.addStudentToGroup(groupId, studentId);
         return ResponseEntity.ok("Student added to group successfully.");
     }
 
-    // DELETE: Studenten aus einer Gruppe entfernen
+    //Studenten aus einer Gruppe entfernen
     @DeleteMapping("/{groupId}/remove-student/{studentId}")
     public ResponseEntity<String> removeStudentFromGroup(@PathVariable Long groupId, @PathVariable Long studentId) {
         groupService.removeStudentFromGroup(groupId, studentId);

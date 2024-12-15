@@ -83,8 +83,27 @@
       </tbody>
     </table>
 
-    <button mat-raised-button (click)="openAddStudentDialog()">Student zum Kurs hinzufügen</button>
+    <button mat-raised-button color="accent" (click)="openAddStudentDialog()">Student zum Kurs hinzufügen</button>
 
+  </div>
+
+  <div class="group-section">
+    <h3>Gruppen:</h3>
+    <table>
+      <thead>
+      <tr>
+        <th>ID</th>
+        <th>Gruppenname</th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr *ngFor="let group of groups$ | async">
+        <td>{{ group.id }}</td>
+        <td>{{ group.name }}</td>
+      </tr>
+      </tbody>
+    </table>
+    <button mat-raised-button color="accent" (click)="openAddGroupDialog()">Gruppe hinzufügen</button>
   </div>
 
 </div>

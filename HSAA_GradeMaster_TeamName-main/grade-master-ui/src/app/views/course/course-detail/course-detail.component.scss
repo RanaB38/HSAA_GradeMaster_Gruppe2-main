@@ -81,3 +81,16 @@ mat-toolbar {
   padding: 10px 20px;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
 }
+
+.course-detail {
+  padding: 20px;
+
+  button {
+    margin-bottom: 20px;
+  }
+
+  mat-list {
+    margin-top: 20px;
+  }
+}
+
