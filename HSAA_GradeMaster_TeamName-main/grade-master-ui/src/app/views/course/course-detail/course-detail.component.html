@@ -89,22 +89,19 @@
 
   <div class="group-section">
     <h3>Gruppen:</h3>
-    <table>
-      <thead>
-      <tr>
-        <th>ID</th>
-        <th>Gruppenname</th>
-      </tr>
-      </thead>
-      <tbody>
-      <tr *ngFor="let group of groups$ | async">
-        <td>{{ group.id }}</td>
-        <td>{{ group.name }}</td>
-      </tr>
-      </tbody>
-    </table>
+    <div class="group-buttons">
+      <div *ngFor="let group of groups$ | async">
+        <button mat-raised-button color="primary" (click)="onSelectGroup(group)">
+          {{ group.id }} - {{ group.name }}
+        </button>
+      </div>
+    </div>
+
     <button mat-raised-button color="accent" (click)="openAddGroupDialog()">Gruppe hinzufügen</button>
   </div>
+
+  <router-outlet></router-outlet>
+
 
 </div>
 </body>

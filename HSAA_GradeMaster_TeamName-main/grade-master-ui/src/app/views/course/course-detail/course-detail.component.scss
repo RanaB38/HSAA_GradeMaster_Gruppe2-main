@@ -94,3 +94,20 @@ mat-toolbar {
   }
 }
 
+.group-buttons {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  justify-content: flex-start;
+  margin-bottom: 20px;
+}
+
+.group-buttons button {
+  min-width: 150px;
+  padding: 10px;
+}
+
+button.mat-raised-button {
+  margin-top: 10px;
+}
+

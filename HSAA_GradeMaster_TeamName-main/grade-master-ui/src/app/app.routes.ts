@@ -38,11 +38,19 @@ export const routes: Routes = [
 
             },
             {
-                path: ':id/details',
-                loadComponent: () =>
-                    import(
-                        './views/course/course-detail/course-detail.component'
-                    ).then((mod) => mod.CourseDetailComponent),
+              path: ':id/details', // Kurs-Detail-Seite
+              loadComponent: () =>
+                import('./views/course/course-detail/course-detail.component').then(
+                  (mod) => mod.CourseDetailComponent
+                ),
+            },
+            {
+              path: ':courseId/groups/:groupId/details', // Gruppen-Detail-Seite als separate Route
+              loadComponent: () =>
+                import('./views/course/group-detail/group-detail.component').then((mod) => {
+                  console.log('GroupDetailComponent wird geladen...');
+                  return mod.GroupDetailComponent;
+                }),
             },
         ]
     },

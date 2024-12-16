@@ -1,7 +1,9 @@
 package de.hsaalen.grademaster.grademasterservice.controller;
 
 import de.hsaalen.grademaster.grademasterservice.domain.Group;
+import de.hsaalen.grademaster.grademasterservice.domain.Student;
 import de.hsaalen.grademaster.grademasterservice.service.GroupService;
+import de.hsaalen.grademaster.grademasterservice.repository.GroupRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -14,10 +16,12 @@ import java.util.List;
 public class GroupController {
 
     private final GroupService groupService;
+    private final GroupRepository groupRepository;
 
     @Autowired
-    public GroupController(GroupService groupService) {
+    public GroupController(GroupService groupService, GroupRepository groupRepository) {
         this.groupService = groupService;
+        this.groupRepository = groupRepository;
     }
 
     //Gruppe zu einem Kurs hinzufügen
@@ -53,5 +57,29 @@ public class GroupController {
     public ResponseEntity<String> removeStudentFromGroup(@PathVariable Long groupId, @PathVariable Long studentId) {
         groupService.removeStudentFromGroup(groupId, studentId);
         return ResponseEntity.ok("Student removed from group successfully.");
+    }
+
+    //Aufgabe 12
+    @GetMapping("/{groupId}")
+    public ResponseEntity<Group> getGroupById(@PathVariable Long groupId) {
+        Group group = groupRepository.findById(groupId)
+                .orElseThrow(() -> new IllegalArgumentException("Group not found."));
+        return ResponseEntity.ok(group);
+    }
+
+    @GetMapping("/{groupId}/students")
+    public ResponseEntity<List<Student>> getStudentsInGroup(@PathVariable Long groupId) {
+        Group group = groupRepository.findById(groupId)
+                .orElseThrow(() -> new IllegalArgumentException("Group not found."));
+        return ResponseEntity.ok(group.getStudents());
+    }
+
+    @DeleteMapping("/{groupId}")
+    public ResponseEntity<String> deleteGroup(@PathVariable Long groupId) {
+        if (!groupRepository.existsById(groupId)) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Group not found.");
+        }
+        groupRepository.deleteById(groupId);
+        return ResponseEntity.status(HttpStatus.NO_CONTENT).body("Group deleted successfully.");
     }
 }

@@ -7,7 +7,7 @@ import {MaterialColor} from "../../../../lib/enums/material-color";
 import {Observable} from "rxjs";
 import {Student} from "../../../../lib/domain/student.interfaces";
 import {CourseCoreService} from "../../../../lib/core-services/course-core.service";
-import {ActivatedRoute} from "@angular/router";
+import {ActivatedRoute, Router, RouterLink, RouterOutlet} from "@angular/router";
 import {HttpClient} from "@angular/common/http";
 import {MatToolbarModule } from '@angular/material/toolbar';
 import {MatFormFieldModule } from '@angular/material/form-field';
@@ -36,6 +36,8 @@ import {AddGroupDialogComponent} from "../add-group-dialog/add-group-dialog.comp
     MatButton,
     MatList,
     MatListItem,
+    RouterLink,
+    RouterOutlet,
   ],
   templateUrl: './course-detail.component.html',
   styleUrls: ['./course-detail.component.scss']
@@ -54,7 +56,8 @@ export class CourseDetailComponent {
     private courseCoreService: CourseCoreService,
     private route: ActivatedRoute,
     private http: HttpClient,
-    private dialog: MatDialog
+    private dialog: MatDialog,
+    private router : Router
   ) {
     this.ngOnInit()
     this.http.get("http://localhost:8080/api/v1/course/"+this.courseId).subscribe(c =>
@@ -113,5 +116,10 @@ export class CourseDetailComponent {
         console.log('Dialog geschlossen ohne Erfolg.');
       }
     });
+  }
+
+  //Sprint 3 - Aufgabe 12
+  onSelectGroup(group: Group): void {
+    this.router.navigate(['/courses', this.courseId, 'groups', group.id, 'details']);
   }
 }
