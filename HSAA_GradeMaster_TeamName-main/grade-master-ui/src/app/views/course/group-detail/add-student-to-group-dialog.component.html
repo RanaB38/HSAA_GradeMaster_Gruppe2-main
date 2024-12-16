@@ -1,0 +1,36 @@
+<mat-dialog-content>
+
+  <button mat-icon-button (click)="dialogRef.close()" class="close-button">
+    <mat-icon>close</mat-icon>
+  </button>
+
+  <h2 mat-dialog-title class="dialog-title">Student zur Gruppe hinzufügen</h2>
+
+  <form [formGroup]="form" class="student-form">
+    <mat-form-field appearance="fill" class="student-id-field">
+      <mat-label>Student ID</mat-label>
+      <input matInput formControlName="studentId" placeholder="Student ID eingeben">
+    </mat-form-field>
+
+    <button mat-raised-button color="primary" (click)="searchStudent()" class="search-button" [disabled]="form.invalid">Suchen</button>
+
+    <mat-form-field *ngIf="studentName" appearance="fill" class="student-name-field">
+      <mat-label>Name</mat-label>
+      <input matInput [value]="studentName" disabled />
+    </mat-form-field>
+
+    <div *ngIf="successMessage" class="success-message">
+      {{ successMessage }}
+    </div>
+
+    <div *ngIf="error" class="error-message">
+      {{ error }}
+    </div>
+
+    <div mat-dialog-actions class="dialog-actions">
+      <button mat-button (click)="dialogRef.close()" class="cancel-button">Abbrechen</button>
+      <button mat-raised-button color="accent" (click)="addStudent()" [disabled]="!studentName" class="add-button">Hinzufügen</button>
+    </div>
+  </form>
+</mat-dialog-content>
+

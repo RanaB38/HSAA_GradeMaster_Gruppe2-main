@@ -9,6 +9,7 @@ import {group} from "@angular/animations";
 import { CommonModule } from '@angular/common';
 import { MatButtonModule } from '@angular/material/button';
 import {GroupDeleteDialogComponent} from "./group-delete-dialog.component";
+import {AddStudentToGroupDialog} from "./add-student-to-group-dialog.component";
 
 
 @Component({
@@ -78,7 +79,7 @@ export class GroupDetailComponent implements OnInit {
   }
 
   openAddStudentDialog(): void {
-    const dialogRef = this.dialog.open(AddStudentDialogComponent, {
+    const dialogRef = this.dialog.open(AddStudentToGroupDialog, {
       width: '400px',
       data: { groupId: this.groupId }
     });
