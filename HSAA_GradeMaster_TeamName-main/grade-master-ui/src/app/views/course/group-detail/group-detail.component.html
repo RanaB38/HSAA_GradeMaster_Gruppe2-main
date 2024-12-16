@@ -1,12 +1,12 @@
 <nav class="breadcrumbs">
   <a [routerLink]="['/courses/overview']">Kurse</a> &gt;
-  <a [routerLink]="['/courses', courseId, 'details']">Kursdetails</a> &gt;
+  <a [routerLink]="['/courses', courseId, 'details']">{{ courseId }}</a> &gt;
   <span>Gruppe: {{ group.name }}</span>
 </nav>
 
 <div class="group-detail-container" *ngIf="group$ | async as group">
   <h1>Gruppe: {{ group.name }}</h1>
-  <button mat-raised-button color="warn" (click)="deleteGroup()">Gruppe löschen</button>
+  <button mat-raised-button color="warn" (click)="openDeleteGroupDialog(group.name)">Gruppe löschen</button>
 
   <h2>Studenten in der Gruppe:</h2>
   <table>

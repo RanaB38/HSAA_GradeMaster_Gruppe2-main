@@ -8,6 +8,7 @@ import {AsyncPipe} from "@angular/common";
 import {group} from "@angular/animations";
 import { CommonModule } from '@angular/common';
 import { MatButtonModule } from '@angular/material/button';
+import {GroupDeleteDialogComponent} from "./group-delete-dialog.component";
 
 
 @Component({
@@ -89,13 +90,32 @@ export class GroupDetailComponent implements OnInit {
     });
   }
 
+  openDeleteGroupDialog(groupName: string): void {
+    const dialogRef = this.dialog.open(GroupDeleteDialogComponent, {
+      width: '400px',
+      data: { groupName }, // Übergibt den Gruppennamen an den Dialog
+    });
+
+    dialogRef.afterClosed().subscribe((result) => {
+      if (result) {
+        // Benutzer klickt "OK"
+        this.deleteGroup();
+      } else {
+        // Benutzer klickt "Abbrechen"
+        console.log('Löschvorgang abgebrochen');
+      }
+    });
+  }
+
+  // Methode zum Löschen der Gruppe
   deleteGroup(): void {
-    if (confirm('Möchten Sie die Gruppe wirklich löschen?')) {
-      this.http.delete(`http://localhost:8080/api/v1/groups/${this.groupId}`).subscribe({
-        next: () => this.router.navigate(['/courses/details']),
-        error: err => alert('Fehler beim Löschen der Gruppe: ' + err.message)
-      });
-    }
+    this.http.delete(`http://localhost:8080/api/v1/groups/${this.groupId}`).subscribe({
+      next: () => {
+        console.log('Gruppe erfolgreich gelöscht');
+        this.router.navigate(['/courses', this.courseId, 'details']); // Zurück zur Kurs-Detail-Seite
+      },
+      error: (err) => alert('Fehler beim Löschen der Gruppe: ' + err.message),
+    });
   }
 
   protected readonly group = group;
