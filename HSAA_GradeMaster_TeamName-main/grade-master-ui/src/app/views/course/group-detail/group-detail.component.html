@@ -1,7 +1,7 @@
 <nav class="breadcrumbs">
   <a [routerLink]="['/courses/overview']">Kurse</a> &gt;
-  <a [routerLink]="['/courses', courseId, 'details']">{{ courseId }}</a> &gt;
-  <span>Gruppe: {{ group.name }}</span>
+  <a [routerLink]="['/courses', courseId, 'details']">{{ courseName }}</a> &gt;
+  <span>Gruppe: {{ group?.name }}</span>
 </nav>
 
 <div class="group-detail-container" *ngIf="group$ | async as group">

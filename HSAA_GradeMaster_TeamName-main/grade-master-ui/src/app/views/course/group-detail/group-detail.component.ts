@@ -27,6 +27,7 @@ import {AddStudentToGroupDialog} from "./add-student-to-group-dialog.component";
 export class GroupDetailComponent implements OnInit {
   groupId!: number;
   courseId!: number;
+  courseName!: string;
   group$!: Observable<any>;
   students$!: Observable<any[]>;
 
@@ -50,6 +51,7 @@ export class GroupDetailComponent implements OnInit {
     console.log('Kurs-ID:', this.courseId);
     console.log('Gruppen-ID:', this.groupId);
 
+    this.loadCourseDetails();
     this.loadGroupDetails();
     this.loadStudents();
   }
@@ -76,6 +78,13 @@ export class GroupDetailComponent implements OnInit {
         console.error('Error loading students:', error);
       }
     );
+  }
+
+  loadCourseDetails(): void {
+    this.http.get<any>(`http://localhost:8080/api/v1/course/${this.courseId}`)
+      .subscribe((course) => {
+        this.courseName = course.name; // Kursname speichern
+      });
   }
 
   openAddStudentDialog(): void {
