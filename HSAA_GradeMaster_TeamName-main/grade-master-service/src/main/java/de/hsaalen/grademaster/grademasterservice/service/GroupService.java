@@ -60,6 +60,15 @@ public class GroupService {
             throw new IllegalArgumentException("Student is not enrolled in the course.");
         }
 
+        List<Group> groupList = groupRepository.findByCourseId(course.getId());
+
+        for (Group g : groupList) {
+
+            if (g.getStudents().contains(student)) {
+                throw new IllegalArgumentException("Student is in a different group");
+            }
+        }
+
         group.addStudent(student);
         groupRepository.save(group);
     }

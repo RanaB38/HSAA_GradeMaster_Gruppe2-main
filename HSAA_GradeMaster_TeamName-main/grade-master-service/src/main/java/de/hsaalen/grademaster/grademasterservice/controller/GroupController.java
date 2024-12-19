@@ -48,8 +48,23 @@ public class GroupController {
     //Studenten zu einer Gruppe hinzufügen
     @PostMapping("/{groupId}/add-student/{studentId}")
     public ResponseEntity<String> addStudentToGroup(@PathVariable Long groupId, @PathVariable Long studentId) {
-        groupService.addStudentToGroup(groupId, studentId);
-        return ResponseEntity.ok("Student added to group successfully.");
+        try {
+            groupService.addStudentToGroup(groupId, studentId);
+            return ResponseEntity.ok("Student added to group successfully.");
+        }
+        catch (IllegalArgumentException e) {
+            if (e.getMessage().contains("Student not found.")) {
+                return ResponseEntity.status(HttpStatus.CONFLICT).body("Student not found");
+            } else if (e.getMessage().contains("Group not found.")) {
+                return ResponseEntity.status(HttpStatus.CONFLICT).body("Group not found");
+            } else if (e.getMessage().contains("Student is not enrolled in the course.")) {
+                return ResponseEntity.status(HttpStatus.CONFLICT).body("Student is not enrolled in the course");
+            }else if (e.getMessage().contains("Student is in a different group")) {
+                return ResponseEntity.status(HttpStatus.CONFLICT).body("Student is in a different group");
+            }
+            return ResponseEntity.badRequest().body("unexpected error");
+        }
+
     }
 
     //Studenten aus einer Gruppe entfernen
