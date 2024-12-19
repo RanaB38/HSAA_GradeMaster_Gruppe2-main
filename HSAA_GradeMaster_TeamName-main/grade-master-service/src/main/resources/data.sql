@@ -20,5 +20,7 @@ INSERT INTO Assignment_Group_Student (group_id, student_id)
 VALUES (1, 85905),
        (1, 85910);
 
+INSERT INTO WEB_USER (USERNAME,PASSWORD, ROLE) values ('user1', 'password', 'ROLE_USER');
+INSERT INTO WEB_USER (USERNAME,PASSWORD, ROLE) values ('user2', 'password', 'ROLE_LECTURER');
 
 

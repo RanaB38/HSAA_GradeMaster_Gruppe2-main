@@ -16,7 +16,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @RestController                             //RestController - verarbeitet HTTP-Anfragen
-@RequestMapping(path = "api/v1/course")    //angeben des Pfads
+@RequestMapping(path = "api/private/v1/course")    //angeben des Pfads
 public class CourseController {
 
     private final  CourseService  courseService;
