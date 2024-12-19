@@ -9,7 +9,7 @@ import {HttpClient} from "@angular/common/http";
 })
 export class CourseCoreService {
 
-  private apiUrl = '/api/v1/courses';
+  private apiUrl = '/api/private/v1/courses';
 
   constructor(
     private providerService: CourseProviderService,

@@ -45,7 +45,7 @@ export class AddStudentDialogComponent {
   // Methode, um den Studenten zu suchen
   searchStudent(): void {
     const studentId = this.form.get('studentId')?.value;
-    this.http.get<any>(`http://localhost:8080/api/v1/student/${studentId}`).subscribe({
+    this.http.get<any>(`http://localhost:8080/api/private/v1/student/${studentId}`).subscribe({
       next: (student) => {
         this.studentName = student.name;
         this.error = null;
@@ -67,7 +67,7 @@ export class AddStudentDialogComponent {
     const studentId = this.form.get('studentId')?.value;
 
     // Anfrage, um den Studenten hinzuzufügen
-    this.http.post(`http://localhost:8080/api/v1/course/${this.data.courseId}/student/${studentId}`, {}, { responseType: 'text' })
+    this.http.post(`http://localhost:8080/api/private/v1/course/${this.data.courseId}/student/${studentId}`, {}, { responseType: 'text' })
       .subscribe({
         next: (response: string) => {
           // Student erfolgreich hinzugefügt

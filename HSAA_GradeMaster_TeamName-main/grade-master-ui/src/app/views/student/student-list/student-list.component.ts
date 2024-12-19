@@ -35,7 +35,7 @@ export class StudentListComponent {
     private router: Router,
     private http: HttpClient,
   ) {
-  this.http.get("http://localhost:8080/api/v1/student").subscribe(s =>
+  this.http.get("http://localhost:8080/api/private/v1/student").subscribe(s =>
   { console.log(s);}
   );
     this.dataSource$ = this.studentCoreService.getStudents();

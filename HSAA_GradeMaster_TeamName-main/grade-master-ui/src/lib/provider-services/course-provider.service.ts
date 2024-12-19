@@ -12,7 +12,7 @@ export class CourseProviderService {
   private coursesSubject: BehaviorSubject<Course[]> = new BehaviorSubject<Course[]>([]);
   public courses$: Observable<Course[]> = this.coursesSubject.asObservable();
 
-  private baseUrl = 'http://localhost:8080/api/v1/course';
+  private baseUrl = 'http://localhost:8080/api/private/v1/course';
 
   constructor(private httpClient: HttpClient, private snackBar: MatSnackBar) {
     this.loadCourses();

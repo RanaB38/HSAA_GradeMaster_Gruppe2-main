@@ -60,7 +60,7 @@ export class CourseDetailComponent {
     private router : Router
   ) {
     this.ngOnInit()
-    this.http.get("http://localhost:8080/api/v1/course/"+this.courseId).subscribe(c =>
+    this.http.get("http://localhost:8080/api/private/v1/course/"+this.courseId).subscribe(c =>
       { console.log(c);}
     );
   }
@@ -78,12 +78,12 @@ export class CourseDetailComponent {
   }
 
   loadStudents(): void {
-    this.students$ = this.http.get<Student[]>(`http://localhost:8080/api/v1/course/${this.courseId}/students`);
+    this.students$ = this.http.get<Student[]>(`http://localhost:8080/api/private/v1/course/${this.courseId}/students`);
     console.log("Load students...");
   }
 
   loadGroups(): void {
-    this.groups$ = this.http.get<Group[]>(`http://localhost:8080/api/v1/groups/course/${this.courseId}`);
+    this.groups$ = this.http.get<Group[]>(`http://localhost:8080/api/private/v1/groups/course/${this.courseId}`);
     console.log("Load groups...");
   }
 

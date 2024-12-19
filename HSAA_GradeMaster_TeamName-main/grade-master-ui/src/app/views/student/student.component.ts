@@ -16,7 +16,7 @@ import { MaterialColor } from '../../../lib/enums/material-color';
   styleUrls: ['./student.component.scss']
 })
 export class StudentComponent {
-  private baseUrl = "http://localhost:8080/api/v1/student";
+  private baseUrl = "http://localhost:8080/api/private/v1/student";
   public title = 'Studenten';
   public color: MaterialColor = 'accent';
 }

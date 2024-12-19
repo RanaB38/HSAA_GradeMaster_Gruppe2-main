@@ -57,7 +57,7 @@ export class GroupDetailComponent implements OnInit {
   }
 
   loadGroupDetails(): void {
-    this.group$ = this.http.get<any>(`http://localhost:8080/api/v1/groups/${this.groupId}`);
+    this.group$ = this.http.get<any>(`http://localhost:8080/api/private/v1/groups/${this.groupId}`);
     this.group$.subscribe(
       (data) => {
         console.log('Group data:', data);
@@ -69,7 +69,7 @@ export class GroupDetailComponent implements OnInit {
   }
 
   loadStudents(): void {
-    this.students$ = this.http.get<any[]>(`http://localhost:8080/api/v1/groups/${this.groupId}/students`);
+    this.students$ = this.http.get<any[]>(`http://localhost:8080/api/private/v1/groups/${this.groupId}/students`);
     this.students$.subscribe(
       (data) => {
         console.log('Students data:', data);
@@ -81,7 +81,7 @@ export class GroupDetailComponent implements OnInit {
   }
 
   loadCourseDetails(): void {
-    this.http.get<any>(`http://localhost:8080/api/v1/course/${this.courseId}`)
+    this.http.get<any>(`http://localhost:8080/api/private/v1/course/${this.courseId}`)
       .subscribe((course) => {
         this.courseName = course.name; // Kursname speichern
       });
@@ -119,7 +119,7 @@ export class GroupDetailComponent implements OnInit {
 
   // Methode zum Löschen der Gruppe
   deleteGroup(): void {
-    this.http.delete(`http://localhost:8080/api/v1/groups/${this.groupId}`).subscribe({
+    this.http.delete(`http://localhost:8080/api/private/v1/groups/${this.groupId}`).subscribe({
       next: () => {
         console.log('Gruppe erfolgreich gelöscht');
         this.router.navigate(['/courses', this.courseId, 'details']); // Zurück zur Kurs-Detail-Seite

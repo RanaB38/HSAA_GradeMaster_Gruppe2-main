@@ -11,7 +11,7 @@ export class StudentProviderService {
 
   private studentsSubject: BehaviorSubject<Student[]> = new BehaviorSubject<Student[]>([]);
   public students$: Observable<Student[]> = this.studentsSubject.asObservable();
-  private baseUrl = 'http://localhost:8080/api/v1/student';
+  private baseUrl = 'http://localhost:8080/api/private/v1/student';
 
   constructor(private httpClient: HttpClient, private snackBar: MatSnackBar) {
     this.loadStudents();

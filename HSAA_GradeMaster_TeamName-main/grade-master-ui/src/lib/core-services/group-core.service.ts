@@ -6,7 +6,7 @@ import { Observable } from 'rxjs';
   providedIn: 'root'
 })
 export class GroupService {
-  private apiUrl = '/api/v1/groups';
+  private apiUrl = '/api/private/v1/groups';
 
   constructor(private http: HttpClient) {}
 

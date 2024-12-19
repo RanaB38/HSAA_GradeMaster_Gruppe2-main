@@ -44,7 +44,7 @@ export class CourseOverviewComponent {
 
   public deleteCourse(courseId: number): void {
     if (confirm(`Möchten Sie den Kurs mit der ID ${courseId} wirklich löschen?`)) {
-      this.http.delete(`http://localhost:8080/api/v1/course/${courseId}`).subscribe({
+      this.http.delete(`http://localhost:8080/api/private/v1/course/${courseId}`).subscribe({
         next: () => {
           this.snackBar.open('Kurs erfolgreich gelöscht', 'OK', { duration: 3000 });
           this.dataSource$ = this.courseCoreService.getCourses(); // Aktualisieren
