@@ -28,6 +28,8 @@ public class AuthConfig {
                 .requestMatchers("/public/**").permitAll()
                 .requestMatchers(HttpMethod.GET,"/api/private/**").hasAnyRole("STUDENT", "LECTURER")
                 .requestMatchers(HttpMethod.PUT,"/api/private/**").hasAnyRole("LECTURER")
+                .requestMatchers(HttpMethod.POST,"/api/private/**").hasAnyRole("LECTURER")
+                .requestMatchers(HttpMethod.DELETE,"/api/private/**").hasAnyRole("LECTURER")
                 .and()
                 .httpBasic(withDefaults());
 
