@@ -49,6 +49,16 @@ export class AppComponent {
       routePath: 'impressum',
       visible: of(true),
     },
+    {
+      name: 'Login',
+      routePath: 'Login',
+      visible: of(true),
+    },
+    {
+      name: 'Logout',
+      routePath: 'Logout',
+      visible: of(true),
+    },
 
   ]
 }
