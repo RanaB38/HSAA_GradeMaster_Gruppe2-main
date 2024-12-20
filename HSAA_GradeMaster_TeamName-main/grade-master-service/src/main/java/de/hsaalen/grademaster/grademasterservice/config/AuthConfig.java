@@ -26,8 +26,8 @@ public class AuthConfig {
         httpSecurity.authorizeRequests()
                 .requestMatchers("/h2/**").permitAll()
                 .requestMatchers("/public/**").permitAll()
-                .requestMatchers(HttpMethod.GET,"/private/**").hasAnyRole("Student", "Lecturer")
-                .requestMatchers(HttpMethod.PUT,"/private/**").hasAnyRole("Lecturer")
+                .requestMatchers(HttpMethod.GET,"/api/private/**").hasAnyRole("STUDENT", "LECTURER")
+                .requestMatchers(HttpMethod.PUT,"/api/private/**").hasAnyRole("LECTURER")
                 .and()
                 .httpBasic(withDefaults());
 
