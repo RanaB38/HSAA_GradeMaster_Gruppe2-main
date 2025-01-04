@@ -36,6 +36,8 @@ public class AuthConfig {
         httpSecurity.csrf(AbstractHttpConfigurer::disable);
         httpSecurity.headers(headers -> headers.frameOptions(HeadersConfigurer.FrameOptionsConfig::sameOrigin));
         httpSecurity.cors(withDefaults());
+
+
         return httpSecurity.build();
     }
 
