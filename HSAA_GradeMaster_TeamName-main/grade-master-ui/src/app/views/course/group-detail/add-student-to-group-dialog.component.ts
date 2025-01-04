@@ -9,6 +9,7 @@ import {MatInput} from "@angular/material/input";
 import {MatButton} from "@angular/material/button";
 import { MatFormFieldModule } from '@angular/material/form-field';
 import {MatIcon} from "@angular/material/icon";
+import {AuthService} from "../../../../lib/provider-services/auth.service";
 
 @Component({
     selector: 'app-add-student-dialog',
@@ -35,6 +36,7 @@ export class AddStudentToGroupDialog {
         private fb: FormBuilder,
         private http: HttpClient,
         protected dialogRef: MatDialogRef<AddStudentToGroupDialog>,
+        private authService: AuthService,
         @Inject(MAT_DIALOG_DATA) public data: any
     ) {
         this.form = this.fb.group({
@@ -45,7 +47,8 @@ export class AddStudentToGroupDialog {
     // Methode, um den Studenten zu suchen
     searchStudent(): void {
         const studentId = this.form.get('studentId')?.value;
-        this.http.get<any>(`http://localhost:8080/api/private/v1/student/${studentId}`).subscribe({
+        this.http.get<any>(`http://localhost:8080/api/private/v1/student/${studentId}`,
+          {headers: this.authService.getAuthHeaders()}).subscribe({
             next: (student) => {
                 this.studentName = student.name;
                 this.error = null;
@@ -70,7 +73,8 @@ export class AddStudentToGroupDialog {
 
 
         // Anfrage, um den Studenten hinzuzufügen
-        this.http.post(`http://localhost:8080/api/private/v1/groups/${this.data.groupId}/add-student/${studentId}`, {}, { responseType: 'text' })
+        this.http.post(`http://localhost:8080/api/private/v1/groups/${this.data.groupId}/add-student/${studentId}`,
+          {headers: this.authService.getAuthHeaders()}, { responseType: 'text' })
             .subscribe({
                 next: (response: string) => {
                     // Student erfolgreich hinzugefügt

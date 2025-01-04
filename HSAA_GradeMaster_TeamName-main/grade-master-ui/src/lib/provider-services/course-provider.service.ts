@@ -3,6 +3,7 @@ import { BehaviorSubject, Observable } from "rxjs";
 import { Course } from "../domain/course.interfaces";
 import { HttpClient } from "@angular/common/http";
 import { MatSnackBar } from '@angular/material/snack-bar';
+import {AuthService} from "./auth.service";
 
 @Injectable({
   providedIn: 'root'
@@ -14,12 +15,12 @@ export class CourseProviderService {
 
   private baseUrl = 'http://localhost:8080/api/private/v1/course';
 
-  constructor(private httpClient: HttpClient, private snackBar: MatSnackBar) {
+  constructor(private httpClient: HttpClient, private snackBar: MatSnackBar, private authService: AuthService) {
     this.loadCourses();
   }
 
   private loadCourses(): void {
-    this.httpClient.get<Course[]>(this.baseUrl).subscribe({
+    this.httpClient.get<Course[]>(this.baseUrl, { headers: this.authService.getAuthHeaders() }).subscribe({
       next: (courses) => {
         this.coursesSubject.next(courses);
       },
@@ -33,13 +34,14 @@ export class CourseProviderService {
   }
 
   public getAllCourses(): Observable<Course[]> {
-    return this.courses$;
+    //return this.courses$;
+    return this.httpClient.get<Course[]>(this.baseUrl, { headers: this.authService.getAuthHeaders() });
   }
 
   public createCourse(course: Course): void {
     console.log('>>> ', course);
 
-    this.httpClient.post<Course>(this.baseUrl, course).subscribe({
+    this.httpClient.post<Course>(this.baseUrl, course, { headers: this.authService.getAuthHeaders() }).subscribe({
       next: (createdCourse) => {
         const currentCourses = this.coursesSubject.value;
         const updatedCourses = [...currentCourses, createdCourse]; // Neuen Kurs hinzufügen

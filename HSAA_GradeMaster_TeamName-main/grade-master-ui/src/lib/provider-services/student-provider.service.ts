@@ -3,6 +3,7 @@ import { BehaviorSubject, Observable } from 'rxjs';
 import { Student } from '../domain/student.interfaces';
 import { HttpClient } from "@angular/common/http";
 import { MatSnackBar } from '@angular/material/snack-bar';
+import {AuthService} from "./auth.service";
 
 @Injectable({
   providedIn: 'root'
@@ -13,12 +14,12 @@ export class StudentProviderService {
   public students$: Observable<Student[]> = this.studentsSubject.asObservable();
   private baseUrl = 'http://localhost:8080/api/private/v1/student';
 
-  constructor(private httpClient: HttpClient, private snackBar: MatSnackBar) {
+  constructor(private httpClient: HttpClient, private snackBar: MatSnackBar, private authService: AuthService) {
     this.loadStudents();
   }
 
   private loadStudents(): void {
-    this.httpClient.get<Student[]>(this.baseUrl).subscribe({
+    this.httpClient.get<Student[]>(this.baseUrl, { headers: this.authService.getAuthHeaders() }).subscribe({
       next: (students) => {
         this.studentsSubject.next(students);
       },
@@ -35,7 +36,7 @@ export class StudentProviderService {
   public createStudent(student: Student): void {
     console.log('>>> ', student);
 
-    this.httpClient.post<Student>(this.baseUrl, student).subscribe({
+    this.httpClient.post<Student>(this.baseUrl, student, { headers: this.authService.getAuthHeaders() }).subscribe({
       next: (createdStudent) => {
         const currentStudents = this.studentsSubject.value;
         const updatedStudents = [...currentStudents, createdStudent];

@@ -10,6 +10,7 @@ import { CommonModule } from '@angular/common';
 import { MatButtonModule } from '@angular/material/button';
 import {GroupDeleteDialogComponent} from "./group-delete-dialog.component";
 import {AddStudentToGroupDialog} from "./add-student-to-group-dialog.component";
+import {AuthService} from "../../../../lib/provider-services/auth.service";
 
 
 @Component({
@@ -36,6 +37,7 @@ export class GroupDetailComponent implements OnInit {
     private http: HttpClient,
     private dialog: MatDialog,
     private router: Router,
+    private authService: AuthService
   ) {
     this.router.events.subscribe(event => {
       if (event instanceof NavigationStart) {
@@ -57,7 +59,8 @@ export class GroupDetailComponent implements OnInit {
   }
 
   loadGroupDetails(): void {
-    this.group$ = this.http.get<any>(`http://localhost:8080/api/private/v1/groups/${this.groupId}`);
+    this.group$ = this.http.get<any>(`http://localhost:8080/api/private/v1/groups/${this.groupId}`,
+      {headers: this.authService.getAuthHeaders()});
     this.group$.subscribe(
       (data) => {
         console.log('Group data:', data);

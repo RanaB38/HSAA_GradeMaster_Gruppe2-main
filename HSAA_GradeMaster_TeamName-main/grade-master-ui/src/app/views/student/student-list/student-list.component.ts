@@ -9,6 +9,7 @@ import { StudentCoreService } from '../../../../lib/core-services/student-core.s
 import { Student } from '../../../../lib/domain/student.interfaces';
 import { StudentDialogComponent } from '../student-dialog/student-dialog.component';
 import {HttpClient, HttpClientModule, provideHttpClient} from "@angular/common/http";
+import {AuthService} from "../../../../lib/provider-services/auth.service";
 
 @Component({
   selector: 'app-student-list',
@@ -34,8 +35,9 @@ export class StudentListComponent {
     private studentCoreService: StudentCoreService,
     private router: Router,
     private http: HttpClient,
+    private authService: AuthService
   ) {
-  this.http.get("http://localhost:8080/api/private/v1/student").subscribe(s =>
+  this.http.get("http://localhost:8080/api/private/v1/student", {headers: authService.getAuthHeaders()}).subscribe(s =>
   { console.log(s);}
   );
     this.dataSource$ = this.studentCoreService.getStudents();

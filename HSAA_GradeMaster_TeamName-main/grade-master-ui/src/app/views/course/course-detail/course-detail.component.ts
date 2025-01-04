@@ -18,6 +18,7 @@ import {MatList, MatListItem} from "@angular/material/list";
 // @ts-ignore
 import {Group} from "../../../../lib/domain/group.interfaces";
 import {AddGroupDialogComponent} from "../add-group-dialog/add-group-dialog.component";
+import {AuthService} from "../../../../lib/provider-services/auth.service";
 
 
 @Component({
@@ -57,10 +58,12 @@ export class CourseDetailComponent {
     private route: ActivatedRoute,
     private http: HttpClient,
     private dialog: MatDialog,
-    private router : Router
+    private router : Router,
+    private authService: AuthService
   ) {
     this.ngOnInit()
-    this.http.get("http://localhost:8080/api/private/v1/course/"+this.courseId).subscribe(c =>
+    this.http.get("http://localhost:8080/api/private/v1/course/"+this.courseId,
+      {headers: authService.getAuthHeaders()}).subscribe(c =>
       { console.log(c);}
     );
   }
@@ -78,12 +81,14 @@ export class CourseDetailComponent {
   }
 
   loadStudents(): void {
-    this.students$ = this.http.get<Student[]>(`http://localhost:8080/api/private/v1/course/${this.courseId}/students`);
+    this.students$ = this.http.get<Student[]>(`http://localhost:8080/api/private/v1/course/${this.courseId}/students`,
+      {headers: this.authService.getAuthHeaders()});
     console.log("Load students...");
   }
 
   loadGroups(): void {
-    this.groups$ = this.http.get<Group[]>(`http://localhost:8080/api/private/v1/groups/course/${this.courseId}`);
+    this.groups$ = this.http.get<Group[]>(`http://localhost:8080/api/private/v1/groups/course/${this.courseId}`,
+      {headers: this.authService.getAuthHeaders()});
     console.log("Load groups...");
   }
 

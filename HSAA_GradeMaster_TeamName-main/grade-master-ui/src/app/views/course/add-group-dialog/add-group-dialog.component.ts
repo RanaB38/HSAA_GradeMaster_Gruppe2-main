@@ -7,6 +7,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatIconModule } from '@angular/material/icon';
+import {AuthService} from "../../../../lib/provider-services/auth.service";
 
 @Component({
   selector: 'app-add-group-dialog',
@@ -31,6 +32,7 @@ export class AddGroupDialogComponent {
   constructor(
     private fb: FormBuilder,
     private http: HttpClient,
+    private authService: AuthService,
     protected dialogRef: MatDialogRef<AddGroupDialogComponent>,
     @Inject(MAT_DIALOG_DATA) public data: { courseId: number }
   ) {
@@ -50,7 +52,8 @@ export class AddGroupDialogComponent {
     this.errorMessage = null; // Vorherige Fehlermeldung zurücksetzen
     this.isLoading = true; // Setze isLoading auf true, um den Button zu deaktivieren
 
-    this.http.post(`http://localhost:8080/api/private/v1/groups/course/${this.data.courseId}`, { name: groupName }, { responseType: 'text' })
+    this.http.post(`http://localhost:8080/api/private/v1/groups/course/${this.data.courseId}`, { name: groupName },
+      {headers: this.authService.getAuthHeaders(), responseType: 'text' })
       .subscribe({
         next: (response) => {
           this.isLoading = false; // Anfragen abgeschlossen, Button wieder aktivieren

@@ -1,10 +1,12 @@
 import { Component } from '@angular/core';
 import { FormsModule } from '@angular/forms';
+import { AuthService } from '../../../lib/provider-services/auth.service';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-login',
   standalone: true,
-  imports: [FormsModule],
+  imports: [FormsModule, CommonModule],
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.scss'],
 })
@@ -16,13 +18,25 @@ export class LoginComponent {
   errorMessage = 'Invalid username or password';
   successMessage = 'Login successful';
 
-  handleLogin() {
-    if (this.username === 'admin' && this.password === 'admin') {
-      this.invalidLogin = false;
-      this.loginSuccess = true;
-    } else {
-      this.invalidLogin = true;
-      this.loginSuccess = false;
-    }
+  constructor(private authService: AuthService) {}
+
+  handleLogin(event: Event): void {
+    event.preventDefault();
+
+    this.authService.authenticate(this.username, this.password).subscribe(
+      (user) => {
+        this.invalidLogin = false;
+        this.loginSuccess = true;
+        this.successMessage = `Welcome, ${user.username}!`;
+
+        localStorage.setItem('authToken', btoa(`${this.username}:${this.password}`));
+      },
+      (error) => {
+        this.invalidLogin = true;
+        this.loginSuccess = false;
+        this.errorMessage = 'Authentication failed. Please try again.';
+        console.error('Login error:', error);
+      }
+    );
   }
 }

@@ -8,6 +8,7 @@ import { Observable } from "rxjs";
 import { Course } from "../../../../lib/domain/course.interfaces";
 import { CourseCoreService } from "../../../../lib/core-services/course-core.service";
 import { HttpClient } from "@angular/common/http";
+import {AuthService} from "../../../../lib/provider-services/auth.service";
 
 @Component({
   selector: 'app-course-overview',
@@ -29,7 +30,8 @@ export class CourseOverviewComponent {
     private router: Router,
     private courseCoreService: CourseCoreService,
     private http: HttpClient,
-    private snackBar: MatSnackBar
+    private snackBar: MatSnackBar,
+    private authService: AuthService
   ) {
     this.dataSource$ = this.courseCoreService.getCourses();
   }
@@ -44,7 +46,8 @@ export class CourseOverviewComponent {
 
   public deleteCourse(courseId: number): void {
     if (confirm(`Möchten Sie den Kurs mit der ID ${courseId} wirklich löschen?`)) {
-      this.http.delete(`http://localhost:8080/api/private/v1/course/${courseId}`).subscribe({
+      this.http.delete(`http://localhost:8080/api/private/v1/course/${courseId}`,
+        {headers: this.authService.getAuthHeaders()}).subscribe({
         next: () => {
           this.snackBar.open('Kurs erfolgreich gelöscht', 'OK', { duration: 3000 });
           this.dataSource$ = this.courseCoreService.getCourses(); // Aktualisieren
