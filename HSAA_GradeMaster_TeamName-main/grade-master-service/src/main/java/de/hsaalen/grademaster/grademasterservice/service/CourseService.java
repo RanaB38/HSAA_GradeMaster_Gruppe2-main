@@ -1,8 +1,10 @@
 package de.hsaalen.grademaster.grademasterservice.service;
 
 import de.hsaalen.grademaster.grademasterservice.domain.Course;
+import de.hsaalen.grademaster.grademasterservice.domain.Group;
 import de.hsaalen.grademaster.grademasterservice.domain.Student;
 import de.hsaalen.grademaster.grademasterservice.repository.CourseRepository;
+import de.hsaalen.grademaster.grademasterservice.repository.GroupRepository;
 import de.hsaalen.grademaster.grademasterservice.repository.StudentRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -17,11 +19,13 @@ public class CourseService {
 
     private final CourseRepository courseRepository;
     private final StudentRepository studentRepository;
+    private final GroupRepository groupRepository;
 
     @Autowired
-    public CourseService(CourseRepository courseRepository, StudentRepository studentRepository) {
+    public CourseService(CourseRepository courseRepository, StudentRepository studentRepository, GroupRepository groupRepository) {
         this.courseRepository = courseRepository;
         this.studentRepository = studentRepository;
+        this.groupRepository = groupRepository;
     }
 
     //Methode, um alle Kurse aus der DB zu holen
@@ -98,6 +102,23 @@ public class CourseService {
         Student student = studentRepository.findById(studentId)
                 .orElseThrow(() -> new IllegalArgumentException("Student not found."));
         course.addStudent(student); // Bidirektionale Zuordnung
+        courseRepository.save(course);
+    }
+
+    //einen Studenten mit der ID aus dem Kurs entfernen
+    public void deleteStudent(Long courseId, Long studentId) {
+        Course course = courseRepository.findById(courseId)
+                .orElseThrow(() -> new IllegalArgumentException("Course not found."));
+        Student student = studentRepository.findById(studentId)
+                .orElseThrow(() -> new IllegalArgumentException("Student not found."));
+        List<Group> courseGroupList = groupRepository.findByCourseId(courseId);                     //Gruppen des Kurses
+        //Mit einer Schleife Studenten aus der Gruppe entfernen falls er in einer ist
+        for (Group group : courseGroupList) {
+            if (group.getStudents().contains(student)) {
+                group.getStudents().remove(student);
+            }
+        }
+        course.removeStudent(student);
         courseRepository.save(course);
     }
 

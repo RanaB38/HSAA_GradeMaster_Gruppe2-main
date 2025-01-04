@@ -1,5 +1,6 @@
 package de.hsaalen.grademaster.grademasterservice.service;
 
+import de.hsaalen.grademaster.grademasterservice.domain.Course;
 import de.hsaalen.grademaster.grademasterservice.domain.Student;
 import de.hsaalen.grademaster.grademasterservice.repository.StudentRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -7,6 +8,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -14,10 +16,15 @@ import java.util.Optional;
 public class StudentService {
 
     private final StudentRepository studentRepository;
+    private final GroupService groupService;
+    private final CourseService courseService;
+
 
     @Autowired
-    public StudentService(StudentRepository studentRepository) {
+    public StudentService(StudentRepository studentRepository, GroupService groupService, CourseService courseService) {
         this.studentRepository = studentRepository;
+        this.groupService = groupService;
+        this.courseService = courseService;
     }
 
     //Methode, um alle Studenten aus der DB zu holen
@@ -36,13 +43,26 @@ public class StudentService {
 
     }
 
-    //Methode, um einen Kurs anhand der ID zu Löschen
+    //Methode, um einen Studenten anhand der ID zu Löschen
     public void deleteStudent(Long studentId) {
         boolean exists = studentRepository.existsById(studentId);                                   //Überprüft, ob ein Student mit derselben
         if(!exists) {                                                                               //ID schon existiert
-            throw new IllegalStateException("student with id" + studentId + " does not exist");     //Wenn nein, dann Fehler
+            throw new IllegalStateException("student with id " + studentId + " does not exist");     //Wenn nein, dann Fehler
         }
-        studentRepository.deleteById(studentId);                                                    //Wenn ja, dann löschen aus der DB
+        //Variable exits ist True
+        else {
+            //Liste der Kurse des Studenten Kopieren
+            List<Course> courseList =new ArrayList<>(studentRepository.findStudentById(studentId).get().getCourses());
+            //Wenn die Liste der Kurse in courseList nicht leer ist
+            if (!courseList.isEmpty()) {
+                for (Course course : courseList) {
+                    //Student aus dem Kurs entfernen
+                    courseService.deleteStudent(course.getId(), studentId);
+                }
+            }
+            //löschen aus der DB
+            studentRepository.deleteById(studentId);
+        }
     }
 
     //Methode, um Studenten anhand ID zu suchen, und wenn nicht vorhanden Fehlermeldung
