@@ -50,7 +50,15 @@ public class CourseService {
         if(!exists) {                                                                           //Überprüft, ob ein Kurs mit demselben
             throw new IllegalStateException("Course with Id " + courseId + " does not exist");  //Namen schon existiert
         }                                                                                       //Wenn nein, dann Fehler
-        courseRepository.deleteById(courseId);                                                  //Wenn ja, dann löschen aus der DB
+        //Wenn der Kurs existiert
+        else {
+            //Gruppen des Kurses holen und löschen bevor der Kurs gelöscht wird
+            List<Group> courseGroupList = groupRepository.findByCourseId(courseId);
+            for(Group group : courseGroupList) {
+                groupRepository.deleteById(group.getId());
+            }
+            courseRepository.deleteById(courseId);                                               //dann löschen aus der DB
+        }
     }
 
     //Methode, um Kurse anhand ID zu suchen, und wenn nicht vorhanden Fehlermeldung
