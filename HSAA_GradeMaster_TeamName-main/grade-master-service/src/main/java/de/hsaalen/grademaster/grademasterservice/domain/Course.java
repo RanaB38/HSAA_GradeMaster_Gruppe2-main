@@ -51,4 +51,21 @@ public class Course {
             student.getCourses().remove(this); // Entfernen aus der bidirektionalen Zuordnung
         }
     }
+
+    //Aufgabe 15 - Sprint 4
+    @OneToMany(mappedBy = "course", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonIgnore
+    private List<Bewertungsschema> bewertungsschemas = new ArrayList<>();
+
+    // Methode, um ein Bewertungsschema hinzuzufügen
+    public void addBewertungsschema(Bewertungsschema bewertungsschema) {
+        bewertungsschemas.add(bewertungsschema);
+        bewertungsschema.setCourse(this); // Setzt die bidirektionale Beziehung
+    }
+
+    // Methode, um ein Bewertungsschema zu entfernen
+    public void removeBewertungsschema(Bewertungsschema bewertungsschema) {
+        bewertungsschemas.remove(bewertungsschema);
+        bewertungsschema.setCourse(null); // Entfernt die bidirektionale Beziehung
+    }
 }

@@ -1,5 +1,6 @@
 package de.hsaalen.grademaster.grademasterservice.controller;
 
+import de.hsaalen.grademaster.grademasterservice.domain.Bewertungsschema;
 import de.hsaalen.grademaster.grademasterservice.domain.Course;
 import de.hsaalen.grademaster.grademasterservice.domain.Group;
 import de.hsaalen.grademaster.grademasterservice.domain.Student;
@@ -130,6 +131,24 @@ public class CourseController {
             //Bei fehler HTTP 404 zurückgeben
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
         }
+    }
+
+    //Aufgabe 15 - Sprint 4
+    @GetMapping("/{courseId}/bewertungsschema")
+    public List<Bewertungsschema> getBewertungsschema(@PathVariable Long courseId) {
+        return courseService.getBewertungsschemaForCourse(courseId);
+    }
+
+    @PostMapping("/{courseId}/bewertungsschema")
+    public ResponseEntity<String> addBewertungsschema(@PathVariable Long courseId, @RequestBody Bewertungsschema bewertungsschema) {
+        courseService.addBewertungsschemaToCourse(courseId, bewertungsschema);
+        return ResponseEntity.status(HttpStatus.CREATED).body("Bewertungsschema hinzugefügt.");
+    }
+
+    @DeleteMapping("/{courseId}/bewertungsschema/{bewertungsschemaId}")
+    public ResponseEntity<String> deleteBewertungsschema(@PathVariable Long courseId, @PathVariable Long bewertungsschemaId) {
+        courseService.removeBewertungsschemaFromCourse(courseId, bewertungsschemaId);
+        return ResponseEntity.status(HttpStatus.NO_CONTENT).body("Bewertungsschema entfernt.");
     }
 
 }

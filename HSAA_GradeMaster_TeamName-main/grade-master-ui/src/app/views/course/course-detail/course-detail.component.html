@@ -102,6 +102,37 @@
 
   <router-outlet></router-outlet>
 
+  <div class="bewertungsschema">
+    <h3>Bewertungsschema:</h3>
+    <table>
+      <thead>
+      <tr>
+        <th>Topic</th>
+        <th>Percentage</th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr *ngFor="let topic of bewertungsschema">
+        <td>{{ topic.topic }}</td>
+        <td>
+          <input type="text" [value]="topic.percentage + '%'" readonly />
+        </td>
+      </tr>
+      </tbody>
+    </table>
+
+    <!-- Button für Editieren -->
+    <!--<p>isLecturer: {{ isLecturer }}</p> Test für Debugging-Ausgabe -->
+    <button
+      mat-raised-button
+      color="accent"
+      [disabled]="!isLecturer"
+      (click)="navigateToEditBewertungsschema()"
+    >
+      Editieren
+    </button>
+  </div>
+
 
 </div>
 </body>

@@ -1,5 +1,6 @@
 package de.hsaalen.grademaster.grademasterservice.service;
 
+import de.hsaalen.grademaster.grademasterservice.domain.Bewertungsschema;
 import de.hsaalen.grademaster.grademasterservice.domain.Course;
 import de.hsaalen.grademaster.grademasterservice.domain.Group;
 import de.hsaalen.grademaster.grademasterservice.domain.Student;
@@ -127,6 +128,31 @@ public class CourseService {
             }
         }
         course.removeStudent(student);
+        courseRepository.save(course);
+    }
+
+    //Aufgabe 15 - Sprint 4
+    public List<Bewertungsschema> getBewertungsschemaForCourse(Long courseId) {
+        Course course = courseRepository.findById(courseId)
+                .orElseThrow(() -> new IllegalArgumentException("Course not found."));
+        return course.getBewertungsschemas();
+    }
+
+    public void addBewertungsschemaToCourse(Long courseId, Bewertungsschema bewertungsschema) {
+        Course course = courseRepository.findById(courseId)
+                .orElseThrow(() -> new IllegalArgumentException("Course not found."));
+        course.addBewertungsschema(bewertungsschema);
+        courseRepository.save(course);
+    }
+
+    public void removeBewertungsschemaFromCourse(Long courseId, Long bewertungsschemaId) {
+        Course course = courseRepository.findById(courseId)
+                .orElseThrow(() -> new IllegalArgumentException("Course not found."));
+        Bewertungsschema bewertungsschema = course.getBewertungsschemas().stream()
+                .filter(b -> b.getId().equals(bewertungsschemaId))
+                .findFirst()
+                .orElseThrow(() -> new IllegalArgumentException("Bewertungsschema not found."));
+        course.removeBewertungsschema(bewertungsschema);
         courseRepository.save(course);
     }
 

@@ -53,6 +53,9 @@ export class CourseDetailComponent {
   public groups: { id: number; name: string }[] = [];
   public groups$!: Observable<Group[]>;
 
+  bewertungsschema: { topic: string; percentage: number }[] = [];
+  isLecturer: boolean = false;
+
   constructor(
     private courseCoreService: CourseCoreService,
     private route: ActivatedRoute,
@@ -66,6 +69,7 @@ export class CourseDetailComponent {
       {headers: authService.getAuthHeaders()}).subscribe(c =>
       { console.log(c);}
     );
+    this.isLecturer = this.authService.getUserRole() === 'LECTURER';
   }
   ngOnInit(): void {
     this.route.paramMap.subscribe(params => {
@@ -73,7 +77,24 @@ export class CourseDetailComponent {
       this.loadCourseDetails();
       this.loadStudents();
       this.loadGroups();
+      this.loadBewertungsschema(this.courseId);
+      this.checkUserRole();
     });
+
+    // Authentifizierung und Rollenabfrage
+    this.authService.authenticate('your-username', 'your-password').subscribe(
+      (response) => {
+        if (response && response.role) {
+          this.authService.setUserRole(response.role);  // Setze die Benutzerrolle im AuthService
+          this.isLecturer = this.authService.getUserRole() === 'LECTURER';
+        } else {
+          console.error('Keine gültige Rolle gefunden.');
+    }
+      },
+      (error) => {
+        console.error('Authentifizierung fehlgeschlagen:', error);
+      }
+    );
   }
 
   loadCourseDetails(): void {
@@ -126,5 +147,32 @@ export class CourseDetailComponent {
   //Sprint 3 - Aufgabe 12
   onSelectGroup(group: Group): void {
     this.router.navigate(['/courses', this.courseId, 'groups', group.id, 'details']);
+  }
+
+  //Aufgabe 15 - Sprint 4
+  loadBewertungsschema(courseId: number | null): void {
+    console.log('Lade Bewertungsschema für Kurs:', courseId);
+    this.http
+      .get<{ topic: string; percentage: number }[]>(
+        `http://localhost:8080/api/private/v1/bewertungsschema/course/${courseId}`
+      )
+      .subscribe((data) => {
+        console.log('Bewertungsschema geladen:', data);
+          this.bewertungsschema = data;
+        },
+          (error) => {
+            console.error('Fehler beim Laden des Bewertungsschemas:', error);
+          }
+      );
+  }
+
+  checkUserRole(): void {
+    this.isLecturer = this.authService.getUserRole() === 'LECTURER';
+    console.log('Benutzerrolle:', this.isLecturer ? 'Dozent' : 'Student');
+  }
+
+  navigateToEditBewertungsschema(): void {
+    const courseId = this.route.snapshot.paramMap.get('id');
+    this.router.navigate([`/courses/${courseId}/edit-bewertungsschema`]);
   }
 }
