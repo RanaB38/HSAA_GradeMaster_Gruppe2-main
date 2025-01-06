@@ -20,8 +20,7 @@ export class AuthService {
 
     return this.http.get<any>(`${this.baseUrl}/auth`, { headers }).pipe(
       tap((response) => {
-        // Angenommene Antwort, dass sie eine Rolle enthält, z.B. "ROLE_LECTURER" oder "ROLE_STUDENT"
-        const role = response.role ? response.role.replace('ROLE_', '') : 'STUDENT'; // Entfernen von "ROLE_" und Standard auf STUDENT setzen
+        const role = response.role ? response.role.replace('ROLE_', '') : 'STUDENT';
         this.setUserRole(role as 'STUDENT' | 'LECTURER'); // Setzt die Rolle korrekt
       }),
       catchError((error) => {
@@ -40,10 +39,12 @@ export class AuthService {
 
   setUserRole(role: 'STUDENT' | 'LECTURER'): void {
     this.role = role;
-    localStorage.setItem('role', role); // Rolle im LocalStorage speichern, falls gewünscht
+    localStorage.setItem('role', role);
   }
 
   getUserRole(): 'STUDENT' | 'LECTURER' {
     return this.role;
   }
 }
+
+

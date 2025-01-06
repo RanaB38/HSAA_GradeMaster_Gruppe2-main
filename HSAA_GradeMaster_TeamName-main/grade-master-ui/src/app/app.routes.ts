@@ -1,7 +1,7 @@
 import { Routes } from '@angular/router';
 import { CourseDialogHandlerComponent } from './views/course/course-dialog/course-dialog-handler/course-dialog-handler.component';
 import { LoginComponent } from './views/login/login.component'; // Login-Komponente importieren
-import { AuthGuard } from './views/login/auth.guard'; // AuthGuard importieren
+import { AuthGuard } from './views/login/auth.guard';
 
 export const routes: Routes = [
   {
@@ -41,6 +41,13 @@ export const routes: Routes = [
         loadComponent: () =>
           import('./views/course/course-detail/course-detail.component').then(
             (mod) => mod.CourseDetailComponent
+          ),
+      },
+      {
+        path: ':courseId/bewertungsschema', //Bewertungsschema Edit
+        loadComponent: () =>
+          import('./views/course/bewertungsschema-edit/bewertungsschema-edit.component').then(
+            (mod) => mod.BewertungsschemaEditComponent
           ),
       },
       {

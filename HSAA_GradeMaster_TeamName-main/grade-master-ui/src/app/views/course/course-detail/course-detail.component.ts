@@ -89,7 +89,7 @@ export class CourseDetailComponent {
           this.isLecturer = this.authService.getUserRole() === 'LECTURER';
         } else {
           console.error('Keine gültige Rolle gefunden.');
-    }
+        }
       },
       (error) => {
         console.error('Authentifizierung fehlgeschlagen:', error);
@@ -157,12 +157,12 @@ export class CourseDetailComponent {
         `http://localhost:8080/api/private/v1/bewertungsschema/course/${courseId}`
       )
       .subscribe((data) => {
-        console.log('Bewertungsschema geladen:', data);
+          console.log('Bewertungsschema geladen:', data);
           this.bewertungsschema = data;
         },
-          (error) => {
-            console.error('Fehler beim Laden des Bewertungsschemas:', error);
-          }
+        (error) => {
+          console.error('Fehler beim Laden des Bewertungsschemas:', error);
+        }
       );
   }
 
@@ -172,7 +172,6 @@ export class CourseDetailComponent {
   }
 
   navigateToEditBewertungsschema(): void {
-    const courseId = this.route.snapshot.paramMap.get('id');
-    this.router.navigate([`/courses/${courseId}/edit-bewertungsschema`]);
+    this.router.navigate([`/courses/${this.courseId}/bewertungsschema`]);
   }
 }

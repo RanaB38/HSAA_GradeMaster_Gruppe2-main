@@ -3,6 +3,7 @@ package de.hsaalen.grademaster.grademasterservice.controller;
 import de.hsaalen.grademaster.grademasterservice.domain.Bewertungsschema;
 import de.hsaalen.grademaster.grademasterservice.service.BewertungsschemaService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -26,4 +27,13 @@ public class BewertungsschemaController {
     public void initializeBewertungsschema(@PathVariable Long courseId) {
         bewertungsschemaService.initializeBewertungsschemaForCourse(courseId);
     }
+
+    @PostMapping("/course/{courseId}")
+    public ResponseEntity<Void> updateBewertungsschema(
+            @PathVariable Long courseId,
+            @RequestBody List<Bewertungsschema> bewertungsschemaList) {
+        bewertungsschemaService.updateBewertungsschema(courseId, bewertungsschemaList);
+        return ResponseEntity.ok().build();
+    }
+
 }

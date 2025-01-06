@@ -156,5 +156,33 @@ public class CourseService {
         courseRepository.save(course);
     }
 
+    //Aufgabe 16 -Sprint 4
+    // Methode zur Bearbeitung des Bewertungsschemas
+    public void updateBewertungsschema(Long courseId, List<Bewertungsschema> bewertungsschemaList) {
+        Course course = courseRepository.findById(courseId)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Course not found"));
 
+        // Summe muss 100% betragen
+        int totalPercentage = bewertungsschemaList.stream().mapToInt(Bewertungsschema::getPercentage).sum();
+        if (totalPercentage != 100) {
+            throw new IllegalArgumentException("Die Gesamtgewichtung muss genau 100% betragen.");
+        }
+
+        // Topics müssen eindeutig sein
+        long uniqueTopics = bewertungsschemaList.stream()
+                .map(Bewertungsschema::getTopic)
+                .distinct()
+                .count();
+        if (uniqueTopics != bewertungsschemaList.size()) {
+            throw new IllegalArgumentException("Alle Topics müssen eindeutig sein.");
+        }
+
+        // Aktualisieren des Schemas
+        course.getBewertungsschemas().clear();
+        for (Bewertungsschema schema : bewertungsschemaList) {
+            course.addBewertungsschema(schema);
+        }
+
+        courseRepository.save(course);
+    }
 }

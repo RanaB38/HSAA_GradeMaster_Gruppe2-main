@@ -1,0 +1,34 @@
+<div class="container">
+  <h1>Bewertungsschema bearbeiten</h1>
+
+  <!-- Tabelle für das Schema -->
+  <table>
+    <thead>
+    <tr>
+      <th>Topic</th>
+      <th>%</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr *ngFor="let item of bewertungsschema; let i = index">
+      <td>
+        <mat-form-field>
+          <input matInput [(ngModel)]="item.topic" placeholder="Topic #{{ i + 1 }}">
+        </mat-form-field>
+      </td>
+      <td>
+        <mat-form-field>
+          <input matInput type="number" [(ngModel)]="item.percentage" min="0" max="100">
+        </mat-form-field>
+      </td>
+    </tr>
+    </tbody>
+  </table>
+
+  <!-- Aktionen -->
+  <button mat-raised-button color="primary" (click)="addRow()">Hinzufügen</button>
+  <button mat-raised-button color="accent" (click)="save()">Speichern</button>
+
+  <!-- Fehlermeldungen -->
+  <p *ngIf="errorMessage" class="error-message">{{ errorMessage }}</p>
+</div>
