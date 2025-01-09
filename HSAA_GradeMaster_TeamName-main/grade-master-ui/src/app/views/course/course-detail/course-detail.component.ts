@@ -79,22 +79,8 @@ export class CourseDetailComponent {
       this.loadGroups();
       this.loadBewertungsschema(this.courseId);
       this.checkUserRole();
+      this.setUserRole();
     });
-
-    // Authentifizierung und Rollenabfrage
-    this.authService.authenticate('your-username', 'your-password').subscribe(
-      (response) => {
-        if (response && response.role) {
-          this.authService.setUserRole(response.role);  // Setze die Benutzerrolle im AuthService
-          this.isLecturer = this.authService.getUserRole() === 'LECTURER';
-        } else {
-          console.error('Keine gültige Rolle gefunden.');
-        }
-      },
-      (error) => {
-        console.error('Authentifizierung fehlgeschlagen:', error);
-      }
-    );
   }
 
   loadCourseDetails(): void {
@@ -154,7 +140,8 @@ export class CourseDetailComponent {
     console.log('Lade Bewertungsschema für Kurs:', courseId);
     this.http
       .get<{ topic: string; percentage: number }[]>(
-        `http://localhost:8080/api/private/v1/bewertungsschema/course/${courseId}`
+        `http://localhost:8080/api/private/v1/bewertungsschema/course/${courseId}`,
+        {headers: this.authService.getAuthHeaders()}
       )
       .subscribe((data) => {
           console.log('Bewertungsschema geladen:', data);
@@ -168,10 +155,21 @@ export class CourseDetailComponent {
 
   checkUserRole(): void {
     this.isLecturer = this.authService.getUserRole() === 'LECTURER';
-    console.log('Benutzerrolle:', this.isLecturer ? 'Dozent' : 'Student');
+    console.log('Benutzerrolle:', this.isLecturer ? 'Lecturer' : 'Student');
   }
 
   navigateToEditBewertungsschema(): void {
     this.router.navigate([`/courses/${this.courseId}/bewertungsschema`]);
+  }
+
+  private setUserRole() {
+    console.log(this.authService.getUserRole());
+    if (this.authService.getUserRole() != 'LECTURER') {
+      this.isLecturer = false;
+      console.log("Student")
+    } else {
+      this.isLecturer = true;
+      console.log("Lecturer")
+    }
   }
 }
