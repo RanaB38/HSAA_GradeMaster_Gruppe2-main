@@ -10,6 +10,7 @@ export class AuthService {
 
   private baseUrl = 'http://localhost:8080/api/public/v1/user';
   private role: 'STUDENT' | 'LECTURER' = 'STUDENT';
+  private username = '';
 
   constructor(private http: HttpClient) {}
 
@@ -22,6 +23,7 @@ export class AuthService {
       tap((response) => {
         const role = response.role ? response.role.replace('ROLE_', '') : 'STUDENT';
         this.setUserRole(role as 'STUDENT' | 'LECTURER'); // Setzt die Rolle korrekt
+        this.setUsername(response.username)
       }),
       catchError((error) => {
         console.error('Fehler bei der Authentifizierung:', error);
@@ -44,6 +46,14 @@ export class AuthService {
 
   getUserRole(): 'STUDENT' | 'LECTURER' {
     return this.role;
+  }
+
+  setUsername(username: string):void{
+    this.username = username;
+  }
+
+  getUsername(): string{
+    return this.username;
   }
 }
 
