@@ -22,6 +22,12 @@ public class StudentController {
         this.studentService = studentService;
     }
 
+    @GetMapping(path = "/data/{studentId}")
+    public ResponseEntity<StudentDTO> getStudentData(@PathVariable ("studentId") String studentId) {
+
+            return ResponseEntity.ok(studentService.getStudentData(String.valueOf(studentId)));
+    }
+
     //Liste aller Studenten aus der DB
     @GetMapping
     public List<StudentDTO> getStudents() {

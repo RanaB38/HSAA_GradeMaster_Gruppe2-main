@@ -6,29 +6,36 @@
       <mat-label>ID</mat-label>
       <input matInput formControlName="id" placeholder="z.B. 12345" />
     </mat-form-field>
+    <div *ngIf="errorMessage" class="error-message">{{ errorMessage }}</div>
 
     <mat-form-field appearance="outline" class="form-field">
       <mat-label>Name</mat-label>
-      <input matInput formControlName="name" placeholder="z.B. Max Mustermann" />
+      <input matInput formControlName="name" placeholder="z.B. Max Mustermann" readonly />
     </mat-form-field>
 
     <mat-form-field appearance="outline" class="form-field">
       <mat-label>E-Mail</mat-label>
-      <input matInput formControlName="email" placeholder="z.B. max@domain.com" />
+      <input matInput formControlName="email" placeholder="z.B. max@domain.com" readonly />
     </mat-form-field>
 
     <div mat-dialog-actions align="end">
+      <button
+        mat-raised-button
+        color="primary"
+        (click)="searchStudent()"
+        [disabled]="form.get('id')?.invalid">
+        Suchen
+      </button>
       <button mat-button mat-dialog-close class="cancel-button">Abbrechen</button>
       <button
         mat-raised-button
         color="primary"
         (click)="onSubmit()"
         [mat-dialog-close]="form.value"
-        [disabled]="form.invalid"
+        [disabled]="!isStudentFound || form.invalid"
       >
         OK
       </button>
     </div>
   </form>
 </div>
-

@@ -58,4 +58,9 @@ export class StudentProviderService {
     const currentStudents = this.studentsSubject.getValue();
     return currentStudents.find(student => student.id === id);
   }
+
+  public getStudentData(id: number): Observable<Student> {
+    return this.httpClient.get<Student>(this.baseUrl + "/data/"+ id, { headers: this.authService.getAuthHeaders() });
+  }
+
 }

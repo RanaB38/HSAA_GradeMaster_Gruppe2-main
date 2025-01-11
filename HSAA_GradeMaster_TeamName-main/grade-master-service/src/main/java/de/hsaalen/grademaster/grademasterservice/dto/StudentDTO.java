@@ -1,5 +1,6 @@
 package de.hsaalen.grademaster.grademasterservice.dto;
 
+import com.fasterxml.jackson.annotation.JsonAlias;
 import lombok.*;
 
 @Getter
@@ -8,6 +9,7 @@ import lombok.*;
 @NoArgsConstructor
 @Builder
 public class StudentDTO {
+    @JsonAlias({"id", "matrikelnummer"})
     private long iD;
     private String name;
     private String email;
