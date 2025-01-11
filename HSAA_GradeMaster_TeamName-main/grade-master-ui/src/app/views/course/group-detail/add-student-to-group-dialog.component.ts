@@ -73,8 +73,8 @@ export class AddStudentToGroupDialog {
 
 
         // Anfrage, um den Studenten hinzuzufügen
-        this.http.post(`http://localhost:8080/api/private/v1/groups/${this.data.groupId}/add-student/${studentId}`,
-          {headers: this.authService.getAuthHeaders()}, { responseType: 'text' })
+        this.http.post(`http://localhost:8080/api/private/v1/groups/${this.data.groupId}/add-student/${studentId}`, {},
+          {headers: this.authService.getAuthHeaders(), responseType: 'text' })
             .subscribe({
                 next: (response: string) => {
                     // Student erfolgreich hinzugefügt
