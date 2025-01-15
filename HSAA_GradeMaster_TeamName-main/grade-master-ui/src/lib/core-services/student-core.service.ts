@@ -22,5 +22,9 @@ export class StudentCoreService {
     return this.providerService.getStudentById(id);
   }
 
+  getStudentData(id: number):Observable<Student> {
+    return this.providerService.getStudentData(id);
+  }
+
 }
 

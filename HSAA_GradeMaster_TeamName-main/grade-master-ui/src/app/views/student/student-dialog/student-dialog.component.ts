@@ -22,7 +22,8 @@ import { StudentCoreService } from '../../../../lib/core-services/student-core.s
   styleUrl: './student-dialog.component.scss'
 })
 export class StudentDialogComponent {
-
+  isStudentFound: boolean = false;
+  errorMessage: string = '';
   form: FormGroup;
 
   constructor(
@@ -34,10 +35,31 @@ export class StudentDialogComponent {
     // Erstellen der Formulardaten -> "form" wird dann im template verknüpft
     this.form = this.fb.group({
       id: ['', Validators.required],
-      name: ['', Validators.required],
-      email: ['', [Validators.required, Validators.email]]
+      name: [{ value: '', disabled: true }, Validators.required],
+      email: [{ value: '', disabled: true }, [Validators.required, Validators.email]]
     });
 
+  }
+
+  searchStudent() {
+    const idNumber = this.form.get('id')?.value;
+    if (idNumber !== null && idNumber !== '') {
+      this.coreService.getStudentData(idNumber).subscribe({
+        next: (student) => {
+          this.form.get('name')?.setValue(student.name);
+          this.form.get('email')?.setValue(student.email);
+          this.form.get('name')?.enable();
+          this.form.get('email')?.enable();
+          this.isStudentFound = true;
+          this.errorMessage = '';
+        },
+        error: () => {
+          // Fehler nicht gefunden
+          this.isStudentFound = false;
+          this.errorMessage = "Es wurde kein Student gefunden";
+        }
+      });
+    }
   }
 
   onSubmit() {

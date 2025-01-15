@@ -2,10 +2,12 @@ package de.hsaalen.grademaster.grademasterservice.service;
 
 import de.hsaalen.grademaster.grademasterservice.domain.Course;
 import de.hsaalen.grademaster.grademasterservice.domain.Student;
+import de.hsaalen.grademaster.grademasterservice.dto.StudentDTO;
 import de.hsaalen.grademaster.grademasterservice.repository.StudentRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.web.reactive.function.client.WebClient;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.util.ArrayList;
@@ -19,12 +21,29 @@ public class StudentService {
     private final GroupService groupService;
     private final CourseService courseService;
 
+    private final WebClient webClient;
 
     @Autowired
     public StudentService(StudentRepository studentRepository, GroupService groupService, CourseService courseService) {
         this.studentRepository = studentRepository;
         this.groupService = groupService;
         this.courseService = courseService;
+        this.webClient = WebClient.builder().baseUrl("https://hsaa-student-service.azurewebsites.net/api/v1/students")
+                .defaultHeader("Api-Key", "63492993-4d04-4bf1-b991-0e92339e7c90")
+                .build();
+    }
+
+    public StudentDTO getStudentData(String studentId) {
+        boolean exits =  studentRepository.existsById(Long.valueOf(studentId));
+        if (exits) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Student sxists");
+        }
+
+        return webClient.get()
+                .uri(uriBuilder -> uriBuilder.queryParam("matriculationNumber", studentId).build())
+                .retrieve()
+                .bodyToMono(StudentDTO.class)
+                .block();
     }
 
     //Methode, um alle Studenten aus der DB zu holen
