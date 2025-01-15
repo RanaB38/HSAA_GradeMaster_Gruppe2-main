@@ -1,7 +1,9 @@
 package de.hsaalen.grademaster.grademasterservice.controller;
 
 import de.hsaalen.grademaster.grademasterservice.domain.Group;
+import de.hsaalen.grademaster.grademasterservice.domain.GroupEvaluation;
 import de.hsaalen.grademaster.grademasterservice.domain.Student;
+import de.hsaalen.grademaster.grademasterservice.dto.GroupEvaluationDTO;
 import de.hsaalen.grademaster.grademasterservice.service.GroupService;
 import de.hsaalen.grademaster.grademasterservice.repository.GroupRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,6 +11,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -96,5 +99,35 @@ public class GroupController {
         }
         groupRepository.deleteById(groupId);
         return ResponseEntity.status(HttpStatus.NO_CONTENT).body("Group deleted successfully.");
+    }
+
+    @PutMapping("/assigneEvaluation/{groupId}")
+    public ResponseEntity<Void> assignEvaluationSchemaToGroup(@PathVariable Long groupId) {
+        try {
+            Group group = groupRepository.findById(groupId)
+                    .orElseThrow(() -> new IllegalArgumentException("Group not found"));
+            groupService.assignEvaluationSchemaToGroup(group);
+            return ResponseEntity.ok().build();
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.badRequest().build();
+        } catch (Exception e) {
+            return ResponseEntity.status(500).build();
+        }
+    }
+
+    @GetMapping("/evaluations/{groupId}")
+    public ResponseEntity<List<GroupEvaluationDTO>> getGroupEvaluations(@PathVariable Long groupId) {
+        try {
+            List<GroupEvaluation> evaluations = groupService.getGroupEvaluations(groupId);
+            List<GroupEvaluationDTO> groupEvaluationDTO = new ArrayList<>();
+            for (GroupEvaluation evaluation : evaluations) {
+                GroupEvaluationDTO groupEvaluationDTOList = new GroupEvaluationDTO(evaluation.getId(), evaluation.getScore());
+                groupEvaluationDTO.add(groupEvaluationDTOList);
+            }
+
+            return ResponseEntity.ok(groupEvaluationDTO);
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.badRequest().build();
+        }
     }
 }

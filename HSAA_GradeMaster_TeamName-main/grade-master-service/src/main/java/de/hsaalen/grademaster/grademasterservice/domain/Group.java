@@ -37,6 +37,10 @@ public class Group {
     @JsonIgnore
     private List<Student> students = new ArrayList<>();
 
+    @OneToMany(mappedBy = "group", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<GroupEvaluation> groupEvaluations = new ArrayList<>();
+
+
     // Methode, um einen Studenten hinzuzufügen, falls dieser nicht schon vorhanden ist
     public void addStudent(Student student) {
         if (!students.contains(student)) {  // Verhindern der doppelten Zuweisung
@@ -51,5 +55,10 @@ public class Group {
             students.remove(student);
             student.getGroups().remove(this); // Entfernen aus der bidirektionalen Zuordnung
         }
+    }
+
+    public void addGroupEvaluation(GroupEvaluation groupEvaluation) {
+        groupEvaluations.add(groupEvaluation);
+        groupEvaluation.setGroup(this);
     }
 }

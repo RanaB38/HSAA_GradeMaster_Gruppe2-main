@@ -3,6 +3,9 @@ package de.hsaalen.grademaster.grademasterservice.domain;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Entity
 @Getter
 @Setter
@@ -22,4 +25,7 @@ public class Bewertungsschema {
     @ManyToOne
     @JoinColumn(name = "course_id", nullable = false)
     private Course course;
+    @ManyToMany(mappedBy = "topics")
+    private List<Group> groups = new ArrayList<>();
+
 }
