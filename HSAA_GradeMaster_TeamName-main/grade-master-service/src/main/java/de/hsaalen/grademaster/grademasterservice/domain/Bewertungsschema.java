@@ -25,7 +25,5 @@ public class Bewertungsschema {
     @ManyToOne
     @JoinColumn(name = "course_id", nullable = false)
     private Course course;
-    @ManyToMany(mappedBy = "topics")
-    private List<Group> groups = new ArrayList<>();
 
 }
