@@ -1,9 +1,10 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { Student } from '../domain/student.interfaces';
-import { HttpClient } from "@angular/common/http";
+import { HttpClient } from '@angular/common/http';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import {AuthService} from "./auth.service";
+import { AuthService } from './auth.service';
+import { tap } from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root'
@@ -14,7 +15,11 @@ export class StudentProviderService {
   public students$: Observable<Student[]> = this.studentsSubject.asObservable();
   private baseUrl = 'http://localhost:8080/api/private/v1/student';
 
-  constructor(private httpClient: HttpClient, private snackBar: MatSnackBar, private authService: AuthService) {
+  constructor(
+    private httpClient: HttpClient,
+    private snackBar: MatSnackBar,
+    private authService: AuthService
+  ) {
     this.loadStudents();
   }
 
@@ -33,25 +38,25 @@ export class StudentProviderService {
     return this.students$;
   }
 
-  public createStudent(student: Student): void {
-    console.log('>>> ', student);
+  public createStudent(student: Student): Observable<Student> {
+    return this.httpClient.post<Student>(this.baseUrl, student, { headers: this.authService.getAuthHeaders() }).pipe(
+      tap({
+        next: (createdStudent) => {
+          const currentStudents = this.studentsSubject.value;
+          const updatedStudents = [...currentStudents, createdStudent];
+          this.studentsSubject.next(updatedStudents);
 
-    this.httpClient.post<Student>(this.baseUrl, student, { headers: this.authService.getAuthHeaders() }).subscribe({
-      next: (createdStudent) => {
-        const currentStudents = this.studentsSubject.value;
-        const updatedStudents = [...currentStudents, createdStudent];
-        this.studentsSubject.next(updatedStudents);
-
-        console.log('Aktualisierte Studentenliste:', updatedStudents);
-      },
-      error: (err) => {
-        if (err.status === 409) { // 409 Conflict
-          this.snackBar.open('Dieser Student existiert bereits!', 'Schließen', {
-            duration: 3000,
-          });
+          console.log('Aktualisierte Studentenliste:', updatedStudents);
+        },
+        error: (err) => {
+          if (err.status === 409) { // 409 Conflict
+            this.snackBar.open('Dieser Student existiert bereits!', 'Schließen', {
+              duration: 3000,
+            });
+          }
         }
-      }
-    });
+      })
+    );
   }
 
   public getStudentById(id: number): Student | undefined {
@@ -60,7 +65,7 @@ export class StudentProviderService {
   }
 
   public getStudentData(id: number): Observable<Student> {
-    return this.httpClient.get<Student>(this.baseUrl + "/data/"+ id, { headers: this.authService.getAuthHeaders() });
+   return this.httpClient.get<Student>(`${this.baseUrl}/data/${id}`, { headers: this.authService.getAuthHeaders() });
   }
 
 }

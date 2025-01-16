@@ -28,14 +28,14 @@ import { MenuBarComponent } from '../lib/components/menu-bar/menu-bar.component'
 export class AppComponent implements OnInit {
   title = 'GRADE MASTER';
   public menuItems: MenuBarItem[] = [
-    { name: 'Home', routePath: '/', visible: of(true), icon: 'home' },
+    { name: 'Home', routePath: 'home', visible: of(true), icon: 'home' },
     { name: 'Kurse', routePath: 'courses', visible: of(true) },
     { name: 'Studenten', routePath: 'students', visible: of(true) },
-    { name: 'Logout', routePath: 'Logout', visible: of(true) },
   ];
 
   username: string = '';
   role: string = '';
+  profileImageUrl: string = 'https://www.example.com/path/to/profile-image.jpg'; // Beispiel URL für das Profilbild
 
   constructor(private authService: AuthService) {}
 
@@ -43,5 +43,8 @@ export class AppComponent implements OnInit {
     // Benutzerdaten aus dem AuthService abrufen
     this.username = this.authService.getUsername();
     this.role = this.authService.getUserRole();
+
+    // Hier kannst du das Profilbild-URL aus dem AuthService abrufen, wenn es dynamisch ist
+    // this.profileImageUrl = this.authService.getUserProfileImageUrl();
   }
 }

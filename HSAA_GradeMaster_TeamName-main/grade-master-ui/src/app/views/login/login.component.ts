@@ -3,6 +3,8 @@ import { FormsModule } from '@angular/forms';
 import { AuthService } from '../../../lib/provider-services/auth.service';
 import { CommonModule } from '@angular/common';
 import {Router} from "@angular/router";
+import {HomeComponent} from "../home/home.component";
+
 
 @Component({
   selector: 'app-login',
@@ -31,7 +33,7 @@ export class LoginComponent {
         this.successMessage = `Welcome, ${user.username}!`;
 
         localStorage.setItem('authToken', btoa(`${this.username}:${this.password}`));
-        this.router.navigate(['/courses']);
+        this.router.navigate(['/home']);
       },
       (error) => {
         this.invalidLogin = true;

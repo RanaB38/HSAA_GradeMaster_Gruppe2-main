@@ -1,23 +1,29 @@
 <mat-toolbar color="primary">
-  <span>{{ title }}</span>
+  <span class="menu-title">{{ title }}</span>
 
-  <!-- Benutzername und Rolle anzeigen -->
-  <span *ngIf="username && role" class="user-info">
-    {{ username }} - {{ role }}
-  </span>
-
+  <!-- Spacer für Zentrierung -->
   <span class="spacer"></span>
 
-  <!-- Logout Button -->
-  <button mat-icon-button routerLink="/Logout" *ngIf="username">
-    <mat-icon>logout</mat-icon>
-  </button>
+  <!-- Benutzername und Rolle anzeigen (mit Avatar und Tooltip) -->
+  <span *ngIf="username && role" class="user-info">
+    <mat-icon *ngIf="role === 'Admin'" class="role-icon">admin_panel_settings</mat-icon>
+    <mat-icon *ngIf="role === 'User'" class="role-icon">account_circle</mat-icon>
+    <span>{{ username }} - {{ role }}</span>
+  </span>
+
+  <!-- Spacer für Balance -->
+  <span class="spacer"></span>
 
   <!-- Menüeinträge -->
-  <div *ngFor="let item of menuBarItems">
+  <div *ngFor="let item of menuBarItems" class="menu-item">
     <button mat-button [routerLink]="item.routePath" matTooltip="{{ item.name }}">
       <mat-icon>{{ item.icon }}</mat-icon>
       {{ item.name }}
     </button>
   </div>
+
+  <!-- Logout Button ganz rechts -->
+  <button mat-icon-button routerLink="/login" *ngIf="username" class="logout-btn">
+    <mat-icon>logout</mat-icon>
+  </button>
 </mat-toolbar>

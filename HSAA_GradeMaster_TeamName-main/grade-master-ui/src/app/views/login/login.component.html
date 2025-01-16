@@ -6,28 +6,28 @@
         <div class="alert alert-warning" *ngIf="invalidLogin">{{ errorMessage }}</div>
         <div class="alert alert-success" *ngIf="loginSuccess">{{ successMessage }}</div>
         <div class="form-group">
-          <label>Username:</label>
+          <label>Benutzername:</label>
           <input
             type="text"
             class="form-control"
-            name="username"
+            name="Benutzername"
             [(ngModel)]="username"
             placeholder="Benutzernamen eingeben"
             required
           />
         </div>
         <div class="form-group">
-          <label>Password:</label>
+          <label>Passwort:</label>
           <input
             type="password"
             class="form-control"
             name="password"
             [(ngModel)]="password"
-            placeholder="Password eingeben"
+            placeholder="Passwort eingeben"
             required
           />
         </div>
-        <button type="submit" class="btn btn-success">Login</button>
+        <button type="submit" class="btn btn-success">Anmelden</button>
       </form>
     </div>
   </div>

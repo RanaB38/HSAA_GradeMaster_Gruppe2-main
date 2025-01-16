@@ -2,12 +2,17 @@ import { Routes } from '@angular/router';
 import { CourseDialogHandlerComponent } from './views/course/course-dialog/course-dialog-handler/course-dialog-handler.component';
 import { LoginComponent } from './views/login/login.component'; // Login-Komponente importieren
 import { AuthGuard } from './views/login/auth.guard';
+import { HomeComponent } from './views/home/home.component'; // Home-Komponente importieren
 
 export const routes: Routes = [
   {
     path: '',
-    redirectTo: 'login', // Standardroute zur Login-Seite umleiten
+    redirectTo: 'login', // Standardroute zur Home-Seite umleiten
     pathMatch: 'full',
+  },
+  {
+    path: 'home',
+    component: HomeComponent, // Home-Komponente
   },
   {
     path: 'login',
@@ -86,26 +91,5 @@ export const routes: Routes = [
           ),
       },
     ],
-  },
-  {
-    path: 'impressum',
-    loadComponent: () =>
-      import('./views/impressum/impressum.component').then((mod) => mod.ImpressumComponent),
-    children: [
-      {
-        path: 'error',
-        loadComponent: () =>
-          import('../lib/components/four-zero-four/four-zero-four.component').then(
-            (mod) => mod.FourZeroFourComponent
-          ),
-      },
-    ],
-  },
-  {
-    path: '**',
-    loadComponent: () =>
-      import('../lib/components/four-zero-four/four-zero-four.component').then(
-        (mod) => mod.FourZeroFourComponent
-      ),
   },
 ];

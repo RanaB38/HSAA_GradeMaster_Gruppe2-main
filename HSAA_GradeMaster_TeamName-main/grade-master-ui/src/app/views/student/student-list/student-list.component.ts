@@ -37,10 +37,9 @@ export class StudentListComponent {
     private http: HttpClient,
     private authService: AuthService
   ) {
-  this.http.get("http://localhost:8080/api/private/v1/student", {headers: authService.getAuthHeaders()}).subscribe(s =>
-  { console.log(s);}
-  );
-    this.dataSource$ = this.studentCoreService.getStudents();
+
+    this.dataSource$ = this.studentCoreService.students$;
+
   }
 
   public addStudent(): void {

@@ -1,13 +1,10 @@
 <div class="header">
   <app-menu-bar
     [title]="title"
-    [menuBarItems]="menuItems">
+    [menuBarItems]="menuItems"
+    [username]="username"
+    [role]="role">
   </app-menu-bar>
-  <div class="user-info">
-
-    <!-- Benutzerinformationen hier, falls nötig -->
-    <span>{{ username }}</span> / <span>{{ role }}</span> <!-- Beispiel für die Anzeige des Benutzernamens -->
-  </div>
 </div>
 
 <div class="content">

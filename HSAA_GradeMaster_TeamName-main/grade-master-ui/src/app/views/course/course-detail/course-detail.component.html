@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <html lang="de">
-<mat-toolbar [color]="color">{{ title }}</mat-toolbar>
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -61,7 +60,6 @@
     <h2>Kursbeschreibung: </h2>
     <p coursedescription="description">{{course.description}}</p>
 
-
     <h2>Kursdetails: </h2>
 
     <h3>Tabelle der Studenten:</h3>
@@ -72,6 +70,7 @@
         <th>ID</th>
         <th>Name</th>
         <th>E-Mail</th>
+        <th>Aktionen</th> <!-- Neue Spalte für das "X" -->
       </tr>
       </thead>
       <tbody>
@@ -79,12 +78,16 @@
         <td>{{ student.id }}</td>
         <td>{{ student.name }}</td>
         <td>{{ student.email }}</td>
+        <td>
+          <button *ngIf="isLecturer" (click)="deleteStudent(student.id)" style="background: red; color: white; border: none; padding: 5px; cursor: pointer;">
+            X
+          </button>
+        </td>
       </tr>
       </tbody>
     </table>
 
     <button mat-raised-button color="accent" (click)="openAddStudentDialog()">Student zum Kurs hinzufügen</button>
-
   </div>
 
   <div class="group-section">
@@ -121,19 +124,10 @@
       </tbody>
     </table>
 
-    <!-- Button für Editieren -->
-    <!--<p>isLecturer: {{ isLecturer }}</p> Test für Debugging-Ausgabe -->
-    <button
-      mat-raised-button
-      color="accent"
-      [disabled]="!isLecturer"
-      (click)="navigateToEditBewertungsschema()"
-    >
+    <button mat-raised-button color="accent" [disabled]="!isLecturer" (click)="navigateToEditBewertungsschema()">
       Editieren
     </button>
   </div>
-
-
 </div>
 </body>
 </html>
