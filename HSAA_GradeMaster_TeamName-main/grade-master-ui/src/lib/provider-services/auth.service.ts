@@ -1,29 +1,37 @@
 import { Injectable } from '@angular/core';
-import {BehaviorSubject, catchError, Observable, of, tap, throwError} from 'rxjs';
-import {HttpClient, HttpHeaders} from "@angular/common/http";
-import { map } from 'rxjs/operators';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { catchError, tap } from 'rxjs/operators';
+import { throwError } from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
 })
 export class AuthService {
-
   private baseUrl = 'http://localhost:8080/api/public/v1/user';
   private role: 'STUDENT' | 'LECTURER' = 'STUDENT';
-  private username = '';
+  private username: string = '';
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient) {
+    // Wenn Benutzerdaten im localStorage vorhanden sind, diese beim Starten der App setzen
+    const storedUsername = localStorage.getItem('username');
+    const storedRole = localStorage.getItem('role');
+    if (storedUsername && storedRole) {
+      this.username = storedUsername;
+      this.role = storedRole as 'STUDENT' | 'LECTURER';
+    }
+  }
 
-  authenticate(username: string, password: string): Observable<any> {
+  authenticate(username: string, password: string) {
     const headers = new HttpHeaders({
       Authorization: 'Basic ' + btoa(`${username}:${password}`),
     });
 
     return this.http.get<any>(`${this.baseUrl}/auth`, { headers }).pipe(
       tap((response) => {
+        // Die Rolle wird aus der Antwort extrahiert
         const role = response.role ? response.role.replace('ROLE_', '') : 'STUDENT';
-        this.setUserRole(role as 'STUDENT' | 'LECTURER'); // Setzt die Rolle korrekt
-        this.setUsername(response.username)
+        this.setUserRole(role as 'STUDENT' | 'LECTURER');
+        this.setUsername(response.username);
       }),
       catchError((error) => {
         console.error('Fehler bei der Authentifizierung:', error);
@@ -32,29 +40,29 @@ export class AuthService {
     );
   }
 
-  getAuthHeaders(): HttpHeaders {
-    const authToken = localStorage.getItem('authToken');
-    return new HttpHeaders({
-      'Authorization': `Basic ${authToken}`,
-    });
-  }
-
-  setUserRole(role: 'STUDENT' | 'LECTURER'): void {
+  setUserRole(role: 'STUDENT' | 'LECTURER') {
     this.role = role;
     localStorage.setItem('role', role);
+  }
+
+  setUsername(username: string) {
+    this.username = username;
+    localStorage.setItem('username', username);
   }
 
   getUserRole(): 'STUDENT' | 'LECTURER' {
     return this.role;
   }
 
-  setUsername(username: string):void{
-    this.username = username;
-  }
-
-  getUsername(): string{
+  getUsername(): string {
     return this.username;
   }
+
+  // Diese Methode gibt die Auth-Header für den HTTP-Request zurück
+  getAuthHeaders(): HttpHeaders {
+    const authToken = localStorage.getItem('authToken'); // authToken aus dem localStorage holen
+    return new HttpHeaders({
+      'Authorization': `Basic ${authToken}`,
+    });
+  }
 }
-
-

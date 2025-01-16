@@ -1,7 +1,16 @@
 <div class="header">
-  <app-menu-bar [title]="title" [menuBarItems]="menuItems"></app-menu-bar>
+  <app-menu-bar
+    [title]="title"
+    [menuBarItems]="menuItems">
+  </app-menu-bar>
+  <div class="user-info">
+
+    <!-- Benutzerinformationen hier, falls nötig -->
+    <span>{{ username }}</span> / <span>{{ role }}</span> <!-- Beispiel für die Anzeige des Benutzernamens -->
+  </div>
 </div>
+
 <div class="content">
-  <router-outlet></router-outlet>
-  <router-outlet name="dialog"></router-outlet>
+  <router-outlet></router-outlet> <!-- Hauptinhalt des Routers -->
+  <router-outlet name="dialog"></router-outlet> <!-- Optionaler Dialog-Router -->
 </div>

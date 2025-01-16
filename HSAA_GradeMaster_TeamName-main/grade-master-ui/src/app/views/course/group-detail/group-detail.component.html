@@ -27,7 +27,32 @@
   </table>
 
   <button mat-raised-button color="accent" (click)="openAddStudentDialog()">Student hinzufügen</button>
-
+  <div>
+    <h2>Bewertung</h2>
+    <table>
+      <thead>
+      <tr>
+        <th>ID</th>
+        <th>Aufgabe erfüllt in Prozent</th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr *ngFor="let evaluation of evaluations">
+        <td>{{ evaluation.id }}</td>
+        <td>
+          <input
+            type="number"
+            [(ngModel)]="evaluation.score"
+            min="0"
+            max="100"
+            style="width: 50px"
+          />
+        </td>
+      </tr>
+      </tbody>
+    </table>
+    <button mat-button color="primary" (click)="saveEvaluations()">Bewertung Speichern</button>
+  </div>
 </div>
 
 

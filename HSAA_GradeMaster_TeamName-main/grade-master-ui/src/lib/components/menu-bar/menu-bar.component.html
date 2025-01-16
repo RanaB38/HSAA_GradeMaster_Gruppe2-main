@@ -1,28 +1,23 @@
-<mat-toolbar color="primary" class="shadow">
-  <span class="header-title" [routerLink]="'/'">{{ title }}</span>
+<mat-toolbar color="primary">
+  <span>{{ title }}</span>
+
+  <!-- Benutzername und Rolle anzeigen -->
+  <span *ngIf="username && role" class="user-info">
+    {{ username }} - {{ role }}
+  </span>
+
   <span class="spacer"></span>
 
-  <div *ngFor="let item of menuBarItems" class="navitems-container">
-    <ng-container *ngIf="item.visible | async as visibleItem">
-      <button
-        *ngIf="!item.highlighted && visibleItem"
-        mat-button
-        color="blue"
-        (click)="routeTo(item.routePath)"
-        [matTooltip]="item.name"
-      >
-        {{ item.name }}
-      </button>
+  <!-- Logout Button -->
+  <button mat-icon-button routerLink="/Logout" *ngIf="username">
+    <mat-icon>logout</mat-icon>
+  </button>
 
-      <button
-        *ngIf="item.highlighted && item.icon && visibleItem"
-        mat-icon-button
-        [color]="item.name === 'Login' ? 'green' : 'warn'"
-        (click)="routeTo(item.routePath)"
-        [matTooltip]="item.name"
-      >
-        <mat-icon>{{ item.icon }}</mat-icon>
-      </button>
-    </ng-container>
+  <!-- Menüeinträge -->
+  <div *ngFor="let item of menuBarItems">
+    <button mat-button [routerLink]="item.routePath" matTooltip="{{ item.name }}">
+      <mat-icon>{{ item.icon }}</mat-icon>
+      {{ item.name }}
+    </button>
   </div>
 </mat-toolbar>
