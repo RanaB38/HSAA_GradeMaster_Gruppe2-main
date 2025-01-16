@@ -38,6 +38,7 @@ export class LoginComponent {
         this.loginSuccess = false;
         this.errorMessage = 'Authentication failed. Please try again.';
         console.error('Login error:', error);
+
       }
     );
   }
