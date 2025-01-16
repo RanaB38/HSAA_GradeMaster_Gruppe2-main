@@ -108,6 +108,9 @@ public class GroupService {
                     .filter(e -> e.getId().equals(dto.getId()))
                     .findFirst()
                     .orElseThrow(() -> new IllegalArgumentException("Evaluation not found"));
+            if (dto.getScore() < 0 || dto.getScore() > 100) {
+                throw new IllegalArgumentException("Invalid score value: " + dto.getScore());
+            }
             evaluation.setScore(dto.getScore());
         }
         groupRepository.save(group);

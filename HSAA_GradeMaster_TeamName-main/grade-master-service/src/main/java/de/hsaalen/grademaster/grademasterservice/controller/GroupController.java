@@ -1,9 +1,9 @@
 package de.hsaalen.grademaster.grademasterservice.controller;
 
-import de.hsaalen.grademaster.grademasterservice.domain.Group;
-import de.hsaalen.grademaster.grademasterservice.domain.GroupEvaluation;
-import de.hsaalen.grademaster.grademasterservice.domain.Student;
+import de.hsaalen.grademaster.grademasterservice.domain.*;
+import de.hsaalen.grademaster.grademasterservice.dto.GroupDTO;
 import de.hsaalen.grademaster.grademasterservice.dto.GroupEvaluationDTO;
+import de.hsaalen.grademaster.grademasterservice.repository.CourseRepository;
 import de.hsaalen.grademaster.grademasterservice.service.GroupService;
 import de.hsaalen.grademaster.grademasterservice.repository.GroupRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,11 +20,13 @@ public class GroupController {
 
     private final GroupService groupService;
     private final GroupRepository groupRepository;
+    private final CourseRepository courseRepository;
 
     @Autowired
-    public GroupController(GroupService groupService, GroupRepository groupRepository) {
+    public GroupController(GroupService groupService, GroupRepository groupRepository, CourseRepository courseRepository) {
         this.groupService = groupService;
         this.groupRepository = groupRepository;
+        this.courseRepository = courseRepository;
     }
 
     //Gruppe zu einem Kurs hinzufügen
@@ -32,6 +34,11 @@ public class GroupController {
     public ResponseEntity<String> createGroup(@PathVariable Long courseId, @RequestBody Group group) {
         try {
             groupService.createGroup(courseId, group);
+            Course course = courseRepository.findById(courseId).get();
+            if (course.getBewertungsschemas() != null) {
+                groupService.assignEvaluationSchemaToGroup(group);
+            }
+
             return ResponseEntity.status(HttpStatus.CREATED).body("Group created successfully.");
         } catch (IllegalArgumentException e) {
             if (e.getMessage().contains("already exists")) {
@@ -43,9 +50,34 @@ public class GroupController {
 
     //Alle Gruppen eines Kurses abrufen
     @GetMapping("/course/{courseId}")
-    public ResponseEntity<List<Group>> getGroupsByCourse(@PathVariable Long courseId) {
-        List<Group> groups = groupService.getGroupsByCourse(courseId);
-        return ResponseEntity.ok(groups);
+    public ResponseEntity<List<GroupDTO>> getGroupsByCourse(@PathVariable Long courseId) {
+        try {
+            // Hole alle Gruppen des Kurses
+            List<Group> groups = groupService.getGroupsByCourse(courseId);
+
+            // Wandle die Gruppen in DTOs um
+            List<GroupDTO> groupDTOs = new ArrayList<>();
+            for (Group group : groups) {
+                List<GroupEvaluationDTO> evaluationDTOs = new ArrayList<>();
+                for (GroupEvaluation evaluation : group.getGroupEvaluations()) {
+                    GroupEvaluationDTO evaluationDTO = new GroupEvaluationDTO(evaluation.getId(), evaluation.getScore());
+                    evaluationDTOs.add(evaluationDTO);
+                }
+                GroupDTO groupDTO = new GroupDTO();
+                groupDTO.setId(group.getId());
+                groupDTO.setName(group.getName());
+                groupDTO.setCourseId(group.getCourse().getId());
+                groupDTO.setStudents(group.getStudents());
+                groupDTO.setEvaluations(evaluationDTOs);
+                groupDTOs.add(groupDTO);
+            }
+
+            return ResponseEntity.ok(groupDTOs);
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.badRequest().build();
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
     }
 
     //Studenten zu einer Gruppe hinzufügen
@@ -79,10 +111,28 @@ public class GroupController {
 
     //Aufgabe 12
     @GetMapping("/{groupId}")
-    public ResponseEntity<Group> getGroupById(@PathVariable Long groupId) {
+    public ResponseEntity<GroupDTO> getGroupById(@PathVariable Long groupId) {
         Group group = groupRepository.findById(groupId)
                 .orElseThrow(() -> new IllegalArgumentException("Group not found."));
-        return ResponseEntity.ok(group);
+        List<Student> students = new ArrayList<>();
+        for (Student student : group.getStudents()) {
+            students.add(student);
+        }
+
+        List<GroupEvaluationDTO> evaluationDTOs = new ArrayList<>();
+        for (GroupEvaluation evaluation : group.getGroupEvaluations()) {
+            GroupEvaluationDTO evaluationDTO = new GroupEvaluationDTO(evaluation.getId(), evaluation.getScore());
+            evaluationDTOs.add(evaluationDTO);
+        }
+
+        GroupDTO groupDTO = new GroupDTO();
+        groupDTO.setId(group.getId());
+        groupDTO.setName(group.getName());
+        groupDTO.setCourseId(group.getCourse().getId());
+        groupDTO.setStudents(students);
+        groupDTO.setEvaluations(evaluationDTOs);
+
+        return ResponseEntity.ok(groupDTO);
     }
 
     @GetMapping("/{groupId}/students")
@@ -128,6 +178,18 @@ public class GroupController {
             return ResponseEntity.ok(groupEvaluationDTO);
         } catch (IllegalArgumentException e) {
             return ResponseEntity.badRequest().build();
+        }
+    }
+
+    @PutMapping("/{groupId}/evaluations")
+    public ResponseEntity<Void> saveGroupEvaluations(@PathVariable Long groupId, @RequestBody List<GroupEvaluationDTO> evaluations) {
+        try {
+            groupService.saveEvaluations(groupId, evaluations);
+            return ResponseEntity.ok().build();
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.badRequest().build();
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
     }
 }

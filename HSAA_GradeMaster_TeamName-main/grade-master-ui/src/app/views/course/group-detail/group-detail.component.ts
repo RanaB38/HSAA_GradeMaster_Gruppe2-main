@@ -11,6 +11,8 @@ import { MatButtonModule } from '@angular/material/button';
 import {GroupDeleteDialogComponent} from "./group-delete-dialog.component";
 import {AddStudentToGroupDialog} from "./add-student-to-group-dialog.component";
 import {AuthService} from "../../../../lib/provider-services/auth.service";
+import {GroupEvaluation} from "../../../../lib/domain/group-evaluation.inferface";
+import {FormsModule} from "@angular/forms";
 
 
 @Component({
@@ -21,7 +23,8 @@ import {AuthService} from "../../../../lib/provider-services/auth.service";
     AsyncPipe,
     RouterLink,
     CommonModule,
-    MatButtonModule
+    MatButtonModule,
+    FormsModule
   ],
   styleUrls: ['./group-detail.component.scss']
 })
@@ -31,6 +34,7 @@ export class GroupDetailComponent implements OnInit {
   courseName!: string;
   group$!: Observable<any>;
   students$!: Observable<any[]>;
+  evaluations: GroupEvaluation[] = [];
 
   constructor(
     private route: ActivatedRoute,
@@ -56,6 +60,7 @@ export class GroupDetailComponent implements OnInit {
     this.loadCourseDetails();
     this.loadGroupDetails();
     this.loadStudents();
+    this.loadEvaluations();
   }
 
   loadGroupDetails(): void {
@@ -134,5 +139,35 @@ export class GroupDetailComponent implements OnInit {
     });
   }
 
+  loadEvaluations(): void {
+    this.http
+      .get<GroupEvaluation[]>(`http://localhost:8080/api/private/v1/groups/evaluations/${this.groupId}`, {
+        headers: this.authService.getAuthHeaders(),
+      })
+      .subscribe(
+        (data) => {
+          this.evaluations = data;
+          console.log('Evaluations loaded:', this.evaluations);
+        },
+        (error) => {
+          console.error('Error loading evaluations:', error);
+        }
+      );
+  }
+  saveEvaluations(): void {
+    this.http
+      .put<void>(`http://localhost:8080/api/private/v1/groups/${this.groupId}/evaluations`, this.evaluations, {
+        headers: this.authService.getAuthHeaders(),
+      })
+      .subscribe(
+        () => {
+          alert('Evaluations saved successfully!');
+        },
+        (error) => {
+          console.error('Error saving evaluations:', error);
+          alert('Failed to save evaluations.');
+        }
+      );
+  }
   protected readonly group = group;
 }
