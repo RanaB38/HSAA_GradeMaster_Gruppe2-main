@@ -79,6 +79,12 @@ export class BewertungsschemaEditComponent {
       return;
     }
 
+    // Sicherstellen, dass keine IDs beim neuen Schema gesetzt sind
+    const dataToSave = this.bewertungsschema.map(schema => {
+      const { id, ...rest } = schema; // Entferne die ID, falls sie existiert
+      return rest;
+    });
+
     this.http
       .post(
         `http://localhost:8080/api/private/v1/bewertungsschema/course/${this.courseId}`,
@@ -104,28 +110,38 @@ export class BewertungsschemaEditComponent {
 
   addRow(): void {
     const newIndex = this.bewertungsschema.length + 1;
-    this.bewertungsschema.push({ topic: `Topic #${newIndex}`, percentage: 0 , id:0});
-  }
-
-  removeRow(index: number): void {
-    this.bewertungsschema.splice(index, 1);
+    const newId = new Date().getTime();
+    this.bewertungsschema.push({ topic: `Topic #${newIndex}`, percentage: 0 , id: newId });
   }
 
   deleteBewertungsschema(bewertungsschemaId: number): void {
-    this.http
-      .delete(
-        `http://localhost:8080/api/private/v1/bewertungsschema/${bewertungsschemaId}`,
-        { headers: this.authService.getAuthHeaders() }
-      )
-      .subscribe({
-        next: () => {
-          this.loadSchema(); // Bewertungsschemata neu laden
-        },
-        error: (err) => {
-          console.error('Fehler beim Löschen des Bewertungsschemas:', err);
-          this.errorMessage = 'Ein Fehler ist beim Löschen aufgetreten.';
-        },
-      });
-  }
+    if (!bewertungsschemaId || bewertungsschemaId <= 0) {
+      this.bewertungsschema = this.bewertungsschema.filter(item => item.id !== bewertungsschemaId);
+      console.log('Eintrag lokal gelöscht, keine gültige ID.');
+      return;
+    }
 
+    this.http.get(`http://localhost:8080/api/private/v1/bewertungsschema/${bewertungsschemaId}`, {
+      headers: this.authService.getAuthHeaders()
+    }).subscribe(
+      () => {
+        this.http.delete(`http://localhost:8080/api/private/v1/bewertungsschema/${bewertungsschemaId}`, {
+          headers: this.authService.getAuthHeaders()
+        }).subscribe(
+          () => {
+            console.log("Bewertungsschema aus der Datenbank gelöscht!");
+            this.bewertungsschema = this.bewertungsschema.filter(item => item.id !== bewertungsschemaId);
+          },
+          error => {
+            console.error('Fehler beim Löschen aus der Datenbank:', error);
+            this.errorMessage = 'Fehler beim Löschen des Bewertungsschemas.';
+          }
+        );
+      },
+      error => {
+        console.error('Fehler: Bewertungsschema existiert nicht im Backend:', error);
+        this.bewertungsschema = this.bewertungsschema.filter(item => item.id !== bewertungsschemaId);
+      }
+    );
+  }
 }
