@@ -9,6 +9,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -64,5 +65,13 @@ public class BewertungsschemaService {
 
         // Speichern des aktualisierten Kurses
         courseRepository.save(course);
+    }
+
+    // Aufgabe 20 - Sprint 5
+    public void deleteBewertungsschema(Long bewertungsschemaId) {
+        Bewertungsschema schema = bewertungsschemaRepository.findById(bewertungsschemaId)
+                .orElseThrow(() -> new IllegalArgumentException("Bewertungsschema with id " + bewertungsschemaId + " does not exist."));
+
+        bewertungsschemaRepository.deleteById(bewertungsschemaId);
     }
 }

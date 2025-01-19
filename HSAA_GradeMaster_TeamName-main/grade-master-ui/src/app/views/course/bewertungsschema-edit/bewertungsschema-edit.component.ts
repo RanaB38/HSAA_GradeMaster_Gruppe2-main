@@ -23,7 +23,8 @@ import {AuthService} from "../../../../lib/provider-services/auth.service";
   styleUrls: ['./bewertungsschema-edit.component.scss']
 })
 export class BewertungsschemaEditComponent {
-  public bewertungsschema: { topic: string; percentage: number }[] = [];
+  public bewertungsschema: {
+    topic: string; percentage: number; id: number}[] = [];
   public errorMessage: string | null = null;
   public courseId!: number;
 
@@ -41,13 +42,19 @@ export class BewertungsschemaEditComponent {
 
   loadSchema(): void {
     this.http
-      .get<{ topic: string; percentage: number }[]>(
+      .get<{ topic: string; percentage: number; id: number }[]>(
         `http://localhost:8080/api/private/v1/bewertungsschema/course/${this.courseId}`,
         { headers: this.authService.getAuthHeaders() } // Authentifizierungs-Header
       )
       .subscribe({
-        next: (data) => (this.bewertungsschema = data),
-        error: (err) => console.error('Fehler beim Laden des Schemas:', err),
+        next: (data) => {
+          this.bewertungsschema = data; // Daten inklusive IDs speichern
+          console.log('Bewertungsschema geladen:', this.bewertungsschema);
+        },
+        error: (err) => {
+          console.error('Fehler beim Laden des Schemas:', err);
+          this.errorMessage = 'Fehler beim Laden des Schemas. Bitte versuchen Sie es später erneut.';
+        },
       });
   }
 
@@ -97,11 +104,28 @@ export class BewertungsschemaEditComponent {
 
   addRow(): void {
     const newIndex = this.bewertungsschema.length + 1;
-    this.bewertungsschema.push({ topic: `Topic #${newIndex}`, percentage: 0 });
+    this.bewertungsschema.push({ topic: `Topic #${newIndex}`, percentage: 0 , id:0});
   }
 
   removeRow(index: number): void {
     this.bewertungsschema.splice(index, 1);
+  }
+
+  deleteBewertungsschema(bewertungsschemaId: number): void {
+    this.http
+      .delete(
+        `http://localhost:8080/api/private/v1/bewertungsschema/${bewertungsschemaId}`,
+        { headers: this.authService.getAuthHeaders() }
+      )
+      .subscribe({
+        next: () => {
+          this.loadSchema(); // Bewertungsschemata neu laden
+        },
+        error: (err) => {
+          console.error('Fehler beim Löschen des Bewertungsschemas:', err);
+          this.errorMessage = 'Ein Fehler ist beim Löschen aufgetreten.';
+        },
+      });
   }
 
 }

@@ -17,10 +17,8 @@ public class Bewertungsschema {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
     private String topic;
-
-    private Integer percentage;
+    private int percentage;
 
     @ManyToOne
     @JoinColumn(name = "course_id", nullable = false)

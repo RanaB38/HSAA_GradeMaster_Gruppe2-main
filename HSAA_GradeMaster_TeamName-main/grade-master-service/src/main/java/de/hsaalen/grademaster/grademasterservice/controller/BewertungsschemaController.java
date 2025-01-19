@@ -3,6 +3,7 @@ package de.hsaalen.grademaster.grademasterservice.controller;
 import de.hsaalen.grademaster.grademasterservice.domain.Bewertungsschema;
 import de.hsaalen.grademaster.grademasterservice.service.BewertungsschemaService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -19,7 +20,7 @@ public class BewertungsschemaController {
     }
 
     @GetMapping("/course/{courseId}")
-    public List<Bewertungsschema> getBewertungsschema(@PathVariable Long courseId) {
+    public List getBewertungsschema(@PathVariable Long courseId) {
         return bewertungsschemaService.getBewertungsschemaByCourseId(courseId);
     }
 
@@ -34,6 +35,17 @@ public class BewertungsschemaController {
             @RequestBody List<Bewertungsschema> bewertungsschemaList) {
         bewertungsschemaService.updateBewertungsschema(courseId, bewertungsschemaList);
         return ResponseEntity.ok().build();
+    }
+
+    // Aufgabe 20 - Sprint 5
+    @DeleteMapping("/{bewertungsschemaId}")
+    public ResponseEntity<String> deleteBewertungsschema(@PathVariable Long bewertungsschemaId) {
+        try {
+            bewertungsschemaService.deleteBewertungsschema(bewertungsschemaId);
+            return ResponseEntity.status(HttpStatus.NO_CONTENT).body("Bewertungsschema deleted successfully.");
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
+        }
     }
 
 }

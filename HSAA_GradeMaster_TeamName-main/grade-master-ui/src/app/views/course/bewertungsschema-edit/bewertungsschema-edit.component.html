@@ -7,19 +7,25 @@
     <tr>
       <th>Topic</th>
       <th>%</th>
+      <th>Aktionen</th>
     </tr>
     </thead>
     <tbody>
-    <tr *ngFor="let item of bewertungsschema; let i = index">
+    <tr *ngFor="let schema of bewertungsschema; let i = index">
       <td>
         <mat-form-field>
-          <input matInput [(ngModel)]="item.topic" placeholder="Topic #{{ i + 1 }}">
+          <input matInput [(ngModel)]="schema.topic" placeholder="Topic #{{ i + 1 }}">
         </mat-form-field>
       </td>
       <td>
         <mat-form-field>
-          <input matInput type="number" [(ngModel)]="item.percentage" min="0" max="100">
+          <input matInput type="number" [(ngModel)]="schema.percentage" min="0" max="100">
         </mat-form-field>
+      </td>
+      <td>
+        <button mat-button (click)="deleteBewertungsschema(schema.id)" style="background: red; color: white;" >
+          X
+        </button>
       </td>
     </tr>
     </tbody>
