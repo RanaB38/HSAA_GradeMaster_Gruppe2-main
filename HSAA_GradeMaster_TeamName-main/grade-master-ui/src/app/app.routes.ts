@@ -4,6 +4,7 @@ import { LoginComponent } from './views/login/login.component'; // Login-Kompone
 import { AuthGuard } from './views/login/auth.guard';
 import { HomeComponent } from './views/home/home.component'; // Home-Komponente importieren
 
+// @ts-ignore
 export const routes: Routes = [
   {
     path: '',
@@ -92,4 +93,8 @@ export const routes: Routes = [
       },
     ],
   },
+  {
+    path: 'notenspiegel',
+    loadComponent: () => import('./views/notenspiegel/notenspiegel.component').then((mod) => mod.NotenspiegelComponent),
+  }
 ];

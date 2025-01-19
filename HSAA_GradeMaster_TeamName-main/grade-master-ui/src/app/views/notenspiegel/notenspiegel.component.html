@@ -1,0 +1,20 @@
+<h2>Notenspiegel</h2>
+<table>
+  <thead>
+  <tr>
+    <th>Min %</th>
+    <th>Max %</th>
+    <th>Note</th>
+    <th>Beschreibung</th>
+  </tr>
+  </thead>
+  <tbody>
+  <tr *ngFor="let entry of notenspiegel" [ngStyle]="{'background-color': getColorForGrade(entry.grade)}">
+    <td>{{ entry.minPercentage }}</td>
+    <td>{{ entry.maxPercentage }}</td>
+    <td>{{ entry.grade }}</td>
+    <td>{{ entry.description }}</td>
+  </tr>
+  </tbody>
+</table>
+

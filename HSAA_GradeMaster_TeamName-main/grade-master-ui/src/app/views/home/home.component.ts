@@ -23,4 +23,8 @@ export class HomeComponent {
   navigateToStudents() {
     this.router.navigate(['/students/list']);
   }
+
+  navigateToNotenspiegel(){
+    this.router.navigate(['/notenspiegel'])
+  }
 }

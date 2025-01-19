@@ -31,6 +31,7 @@ export class AppComponent implements OnInit {
     { name: 'Home', routePath: 'home', visible: of(true), icon: 'home' },
     { name: 'Kurse', routePath: 'courses', visible: of(true) },
     { name: 'Studenten', routePath: 'students', visible: of(true) },
+    { name: 'Notenspiegel', routePath: 'notenspiegel', visible: of(true) },
   ];
 
   username: string = '';
