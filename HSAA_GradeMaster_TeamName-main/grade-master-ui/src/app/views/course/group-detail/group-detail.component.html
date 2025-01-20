@@ -53,6 +53,30 @@
     </table>
     <button mat-button color="primary" (click)="saveEvaluations()">Bewertung Speichern</button>
   </div>
+
+  <div class="group-overall-evaluation" *ngIf="isLecturer">
+    <h2>Gesamtbewertung der Gruppe:</h2>
+    <table *ngIf="overallEvaluation">
+      <thead>
+      <tr>
+        <th>Prozentuale Bewertung</th>
+        <th>Note</th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr>
+        <td [ngStyle]="{'background-color': overallEvaluation?.gradeColor}">
+          {{ overallEvaluation?.totalScore | number:'1.1-2' }}%
+        </td>
+        <td [ngStyle]="{'background-color': overallEvaluation?.gradeColor}">
+          {{ overallEvaluation?.grade }}
+        </td>
+      </tr>
+      </tbody>
+    </table>
+    <p *ngIf="!overallEvaluation">Lade Gesamtbewertung...</p>
+  </div>
+
 </div>
 
 

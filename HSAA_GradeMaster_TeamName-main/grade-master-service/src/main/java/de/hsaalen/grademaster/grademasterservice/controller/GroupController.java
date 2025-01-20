@@ -4,15 +4,21 @@ import de.hsaalen.grademaster.grademasterservice.domain.*;
 import de.hsaalen.grademaster.grademasterservice.dto.GroupDTO;
 import de.hsaalen.grademaster.grademasterservice.dto.GroupEvaluationDTO;
 import de.hsaalen.grademaster.grademasterservice.repository.CourseRepository;
+import de.hsaalen.grademaster.grademasterservice.repository.UserRepository;
 import de.hsaalen.grademaster.grademasterservice.service.GroupService;
 import de.hsaalen.grademaster.grademasterservice.repository.GroupRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
+import java.security.Principal;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/api/private/v1/groups")
@@ -21,12 +27,14 @@ public class GroupController {
     private final GroupService groupService;
     private final GroupRepository groupRepository;
     private final CourseRepository courseRepository;
+    private final UserRepository userRepository;
 
     @Autowired
-    public GroupController(GroupService groupService, GroupRepository groupRepository, CourseRepository courseRepository) {
+    public GroupController(GroupService groupService, GroupRepository groupRepository, CourseRepository courseRepository, UserRepository userRepository) {
         this.groupService = groupService;
         this.groupRepository = groupRepository;
         this.courseRepository = courseRepository;
+        this.userRepository = userRepository;
     }
 
     //Gruppe zu einem Kurs hinzufügen
@@ -190,6 +198,18 @@ public class GroupController {
             return ResponseEntity.badRequest().build();
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
+    }
+
+    // Aufgabe 22 - Sprint 5
+    @GetMapping("/{groupId}/overall-evaluation")
+    @PreAuthorize("hasRole('LECTURER')")
+    public ResponseEntity<Map<String, Object>> getGroupOverallEvaluation(@PathVariable Long groupId) {
+        try {
+            Map<String, Object> evaluation = groupService.calculateGroupOverallEvaluation(groupId);
+            return ResponseEntity.ok(evaluation);
+        } catch (IllegalArgumentException | IllegalStateException e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(Map.of("error", "No grading schema defined in Notenspiegel."));
         }
     }
 }

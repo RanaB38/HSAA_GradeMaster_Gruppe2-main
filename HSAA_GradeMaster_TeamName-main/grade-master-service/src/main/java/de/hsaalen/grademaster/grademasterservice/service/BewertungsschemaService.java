@@ -57,14 +57,18 @@ public class BewertungsschemaService {
             throw new IllegalArgumentException("Alle Topics müssen eindeutig sein.");
         }
 
-        // Aktualisieren des Schemas
-        course.getBewertungsschemas().clear(); // Altes Schema entfernen
-        for (Bewertungsschema schema : bewertungsschemaList) {
-            course.addBewertungsschema(schema); // Neues Schema hinzufügen
+        // Alte Bewertungsschemas entfernen
+        List<Bewertungsschema> existingSchemas = bewertungsschemaRepository.findByCourseId(courseId);
+        for (Bewertungsschema existingSchema : existingSchemas) {
+            bewertungsschemaRepository.deleteById(existingSchema.getId());
         }
 
-        // Speichern des aktualisierten Kurses
-        courseRepository.save(course);
+        // Neue Bewertungsschemas hinzufügen
+        for (Bewertungsschema schema : bewertungsschemaList) {
+            schema.setId(null);
+            schema.setCourse(course);
+            bewertungsschemaRepository.save(schema);
+        }
     }
 
     // Aufgabe 20 - Sprint 5

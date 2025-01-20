@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import {ActivatedRoute, NavigationStart, Router, RouterLink} from '@angular/router';
 import { MatDialog } from '@angular/material/dialog';
 import { Observable } from 'rxjs';
-import { HttpClient } from '@angular/common/http';
+import {HttpClient, HttpHeaders} from '@angular/common/http';
 import { AddStudentDialogComponent } from '../add-student-dialog/add-student-dialog.component';
 import {AsyncPipe} from "@angular/common";
 import {group} from "@angular/animations";
@@ -35,6 +35,11 @@ export class GroupDetailComponent implements OnInit {
   group$!: Observable<any>;
   students$!: Observable<any[]>;
   evaluations: GroupEvaluation[] = [];
+  overallEvaluation: any = {
+    totalScore: 0,
+    grade: 'Keine Note'
+  };
+  isLecturer: boolean = false;
 
   constructor(
     private route: ActivatedRoute,
@@ -46,6 +51,13 @@ export class GroupDetailComponent implements OnInit {
     this.router.events.subscribe(event => {
       if (event instanceof NavigationStart) {
         console.log('Navigating to:', event.url);
+      }
+      {
+        this.ngOnInit();
+        this.http.get("http://localhost:8080/api/private/v1/groups/" + this.groupId,
+          { headers: authService.getAuthHeaders() }).subscribe(c => {
+          console.log(c);
+        });
       }
     });
   }
@@ -61,6 +73,11 @@ export class GroupDetailComponent implements OnInit {
     this.loadGroupDetails();
     this.loadStudents();
     this.loadEvaluations();
+    this.checkUserRole();
+    this.setUserRole();
+    this.loadOverallEvaluation(this.groupId);
+
+    this.isLecturer = this.authService.getUserRole() === 'LECTURER';
   }
 
   loadGroupDetails(): void {
@@ -156,12 +173,15 @@ export class GroupDetailComponent implements OnInit {
   }
   saveEvaluations(): void {
     this.http
-      .put<void>(`http://localhost:8080/api/private/v1/groups/${this.groupId}/evaluations`, this.evaluations, {
-        headers: this.authService.getAuthHeaders(),
-      })
+      .put<void>(
+        `http://localhost:8080/api/private/v1/groups/${this.groupId}/evaluations`,
+        this.evaluations,
+        { headers: this.authService.getAuthHeaders() }
+      )
       .subscribe(
         () => {
           alert('Evaluations saved successfully!');
+          this.loadOverallEvaluation(this.groupId); // Gesamtbewertung aktualisieren
         },
         (error) => {
           console.error('Error saving evaluations:', error);
@@ -170,4 +190,46 @@ export class GroupDetailComponent implements OnInit {
       );
   }
   protected readonly group = group;
+
+  checkUserRole(): void {
+    this.isLecturer = this.authService.getUserRole() === 'LECTURER';
+    console.log('User role:', this.isLecturer ? 'Lecturer' : 'Student');
+  }
+
+  private setUserRole() {
+    console.log(this.authService.getUserRole());
+    if (this.authService.getUserRole() !== 'LECTURER') {
+      this.isLecturer = false;
+      console.log("Student");
+    } else {
+      this.isLecturer = true;
+      console.log("Lecturer");
+    }
+  }
+
+  loadOverallEvaluation(groupId: number): void {
+    if (!this.isLecturer) {
+      console.log('Zugriff verweigert: Nur Dozenten können die Gesamtbewertung laden.');
+      return;
+    }
+
+    this.http.get<{ totalScore: number; grade: string, gradeColor: string }>(
+      `http://localhost:8080/api/private/v1/groups/${groupId}/overall-evaluation`,
+      { headers: this.authService.getAuthHeaders() }
+    ).subscribe(
+      data => {
+        this.overallEvaluation = data; // Gesamtbewertung setzen
+        console.log('Overall evaluation loaded:', this.overallEvaluation);
+      },
+      error => {
+        console.error('Error loading overall evaluation:', error);
+        if (error.status === 400 && error.error?.error) {
+          alert(`Fehler: ${error.error.error}`);
+        } else {
+          alert('Es ist ein unerwarteter Fehler aufgetreten.');
+        }
+      }
+    );
+  }
+
 }

@@ -28,10 +28,9 @@ export class AuthService {
 
     return this.http.get<any>(`${this.baseUrl}/auth`, { headers }).pipe(
       tap((response) => {
-        // Die Rolle wird aus der Antwort extrahiert
-        const role = response.role ? response.role.replace('ROLE_', '') : 'STUDENT';
-        this.setUserRole(role as 'STUDENT' | 'LECTURER');
         this.setUsername(response.username);
+        this.setUserRole(response.role.replace('ROLE_', '') as 'STUDENT' | 'LECTURER');
+        localStorage.setItem('authToken', btoa(`${username}:${password}`));
       }),
       catchError((error) => {
         console.error('Fehler bei der Authentifizierung:', error);
@@ -59,10 +58,21 @@ export class AuthService {
   }
 
   // Diese Methode gibt die Auth-Header für den HTTP-Request zurück
-  getAuthHeaders(): HttpHeaders {
+  /*getAuthHeaders(): HttpHeaders {
     const authToken = localStorage.getItem('authToken'); // authToken aus dem localStorage holen
+    console.log("Auth Token:", authToken);
     return new HttpHeaders({
       'Authorization': `Basic ${authToken}`,
+    });
+  }*/
+  getAuthHeaders(): HttpHeaders {
+    const authToken = localStorage.getItem('authToken');
+    if (!authToken) {
+      console.error("Auth token is missing. Please log in again.");
+      throw new Error("Authentication token is missing.");
+    }
+    return new HttpHeaders({
+      Authorization: `Basic ${authToken}`,
     });
   }
 }

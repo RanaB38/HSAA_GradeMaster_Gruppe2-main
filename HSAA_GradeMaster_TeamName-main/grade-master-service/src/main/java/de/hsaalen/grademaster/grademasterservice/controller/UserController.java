@@ -22,14 +22,17 @@ public class UserController {
 
     @GetMapping(path = "/auth")
     public ResponseEntity<WebUserDTO> login(Principal principle) {
+        if (principle == null) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(null);
+        }
 
         WebUser user = userRepository.findByUsername(principle.getName());
+        if (user == null) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+        }
+
         WebUserDTO userDTO = new WebUserDTO(user.getUsername(), user.getRole());
-
-        return new ResponseEntity<WebUserDTO>(
-                userDTO,
-                HttpStatus.OK
-        );
-
+        return new ResponseEntity<>(userDTO, HttpStatus.OK);
     }
+
 }

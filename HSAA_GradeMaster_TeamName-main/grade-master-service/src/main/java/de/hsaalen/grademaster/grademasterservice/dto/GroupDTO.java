@@ -1,6 +1,7 @@
 package de.hsaalen.grademaster.grademasterservice.dto;
 
 import de.hsaalen.grademaster.grademasterservice.domain.Student;
+import de.hsaalen.grademaster.grademasterservice.domain.*;
 import lombok.*;
 
 import java.util.List;

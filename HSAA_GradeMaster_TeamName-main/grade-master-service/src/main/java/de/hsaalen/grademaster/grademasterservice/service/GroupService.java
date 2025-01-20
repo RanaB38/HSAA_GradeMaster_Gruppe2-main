@@ -8,8 +8,11 @@ import org.springframework.stereotype.Service;
 import de.hsaalen.grademaster.grademasterservice.repository.CourseRepository;
 import de.hsaalen.grademaster.grademasterservice.repository.StudentRepository;
 import de.hsaalen.grademaster.grademasterservice.repository.GroupRepository;
+import de.hsaalen.grademaster.grademasterservice.repository.NotenspiegelRepository;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 
 @Service
@@ -19,13 +22,15 @@ public class GroupService {
     private final CourseRepository courseRepository;
     private final StudentRepository studentRepository;
     private final BewertungsschemaRepository bewertungsschemaRepository;
+    private final NotenspiegelRepository notenspiegelRepository;
 
     @Autowired
-    public GroupService(GroupRepository groupRepository, CourseRepository courseRepository, StudentRepository studentRepository, BewertungsschemaRepository bewertungsschemaRepository) {
+    public GroupService(GroupRepository groupRepository, CourseRepository courseRepository, StudentRepository studentRepository, BewertungsschemaRepository bewertungsschemaRepository, NotenspiegelRepository notenspiegelRepository) {
         this.groupRepository = groupRepository;
         this.courseRepository = courseRepository;
         this.studentRepository = studentRepository;
         this.bewertungsschemaRepository = bewertungsschemaRepository;
+        this.notenspiegelRepository = notenspiegelRepository;
     }
 
     // Gruppe in einem Kurs erstellen
@@ -121,5 +126,70 @@ public class GroupService {
                 .orElseThrow(() -> new IllegalArgumentException("Group not found"));
 
         return group.getGroupEvaluations();
+    }
+
+    // Aufgabe 22 - Sprint 5
+    public Map<String, Object> calculateGroupOverallEvaluation(Long groupId) {
+        Group group = groupRepository.findById(groupId)
+                .orElseThrow(() -> new IllegalArgumentException("Group not found."));
+
+        double totalScore = 0;
+        int totalWeight = 0;
+
+        for (GroupEvaluation evaluation : group.getGroupEvaluations()) {
+            double score = evaluation.getScore();
+            int weight = evaluation.getEvaluation().getPercentage();
+            totalScore += (weight / 100.0) * score;
+            totalWeight += weight;
+        }
+
+        if (totalWeight != 100) {
+            throw new IllegalStateException("Gesamtgewichtung der Bewertungsschemata muss 100% sein.");
+        }
+
+        List<Notenspiegel> notenspiegel = notenspiegelRepository.findAll();
+        if (notenspiegel.isEmpty()) {
+            throw new IllegalStateException("No grading schema defined in Notenspiegel.");
+        }
+
+        String grade = "Keine Note";
+        String gradeColor = "white";
+        for (Notenspiegel note : notenspiegel) {
+            if (totalScore <= note.getMaxPercentage() && totalScore > note.getMinPercentage()) {
+                grade = note.getGrade();
+                gradeColor = getColorForGrade(note.getGrade());
+                break;
+            }
+        }
+
+        Map<String, Object> evaluationResult = new HashMap<>();
+        evaluationResult.put("totalScore", totalScore);
+        evaluationResult.put("grade", grade);
+        evaluationResult.put("gradeColor", gradeColor);
+
+        return evaluationResult;
+    }
+
+    private String getColorForGrade(String grade) {
+        switch (grade) {
+            case "1.0":
+            case "1.3":
+                return "green";
+            case "1.7":
+            case "2.0":
+            case "2.3":
+                return "yellowgreen";
+            case "2.7":
+            case "3.0":
+            case "3.3":
+                return "yellow";
+            case "3.7":
+            case "4.0":
+                return "orange";
+            case "5.0":
+                return "red";
+            default:
+                return "white";
+        }
     }
 }
