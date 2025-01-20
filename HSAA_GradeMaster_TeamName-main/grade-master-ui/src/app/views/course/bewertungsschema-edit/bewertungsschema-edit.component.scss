@@ -35,3 +35,8 @@ table {
   font-weight: bold;
 }
 
+.disabled-button {
+  opacity: 0.5;
+  pointer-events: none;
+}
+

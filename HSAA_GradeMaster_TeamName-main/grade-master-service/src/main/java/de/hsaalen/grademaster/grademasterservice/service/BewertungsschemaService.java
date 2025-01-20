@@ -11,6 +11,7 @@ import org.springframework.web.server.ResponseStatusException;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class BewertungsschemaService {
@@ -57,6 +58,11 @@ public class BewertungsschemaService {
             throw new IllegalArgumentException("Alle Topics müssen eindeutig sein.");
         }
 
+        // Prüfen, ob mindestens ein Topic vorhanden bleibt
+        if (bewertungsschemaList.isEmpty()) {
+            throw new IllegalArgumentException("Es muss mindestens ein Topic vorhanden sein.");
+        }
+
         // Alte Bewertungsschemas entfernen
         List<Bewertungsschema> existingSchemas = bewertungsschemaRepository.findByCourseId(courseId);
         for (Bewertungsschema existingSchema : existingSchemas) {
@@ -77,5 +83,9 @@ public class BewertungsschemaService {
                 .orElseThrow(() -> new IllegalArgumentException("Bewertungsschema with id " + bewertungsschemaId + " does not exist."));
 
         bewertungsschemaRepository.deleteById(bewertungsschemaId);
+    }
+
+    public Optional<Bewertungsschema> getBewertungsschemaById(Long bewertungsschemaId) {
+        return bewertungsschemaRepository.findById(bewertungsschemaId);
     }
 }

@@ -23,7 +23,13 @@
         </mat-form-field>
       </td>
       <td>
-        <button mat-button (click)="deleteBewertungsschema(schema.id)" style="background: red; color: white;" >
+        <button
+          mat-button
+          (click)="deleteBewertungsschema(schema.id)"
+          [disabled]="bewertungsschema.length === 1"
+          [ngClass]="{'disabled-button': bewertungsschema.length === 1}"
+          style="background: red; color: white;"
+        >
           X
         </button>
       </td>

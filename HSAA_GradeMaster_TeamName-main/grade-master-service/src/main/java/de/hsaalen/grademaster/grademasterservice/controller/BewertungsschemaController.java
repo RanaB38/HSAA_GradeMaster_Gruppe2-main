@@ -41,8 +41,22 @@ public class BewertungsschemaController {
     @DeleteMapping("/{bewertungsschemaId}")
     public ResponseEntity<String> deleteBewertungsschema(@PathVariable Long bewertungsschemaId) {
         try {
+            // Lade das Bewertungsschema, um die Course-ID zu erhalten
+            Bewertungsschema schema = bewertungsschemaService.getBewertungsschemaById(bewertungsschemaId)
+                    .orElseThrow(() -> new IllegalArgumentException("Bewertungsschema mit ID " + bewertungsschemaId + " existiert nicht."));
+
+            Long courseId = schema.getCourse().getId();
+
+            // Prüfen, ob mindestens ein Topic übrig bleibt
+            List<Bewertungsschema> schemas = bewertungsschemaService.getBewertungsschemaByCourseId(courseId);
+            if (schemas.size() <= 1) {
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                        .body("Es muss mindestens ein Topic vorhanden bleiben.");
+            }
+
+            // Löschen des Bewertungsschemas
             bewertungsschemaService.deleteBewertungsschema(bewertungsschemaId);
-            return ResponseEntity.status(HttpStatus.NO_CONTENT).body("Bewertungsschema deleted successfully.");
+            return ResponseEntity.status(HttpStatus.NO_CONTENT).body("Bewertungsschema erfolgreich gelöscht.");
         } catch (IllegalArgumentException e) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
         }

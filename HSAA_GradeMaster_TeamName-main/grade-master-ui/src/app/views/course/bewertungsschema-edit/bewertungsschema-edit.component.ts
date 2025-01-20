@@ -115,6 +115,11 @@ export class BewertungsschemaEditComponent {
   }
 
   deleteBewertungsschema(bewertungsschemaId: number): void {
+    if (this.bewertungsschema.length === 1) {
+      this.errorMessage = 'Es muss mindestens ein Topic vorhanden bleiben.';
+      return;
+    }
+
     if (!bewertungsschemaId || bewertungsschemaId <= 0) {
       this.bewertungsschema = this.bewertungsschema.filter(item => item.id !== bewertungsschemaId);
       console.log('Eintrag lokal gelöscht, keine gültige ID.');
