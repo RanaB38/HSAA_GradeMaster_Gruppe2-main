@@ -38,6 +38,12 @@ public class Student {
     @JsonIgnore
     private List<Group> groups = new ArrayList<>();
 
+    public Student(String number, String name, String mail) {
+        this.id = Long.valueOf(number);
+        this.name = name;
+        this.email = mail;
+    }
+
     // Methode, um eine Gruppe hinzuzufügen
     public void addGroup(Group group) {
         if (!groups.contains(group)) {

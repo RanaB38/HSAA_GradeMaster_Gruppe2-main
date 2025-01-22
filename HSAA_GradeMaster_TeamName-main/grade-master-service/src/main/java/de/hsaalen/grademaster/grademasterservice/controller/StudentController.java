@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 @RestController
 @RequestMapping(path = "api/private/v1/student")
@@ -47,8 +48,7 @@ public class StudentController {
 
     //Fehlerbehandlung für das Hinzufügen eines Studenten mit doppelter ID
     @PostMapping
-    public ResponseEntity<String> registerNewStudent(@RequestBody Student student) {
-
+    public ResponseEntity<Object> registerNewStudent(@RequestBody Student student) {
         // Überprüfen auf leere Felder, damit Name und Email vorhanden sind
         if (student.getId() == null || student.getId().describeConstable().isEmpty() ||
                 student.getName() == null || student.getName().isEmpty() ||
@@ -58,11 +58,11 @@ public class StudentController {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST)
                     .body("Name and email are required and cannot be empty.");
         }
-
+        StudentDTO studentDTO = new StudentDTO(student.getId(), student.getName(), student.getEmail());
         try {
             //Versucht den neuen Student hinzuzufügen
             studentService.addNewStudent(student);
-            return ResponseEntity.status(HttpStatus.CREATED).body("Student created successfully.");
+            return ResponseEntity.status(HttpStatus.CREATED).body(studentDTO);
 
         } catch (IllegalStateException e) {
 
