@@ -70,6 +70,7 @@
         <th>ID</th>
         <th>Name</th>
         <th>E-Mail</th>
+        <th>Note</th>
         <th>Aktionen</th> <!-- Neue Spalte für das "X" -->
       </tr>
       </thead>
@@ -78,6 +79,7 @@
         <td>{{ student.id }}</td>
         <td>{{ student.name }}</td>
         <td>{{ student.email }}</td>
+        <td>{{ student.grade }}</td>
         <td>
           <button *ngIf="isLecturer" (click)="deleteStudent(student.id)" style="background: red; color: white; border: none; padding: 5px; cursor: pointer;">
             X

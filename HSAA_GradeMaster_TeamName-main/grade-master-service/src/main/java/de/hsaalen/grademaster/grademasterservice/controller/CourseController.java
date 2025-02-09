@@ -6,7 +6,9 @@ import de.hsaalen.grademaster.grademasterservice.domain.Group;
 import de.hsaalen.grademaster.grademasterservice.domain.Student;
 import de.hsaalen.grademaster.grademasterservice.dto.CourseDTO;
 import de.hsaalen.grademaster.grademasterservice.dto.StudentDTO;
+import de.hsaalen.grademaster.grademasterservice.dto.StudentWithGradeDTO;
 import de.hsaalen.grademaster.grademasterservice.service.CourseService;
+import de.hsaalen.grademaster.grademasterservice.service.GroupService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -15,16 +17,19 @@ import org.springframework.web.server.ResponseStatusException;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 @RestController                             //RestController - verarbeitet HTTP-Anfragen
 @RequestMapping(path = "api/private/v1/course")    //angeben des Pfads
 public class CourseController {
 
     private final  CourseService  courseService;
+    private final GroupService groupService;
 
     @Autowired
-    public CourseController(CourseService courseService) {
+    public CourseController(CourseService courseService, GroupService groupService) {
         this.courseService = courseService;
+        this.groupService = groupService;
     }
 
     //Liste aller Kurse aus der DB
@@ -114,10 +119,37 @@ public class CourseController {
 
     // GET-Endpunkt, um alle Studenten eines bestimmten Kurses zu erhalten
     @GetMapping("/{courseId}/students")
-    public ResponseEntity<List<Student>> getStudentsInCourse(@PathVariable Long courseId) {
+    public ResponseEntity<List<StudentWithGradeDTO>> getStudentsInCourse(@PathVariable Long courseId) {
 
         List<Student> students = courseService.getStudentsInCourse(courseId);   //Studenten des Kurses holen
-        return ResponseEntity.ok(students);                                     // Gibt die Liste der Studenten zurück
+        List<Group> groups = groupService.getGroupsByCourse(courseId);
+        List< StudentWithGradeDTO> studentWithGradeDTOS = new ArrayList<>();
+
+        for (Student student : students) {
+            Group studentGroup = null;
+            String grade = "Noch nicht Bewertet";
+            for (Group group : groups) {
+                //Gruppe des Studenten zuweisen und dann die schleife abbrechen
+                if(group.getStudents().contains(student)) {
+                    studentGroup = group;
+                    break;
+                }
+            }
+
+            if(studentGroup != null){
+               try {
+                   Map<String, Object> evaluationResult = groupService.calculateGroupOverallEvaluation(studentGroup.getId());
+                   grade = (String) evaluationResult.get("grade");
+               }catch (Exception e){
+                   grade = "Noch nicht Bewertet";
+               }
+
+
+            }
+            studentWithGradeDTOS.add(new StudentWithGradeDTO(student.getId(), student.getName(), student.getEmail(), grade));
+
+        }
+        return ResponseEntity.ok(studentWithGradeDTOS);                                     // Gibt die Liste der Studenten zurück
     }
 
     @PutMapping(path = "{courseId}")

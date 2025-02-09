@@ -13,6 +13,7 @@ import {AddStudentToGroupDialog} from "./add-student-to-group-dialog.component";
 import {AuthService} from "../../../../lib/provider-services/auth.service";
 import {GroupEvaluation} from "../../../../lib/domain/group-evaluation.inferface";
 import {FormsModule} from "@angular/forms";
+import {NotenspiegelProviderService} from "../../../../lib/provider-services/notenspiegel-provider.service";
 
 
 @Component({
@@ -46,7 +47,8 @@ export class GroupDetailComponent implements OnInit {
     private http: HttpClient,
     private dialog: MatDialog,
     private router: Router,
-    private authService: AuthService
+    private authService: AuthService,
+    private notenSpiegel: NotenspiegelProviderService
   ) {
     this.router.events.subscribe(event => {
       if (event instanceof NavigationStart) {

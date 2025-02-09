@@ -17,6 +17,7 @@ import { MatButton } from "@angular/material/button";
 import { Group } from "../../../../lib/domain/group.interfaces";
 import { AddGroupDialogComponent } from "../add-group-dialog/add-group-dialog.component";
 import { AuthService } from "../../../../lib/provider-services/auth.service";
+import {StudentWithGrade} from "../../../../lib/domain/studentWithGrade.interface";
 
 @Component({
   selector: 'app-course-detail',
@@ -43,7 +44,7 @@ export class CourseDetailComponent {
   public title = 'Kurs Details';
   public color: MaterialColor = 'accent';
   public courseId!: number;
-  public students$!: Observable<Student[]>;
+  public students$!: Observable<StudentWithGrade[]>;
   public groups: { id: number; name: string }[] = [];
   public groups$!: Observable<Group[]>;
   bewertungsschema: { topic: string; percentage: number }[] = [];
@@ -82,7 +83,7 @@ export class CourseDetailComponent {
   }
 
   loadStudents(): void {
-    this.students$ = this.http.get<Student[]>(`http://localhost:8080/api/private/v1/course/${this.courseId}/students`,
+    this.students$ = this.http.get<StudentWithGrade[]>(`http://localhost:8080/api/private/v1/course/${this.courseId}/students`,
       { headers: this.authService.getAuthHeaders() });
     console.log("Load students...");
   }

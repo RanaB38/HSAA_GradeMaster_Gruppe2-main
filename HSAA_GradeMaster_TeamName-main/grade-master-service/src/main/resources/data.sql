@@ -20,7 +20,12 @@ INSERT INTO Assignment_Group_Student (group_id, student_id)
 VALUES (1, 85905),
       (1, 85910);
 
-INSERT INTO Bewertungsschema (ID, TOPIC, PERCENTAGE, COURSE_ID) values (1, 'Topic #1', 50, 1);
+INSERT INTO Bewertungsschema (ID, TOPIC, PERCENTAGE, COURSE_ID) values ( 1,'Topic #1', 50, 1);
+INSERT INTO Bewertungsschema (ID, TOPIC, PERCENTAGE, COURSE_ID) values ( 2,'Topic #2', 50, 1);
+INSERT INTO  GROUP_EVALUATION (Score, Evaluation_id, Group_id ) values (0, 1, 1);
+INSERT INTO  GROUP_EVALUATION (Score, Evaluation_id, Group_id ) values (0, 2, 1);
+INSERT INTO  GROUP_EVALUATION (Score, Evaluation_id, Group_id ) values (0, 1, 2);
+INSERT INTO  GROUP_EVALUATION (Score, Evaluation_id, Group_id ) values (0, 2, 2);
 
 INSERT INTO WEB_USER (USERNAME,PASSWORD, ROLE) values ('user1', 'password', 'ROLE_STUDENT');
 INSERT INTO WEB_USER (USERNAME,PASSWORD, ROLE) values ('user2', 'password', 'ROLE_LECTURER');
