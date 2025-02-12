@@ -2,8 +2,7 @@ package de.hsaalen.grademaster.grademasterservice.dto;
 
 import lombok.*;
 
-@Getter
-@Setter
+
 /**
  * Data Transfer Object (DTO) für einen Studenten mit zugewiesener Note.
  * Erweitert {@link StudentDTO} um die Note des Studenten.
