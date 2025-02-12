@@ -34,7 +34,7 @@ export class StudentCoreService {
     this.providerService.createStudent({...newStudent}).subscribe(newStudent => {
       const currentStudents = this.studentsSubject.value;
       const updatedStudents = [...currentStudents, newStudent];
-      this.studentsSubject.next(updatedStudents);
+      //this.studentsSubject.next(updatedStudents);
       }
     );
   }
