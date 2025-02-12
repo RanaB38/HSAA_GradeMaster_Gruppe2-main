@@ -78,6 +78,9 @@ public class StudentService {
             Map.entry("10050", new Student("10050", "Ryan Coleman", "ryan.coleman@example.com"))
     );
 
+    /**
+     * Konstruktor zur Injektion der benötigten Services und der WebClient-Konfiguration.
+     */
     @Autowired
     public StudentService(StudentRepository studentRepository, GroupService groupService, CourseService courseService) {
         this.studentRepository = studentRepository;
@@ -88,6 +91,12 @@ public class StudentService {
                 .build();
     }
 
+    /**
+     * Holt die Daten eines Studenten entweder aus der Datenbank oder einem externen Service.
+     * Falls der Student nicht in der Datenbank gefunden wird, wird auf den externen Service zugegriffen.
+     * @param studentId Die ID des Studenten
+     * @return StudentDTO mit den Studentendaten
+     */
     public StudentDTO getStudentData(String studentId) {
         boolean exits =  studentRepository.existsById(Long.valueOf(studentId));
         if (exits) {
@@ -100,19 +109,25 @@ public class StudentService {
                     .bodyToMono(StudentDTO.class)
                     .block();
         }catch (Exception e) {
-           Student student =  STUDENTS.get(studentId);
-           return new StudentDTO (student.getId(), student.getName(), student.getEmail());
+            Student student =  STUDENTS.get(studentId);
+            return new StudentDTO (student.getId(), student.getName(), student.getEmail());
 
         }
 
     }
 
-    //Methode, um alle Studenten aus der DB zu holen
+    /**
+     * Holt alle Studenten aus der Datenbank.
+     * @return Eine Liste aller Studenten.
+     */
     public List<Student> getStudents() {
         return studentRepository.findAll();
     }
 
-    //Methode, um einen neuen Studenten hinzuzufügen, mit Fehlerbehandlung für doppelte ID
+    /**
+     * Fügt einen neuen Studenten hinzu, überprüft aber, ob der Student bereits existiert.
+     * @param student Der hinzuzufügende Student.
+     */
     public void addNewStudent(Student student) {
         Optional<Student> studentOptional = studentRepository.findStudentById(student.getId());     //Überprüft, ob ein Student mit derselben
         if(studentOptional.isPresent()) {                                                           //ID schon existiert
@@ -123,7 +138,10 @@ public class StudentService {
 
     }
 
-    //Methode, um einen Studenten anhand der ID zu Löschen
+    /**
+     * Löscht einen Studenten anhand seiner ID. Wenn der Student Kurse belegt hat, wird der Student auch aus den Kursen entfernt.
+     * @param studentId Die ID des zu löschenden Studenten.
+     */
     public void deleteStudent(Long studentId) {
         boolean exists = studentRepository.existsById(studentId);                                   //Überprüft, ob ein Student mit derselben
         if(!exists) {                                                                               //ID schon existiert
@@ -145,13 +163,22 @@ public class StudentService {
         }
     }
 
-    //Methode, um Studenten anhand ID zu suchen, und wenn nicht vorhanden Fehlermeldung
+    /**
+     * Holt einen Studenten anhand seiner ID aus der Datenbank. Falls der Student nicht gefunden wird, wird eine Fehlermeldung geworfen.
+     * @param studentId Die ID des gesuchten Studenten.
+     * @return Der Student mit der entsprechenden ID.
+     */
     public Student getStudentById(Long studentId) {
         return studentRepository.findById(studentId)
                 .orElseThrow(() -> new ResponseStatusException(
                         HttpStatus.NOT_FOUND, "Student with ID " + studentId + " not found"));      //Fehler, wenn ID nicht existiert
     }
 
+    /**
+     * Aktualisiert die Daten eines bestehenden Studenten.
+     * @param studentId Die ID des zu aktualisierenden Studenten.
+     * @param student Die neuen Daten des Studenten.
+     */
     public void updateStudent(Long studentId, Student student) {
         //Überprüfen ob der student mit der ID schon existiert
         boolean exists = studentRepository.existsById(studentId);

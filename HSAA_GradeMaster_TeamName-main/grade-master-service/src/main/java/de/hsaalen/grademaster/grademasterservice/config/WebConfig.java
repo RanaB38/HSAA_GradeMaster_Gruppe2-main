@@ -7,6 +7,11 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 @Configuration
 public class WebConfig {
+
+    /**
+     * Erlaubt bestimmten Clients den Zugriff auf Ressourcen der API, z.B. localhost:4200
+     * @return Eine Instanz von WebMvcConfigurer mit den definierten CORS-Regeln.
+     */
     @Bean
     public WebMvcConfigurer corsConfigurer() {
         return new WebMvcConfigurer() {

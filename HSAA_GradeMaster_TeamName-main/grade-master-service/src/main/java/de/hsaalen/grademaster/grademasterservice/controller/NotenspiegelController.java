@@ -14,11 +14,20 @@ import java.util.List;
 public class NotenspiegelController {
     private final NotenspiegelService notenspiegelService;
 
+    /**
+     * Konstruktor für den NotenspiegelController.
+     * @param notenspiegelService Der Service, der für die Logik des Notenspiegels verantwortlich ist.
+     */
     @Autowired
     public NotenspiegelController(NotenspiegelService notenspiegelService) {
         this.notenspiegelService = notenspiegelService;
     }
 
+    /**
+     * Ruft alle Notenspiegel-Daten ab.
+     * @return Eine Liste von Notenspiegel-Objekten.
+     * @throws ResponseStatusException Wenn keine Notenspiegel-Daten vorhanden sind, wird ein Fehler 204 (No Content) zurückgegeben.
+     */
     @GetMapping
     public List<Notenspiegel> getNotenspiegel() {
         List<Notenspiegel> notenspiegelList = notenspiegelService.getAllNotenspiegel();
@@ -28,6 +37,10 @@ public class NotenspiegelController {
         return notenspiegelList;
     }
 
+    /**
+     * Initialisiert den Notenspiegel mit den Standarddaten.
+     * Diese Methode wird aufgerufen, um den Notenspiegel zu initialisieren.
+     */
     @PostMapping("/initialize")
     public void initializeNotenspiegel() {
         notenspiegelService.initializeNotenspiegel();

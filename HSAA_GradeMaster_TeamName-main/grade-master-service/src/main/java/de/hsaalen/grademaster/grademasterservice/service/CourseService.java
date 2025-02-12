@@ -22,6 +22,12 @@ public class CourseService {
     private final StudentRepository studentRepository;
     private final GroupRepository groupRepository;
 
+    /**
+     * Konstruktor für den `CourseService`, der die notwendigen Repositories injiziert.
+     * @param courseRepository Das Repository für die Kurse.
+     * @param studentRepository Das Repository für die Studenten.
+     * @param groupRepository Das Repository für die Gruppen.
+     */
     @Autowired
     public CourseService(CourseRepository courseRepository, StudentRepository studentRepository, GroupRepository groupRepository) {
         this.courseRepository = courseRepository;
@@ -29,12 +35,19 @@ public class CourseService {
         this.groupRepository = groupRepository;
     }
 
-    //Methode, um alle Kurse aus der DB zu holen
+    /**
+     * Holt alle Kurse aus der Datenbank.
+     * @return Eine Liste aller Kurse.
+     */
     public List<Course> getCourses() {
         return courseRepository.findAll();
     }
 
-    //Methode, um einen neuen Kurs hinzuzufügen, mit Fehlerbehandlung für doppelten Namen
+    /**
+     * Fügt einen neuen Kurs hinzu.
+     * Überprüft, ob der Kursname bereits existiert, um Konflikte zu vermeiden.
+     * @param course Der Kurs, der hinzugefügt werden soll.
+     */
     public void addNewCourse(Course course) {
         Optional<Course> courseOptional = courseRepository.findCourseByName(course.getName());          //Überprüft, ob ein Kurs mit demselben
         if(courseOptional.isPresent()) {                                                                //Namen schon existiert
@@ -45,7 +58,11 @@ public class CourseService {
 
     }
 
-    //Methode, um einen Kurs anhand der Id zu Löschen
+    /**
+     * Löscht einen Kurs anhand seiner ID.
+     * Prüft zuerst, ob der Kurs existiert. Wenn der Kurs existiert, werden auch die zugehörigen Gruppen gelöscht.
+     * @param courseId Die ID des Kurses, der gelöscht werden soll.
+     */
     public void deleteCourse(Long courseId) {
         boolean exists = courseRepository.existsById(courseId);
         if(!exists) {                                                                           //Überprüft, ob ein Kurs mit demselben
@@ -62,14 +79,24 @@ public class CourseService {
         }
     }
 
-    //Methode, um Kurse anhand ID zu suchen, und wenn nicht vorhanden Fehlermeldung
+    /**
+     * Sucht einen Kurs anhand der ID.
+     * Wenn der Kurs nicht gefunden wird, wird eine Fehlermeldung geworfen.
+     * @param courseId Die ID des Kurses.
+     * @return Der gefundene Kurs.
+     */
     public Course getCourseById(Long courseId) {
         return courseRepository.findById(courseId)
                 .orElseThrow(() -> new ResponseStatusException(
                         HttpStatus.NOT_FOUND, "Course with ID " + courseId + " not found"));    //Fehler, wenn ID nicht existiert
     }
 
-    // Methode zur Zuweisung eines Studenten zu einem Kurs
+    /**
+     * Weist einen Studenten einem Kurs zu.
+     * Überprüft, ob der Kurs und der Student existieren und ob der Student bereits im Kurs ist.
+     * @param courseId Die ID des Kurses.
+     * @param studentId Die ID des Studenten.
+     */
     public void assignStudent(Long courseId, Long studentId) {
         //Kurs mit der ID finden und übergeben, wenn der Kurs nicht gefunden wurde fehler
         Course course = courseRepository.findById(courseId)
@@ -86,13 +113,23 @@ public class CourseService {
         courseRepository.save(course);  // Kurs mit aktualisierter Studentenliste speichern
     }
 
-    // Methode, um alle Studenten eines Kurses abzurufen
+    /**
+     * Holt alle Studenten eines Kurses anhand der Kurs-ID.
+     * @param courseId Die ID des Kurses.
+     * @return Eine Liste der Studenten, die dem Kurs zugewiesen sind.
+     */
     public List<Student> getStudentsInCourse(Long courseId) {
         Course course = courseRepository.findById(courseId)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Course not found."));   //404
         return course.getStudents();                                      // Gibt alle Studenten des Kurses zurück
     }
 
+    /**
+     * Aktualisiert die Informationen eines Kurses.
+     * Überprüft, ob der Kurs existiert, und speichert dann die Änderungen.
+     * @param courseId Die ID des zu aktualisierenden Kurses.
+     * @param course Der Kurs mit den neuen Daten.
+     */
     public void updateCourse(Long courseId, Course course) {
         boolean exists = courseRepository.existsById(courseId);
         if (!exists) {
@@ -104,7 +141,11 @@ public class CourseService {
     }
 
     //Sprint 3 - Aufgabe 11
-    // Studenten in einen Kurs einschreiben
+    /**
+     * Meldet einen Studenten in einem Kurs an.
+     * @param courseId Die ID des Kurses.
+     * @param studentId Die ID des Studenten.
+     */
     public void enrollStudent(Long courseId, Long studentId) {
         Course course = courseRepository.findById(courseId)
                 .orElseThrow(() -> new IllegalArgumentException("Course not found."));
@@ -114,7 +155,12 @@ public class CourseService {
         courseRepository.save(course);
     }
 
-    //einen Studenten mit der ID aus dem Kurs entfernen
+    /**
+     * Entfernt einen Studenten aus einem Kurs.
+     * Entfernt den Studenten aus allen zugehörigen Gruppen und dem Kurs.
+     * @param courseId Die ID des Kurses.
+     * @param studentId Die ID des Studenten.
+     */
     public void deleteStudent(Long courseId, Long studentId) {
         Course course = courseRepository.findById(courseId)
                 .orElseThrow(() -> new IllegalArgumentException("Course not found."));
@@ -132,12 +178,22 @@ public class CourseService {
     }
 
     //Aufgabe 15 - Sprint 4
+    /**
+     * Holt das Bewertungsschema für einen Kurs.
+     * @param courseId Die ID des Kurses.
+     * @return Das Bewertungsschema des Kurses.
+     */
     public List<Bewertungsschema> getBewertungsschemaForCourse(Long courseId) {
         Course course = courseRepository.findById(courseId)
                 .orElseThrow(() -> new IllegalArgumentException("Course not found."));
         return course.getBewertungsschemas();
     }
 
+    /**
+     * Fügt ein Bewertungsschema zu einem Kurs hinzu.
+     * @param courseId Die ID des Kurses.
+     * @param bewertungsschema Das Bewertungsschema, das hinzugefügt werden soll.
+     */
     public void addBewertungsschemaToCourse(Long courseId, Bewertungsschema bewertungsschema) {
         Course course = courseRepository.findById(courseId)
                 .orElseThrow(() -> new IllegalArgumentException("Course not found."));
@@ -145,6 +201,11 @@ public class CourseService {
         courseRepository.save(course);
     }
 
+    /**
+     * Entfernt ein Bewertungsschema aus einem Kurs.
+     * @param courseId Die ID des Kurses.
+     * @param bewertungsschemaId Die ID des Bewertungsschemas, das entfernt werden soll.
+     */
     public void removeBewertungsschemaFromCourse(Long courseId, Long bewertungsschemaId) {
         Course course = courseRepository.findById(courseId)
                 .orElseThrow(() -> new IllegalArgumentException("Course not found."));
@@ -157,7 +218,12 @@ public class CourseService {
     }
 
     //Aufgabe 16 -Sprint 4
-    // Methode zur Bearbeitung des Bewertungsschemas
+    /**
+     * Aktualisiert das Bewertungsschema eines Kurses.
+     * Überprüft, ob die Summe der Prozente 100% beträgt und ob die Themen eindeutig sind.
+     * @param courseId Die ID des Kurses.
+     * @param bewertungsschemaList Die Liste der neuen Bewertungsschemas.
+     */
     public void updateBewertungsschema(Long courseId, List<Bewertungsschema> bewertungsschemaList) {
         Course course = courseRepository.findById(courseId)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Course not found"));

@@ -8,64 +8,102 @@ import lombok.*;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Repräsentiert einen Kurs in der Datenbank.
+ * Enthält Informationen zum Kurs sowie eine Liste der zugewiesenen Studenten und Bewertungsschemata.
+ */
 @Builder
 @Getter
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity(name = "Course")
-@Table                      // Erstellt automatisch eine Tabelle mit Kurs in der Datenbank
+@Table  // Erstellt automatisch eine Tabelle für Kurs in der Datenbank
 public class Course {
+
+    /**
+     * Die eindeutige ID des Kurses. Wird automatisch generiert.
+     */
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)     //ID wird automatisch generiert
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
+    /**
+     * Der Name des Kurses.
+     */
     private String name;
+
+    /**
+     * Eine Beschreibung des Kurses.
+     */
     private String description;
 
-    //Aufgabe 03 - Zuweisung
+    // Aufgabe 03 - Zuweisung
 
-    //Many-to-Many-Beziehung zu Student
+    /**
+     * Liste der Studenten, die in diesem Kurs eingeschrieben sind.
+     * Many-to-Many-Beziehung zwischen Kurs und Student.
+     */
     @ManyToMany
     @JoinTable(
-            name = "Assignment_Course_Student",                     //Tabelle zur Verknüpfung von kurs und student
-            joinColumns = @JoinColumn(name = "course_id"),          // Spalte für Kurs ID
-            inverseJoinColumns = @JoinColumn(name = "student_id")   // Spalte für Student ID
+            name = "Assignment_Course_Student",  // Verknüpfungstabelle für Kurs und Student
+            joinColumns = @JoinColumn(name = "course_id"),  // Spalte für Kurs-ID
+            inverseJoinColumns = @JoinColumn(name = "student_id")  // Spalte für Student-ID
     )
-
     @JsonIgnore
-    private List<Student> students = new ArrayList<>();             // Liste der Studenten, die den Kurs belegen
+    private List<Student> students = new ArrayList<>();
 
-
-    // Methode, um einen Studenten hinzuzufügen, falls dieser nicht schon vorhanden ist
+    /**
+     * Fügt einen Studenten zum Kurs hinzu, falls dieser nicht bereits enthalten ist.
+     *
+     * @param student Der hinzuzufügende Student.
+     */
     public void addStudent(Student student) {
-        if (!students.contains(student)) {                          // Verhindern der doppelten Zuweisung
+        if (!students.contains(student)) {
             students.add(student);
             student.getCourses().add(this);
         }
     }
 
-    // Methode, um einen Studenten zu entfernen
+    /**
+     * Entfernt einen Studenten aus dem Kurs.
+     *
+     * @param student Der zu entfernende Student.
+     */
     public void removeStudent(Student student) {
         if (students.contains(student)) {
             students.remove(student);
-            student.getCourses().remove(this); // Entfernen aus der bidirektionalen Zuordnung
+            student.getCourses().remove(this);
         }
     }
 
-    //Aufgabe 15 - Sprint 4
+    // Aufgabe 15 - Sprint 4
+
+    /**
+     * Liste der Bewertungsschemata, die mit diesem Kurs verknüpft sind.
+     * One-to-Many-Beziehung zwischen Kurs und Bewertungsschema.
+     */
     @OneToMany(mappedBy = "course", cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonIgnore
     private List<Bewertungsschema> bewertungsschemas = new ArrayList<>();
 
-    // Methode, um ein Bewertungsschema hinzuzufügen
+    /**
+     * Fügt ein Bewertungsschema zum Kurs hinzu.
+     *
+     * @param bewertungsschema Das hinzuzufügende Bewertungsschema.
+     */
     public void addBewertungsschema(Bewertungsschema bewertungsschema) {
         bewertungsschemas.add(bewertungsschema);
-        bewertungsschema.setCourse(this); // Setzt die bidirektionale Beziehung
+        bewertungsschema.setCourse(this);
     }
 
-    // Methode, um ein Bewertungsschema zu entfernen
+    /**
+     * Entfernt ein Bewertungsschema aus dem Kurs.
+     *
+     * @param bewertungsschema Das zu entfernende Bewertungsschema.
+     */
     public void removeBewertungsschema(Bewertungsschema bewertungsschema) {
         bewertungsschemas.remove(bewertungsschema);
-        bewertungsschema.setCourse(null); // Entfernt die bidirektionale Beziehung
+        bewertungsschema.setCourse(null);
     }
 }

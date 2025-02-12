@@ -14,21 +14,34 @@ import java.util.List;
 public class BewertungsschemaController {
     private final BewertungsschemaService bewertungsschemaService;
 
+    /**
+     * Konstruktor für den BewertungsschemaController.
+     * @param bewertungsschemaService Der Service für die Verarbeitung von Bewertungsschemata.
+     **/
     @Autowired
     public BewertungsschemaController(BewertungsschemaService bewertungsschemaService) {
         this.bewertungsschemaService = bewertungsschemaService;
     }
 
+    /**
+     * Ruft das Bewertungsschema für einen bestimmten Kurs ab.
+     **/
     @GetMapping("/course/{courseId}")
     public List getBewertungsschema(@PathVariable Long courseId) {
         return bewertungsschemaService.getBewertungsschemaByCourseId(courseId);
     }
 
+    /**
+     * Initialisiert ein neues Bewertungsschema für einen Kurs.
+     **/
     @PostMapping("/course/{courseId}/initialize")
     public void initializeBewertungsschema(@PathVariable Long courseId) {
         bewertungsschemaService.initializeBewertungsschemaForCourse(courseId);
     }
 
+    /**
+     * Aktualisiert das Bewertungsschema für einen Kurs.
+     **/
     @PostMapping("/course/{courseId}")
     public ResponseEntity<Void> updateBewertungsschema(
             @PathVariable Long courseId,

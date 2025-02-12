@@ -16,11 +16,24 @@ import static org.springframework.security.config.Customizer.withDefaults;
 @Configuration
 @EnableWebSecurity
 public class AuthConfig {
+
+    /**
+     * Erstellt und liefert einen Passwort-Encoder.
+     * @return Eine Instanz des NoOpPasswordEncoders.
+     **/
+
     @Bean
     PasswordEncoder getPasswordEncoder() {
         return NoOpPasswordEncoder.getInstance();
     }
 
+    /**
+     * Konfiguriert die Sicherheitsregeln für die Anwendung.
+     * Definiert Zugriffsrechte für Endpunkte, z.B. H2 DB Konsole
+     * @param httpSecurity Die HttpSecurity-Konfiguration.
+     * @return Die konfigurierte SecurityFilterChain.
+     * @throws Exception Falls ein Fehler bei der Sicherheitskonfiguration auftritt.
+     */
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception {
         httpSecurity.authorizeRequests()

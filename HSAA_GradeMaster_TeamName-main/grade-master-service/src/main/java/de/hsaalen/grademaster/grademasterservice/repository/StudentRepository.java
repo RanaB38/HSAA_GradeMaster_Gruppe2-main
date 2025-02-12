@@ -7,11 +7,17 @@ import org.springframework.stereotype.Repository;
 
 import java.util.Optional;
 
+/**
+ * Repository-Schnittstelle für Student-Entitäten.
+ */
 @Repository
 public interface StudentRepository
         extends JpaRepository<Student, Long> {
+    /**
+     * Methode ucht einen Studenten anhand der ID.
+     * @return Optional mit dem gefundenen Studenten, falls vorhanden
+     */
 
-    //Methode, um einen Studenten anhand der ID zu suchen
     @Query("SELECT s FROM Student s WHERE s.id = ?1")
     Optional <Student> findStudentById(Long id);
 }

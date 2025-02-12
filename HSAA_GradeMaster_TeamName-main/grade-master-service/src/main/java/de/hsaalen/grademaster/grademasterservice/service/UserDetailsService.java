@@ -21,6 +21,14 @@ public class UserDetailsService implements org.springframework.security.core.use
     @Autowired
     private UserRepository repo;
 
+    /**
+     * Wird von Spring Security aufgerufen, um einen Benutzer anhand des Benutzernamens zu laden.
+     * Wenn der Benutzer existiert, werden die Benutzerinformationen (Benutzername, Passwort und Rollen) zurückgegeben.
+     * Andernfalls wird eine Ausnahme geworfen.
+     * @param username Der Benutzername des zu ladenden Benutzers.
+     * @return Ein UserDetails-Objekt mit den Benutzerinformationen.
+     * @throws UsernameNotFoundException Wird geworfen, wenn der Benutzer nicht gefunden wird.
+     */
     @Override
     @Transactional
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
@@ -37,6 +45,12 @@ public class UserDetailsService implements org.springframework.security.core.use
         }
     }
 
+    /**
+     * Hilfsmethode zur Erstellung der Benutzerberechtigungen (Authorities) basierend auf der Rolle des Benutzers.
+     * Spring Security erwartet, dass Benutzerrechte als "GrantedAuthority" übergeben werden.
+     * @param roles Die Rolle des Benutzers (z. B. "ROLE_USER").
+     * @return Eine Liste von SimpleGrantedAuthority-Objekten, die die Berechtigungen des Benutzers repräsentieren.
+     */
     private static List<SimpleGrantedAuthority> userAuthorities(final String roles) {
 
         List<SimpleGrantedAuthority> authorities = new ArrayList<>();
@@ -45,3 +59,4 @@ public class UserDetailsService implements org.springframework.security.core.use
         return authorities;
     }
 }
+

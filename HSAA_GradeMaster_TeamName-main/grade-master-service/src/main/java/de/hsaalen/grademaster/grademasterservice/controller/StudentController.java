@@ -18,18 +18,31 @@ public class StudentController {
 
     private final StudentService studentService;
 
+    /**
+     * Konstruktor für den StudentController.
+     * @param studentService Der Service, der für die Logik der Studenten verantwortlich ist.
+     */
     @Autowired
     public StudentController(StudentService studentService) {
         this.studentService = studentService;
     }
 
+    /**
+     * Ruft die Daten eines bestimmten Studenten anhand seiner ID ab.
+     * @param studentId Die ID des Studenten.
+     * @return Die StudentDTO mit den entsprechenden Daten des Studenten.
+     */
     @GetMapping(path = "/data/{studentId}")
     public ResponseEntity<StudentDTO> getStudentData(@PathVariable ("studentId") String studentId) {
 
-            return ResponseEntity.ok(studentService.getStudentData(String.valueOf(studentId)));
+        return ResponseEntity.ok(studentService.getStudentData(String.valueOf(studentId)));
     }
 
-    //Liste aller Studenten aus der DB
+
+    /**
+     * Ruft eine Liste aller Studenten ab.
+     * @return Eine Liste von StudentDTOs mit den grundlegenden Informationen der Studenten.
+     */
     @GetMapping
     public List<StudentDTO> getStudents() {
 
@@ -46,7 +59,13 @@ public class StudentController {
         return ResponseEntity.ok(studentsDTO).getBody();
     }
 
-    //Fehlerbehandlung für das Hinzufügen eines Studenten mit doppelter ID
+
+    /**
+     * Registriert einen neuen Studenten.
+     * Überprüft, ob alle erforderlichen Felder ausgefüllt sind und behandelt Fehler wie doppelte IDs.
+     * @param student Die zu registrierenden Studentendaten.
+     * @return Eine ResponseEntity mit dem Status-Code und einer Nachricht.
+     */
     @PostMapping
     public ResponseEntity<Object> registerNewStudent(@RequestBody Student student) {
         // Überprüfen auf leere Felder, damit Name und Email vorhanden sind
@@ -70,7 +89,11 @@ public class StudentController {
         }
     }
 
-    //Fehlerbehandlung für das Löschen eines Studenten mit nicht vorhandener ID
+    /**
+     * Löscht einen Studenten anhand seiner ID.
+     * @param studentId Die ID des zu löschenden Studenten.
+     * @return Eine ResponseEntity mit dem Status-Code und einer Nachricht.
+     */
     @DeleteMapping(path = "{studentId}")
     public ResponseEntity<String> deleteStudent(@PathVariable("studentId") Long studentId) {
 
@@ -84,7 +107,11 @@ public class StudentController {
         }
     }
 
-    //Student nach ID finden
+    /**
+     * Ruft einen Studenten anhand seiner ID ab.
+     * @param studentId Die ID des Studenten.
+     * @return Die Student-Objekt als ResponseEntity.
+     */
     @GetMapping(path = "{studentId}")
     public ResponseEntity<Student> getStudentById(@PathVariable("studentId") Long studentId) {
 
@@ -92,7 +119,12 @@ public class StudentController {
         return ResponseEntity.ok(student);                          //200 bei gefundenem Kurs
     }
 
-    //Daten eines Studenten aktualisieren
+    /**
+     * Aktualisiert die Daten eines bestehenden Studenten.
+     * @param studentId Die ID des zu aktualisierenden Studenten.
+     * @param student   Die neuen Studentendaten.
+     * @return Eine ResponseEntity mit dem Status-Code und einer Nachricht.
+     */
     @PutMapping(path = "{studentId}")
     public ResponseEntity<String> updateStudent(@PathVariable("studentId") Long studentId, @RequestBody Student student) {
 
@@ -107,5 +139,3 @@ public class StudentController {
         }
     }
 }
-
-

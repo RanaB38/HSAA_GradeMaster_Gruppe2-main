@@ -24,6 +24,14 @@ public class GroupService {
     private final BewertungsschemaRepository bewertungsschemaRepository;
     private final NotenspiegelRepository notenspiegelRepository;
 
+    /**
+     * Konstruktor, der die Repositories für die verschiedenen Entitäten injiziert.
+     * @param groupRepository Repository für Gruppen.
+     * @param courseRepository Repository für Kurse.
+     * @param studentRepository Repository für Studenten.
+     * @param bewertungsschemaRepository Repository für Bewertungsschemas.
+     * @param notenspiegelRepository Repository für Notenspiegel.
+     */
     @Autowired
     public GroupService(GroupRepository groupRepository, CourseRepository courseRepository, StudentRepository studentRepository, BewertungsschemaRepository bewertungsschemaRepository, NotenspiegelRepository notenspiegelRepository) {
         this.groupRepository = groupRepository;
@@ -33,7 +41,12 @@ public class GroupService {
         this.notenspiegelRepository = notenspiegelRepository;
     }
 
-    // Gruppe in einem Kurs erstellen
+    /**
+     * Erstellt eine neue Gruppe für einen bestimmten Kurs.
+     * Überprüft, ob eine Gruppe mit dem gleichen Namen bereits existiert.
+     * @param courseId Die ID des Kurses, zu dem die Gruppe hinzugefügt werden soll.
+     * @param group Die Gruppe, die erstellt werden soll.
+     */
     public void createGroup(Long courseId, Group group) {
         Course course = courseRepository.findById(courseId)
                 .orElseThrow(() -> new IllegalArgumentException("Course not found."));
@@ -46,7 +59,11 @@ public class GroupService {
         groupRepository.save(group);
     }
 
-    // Alle Gruppen eines Kurses abrufen
+    /**
+     * Holt alle Gruppen für einen bestimmten Kurs.
+     * @param courseId Die ID des Kurses, für den Gruppen abgerufen werden sollen.
+     * @return Eine Liste von Gruppen, die dem Kurs zugeordnet sind.
+     */
     public List<Group> getGroupsByCourse(Long courseId) {
         if (!courseRepository.existsById(courseId)) {
             throw new IllegalArgumentException("Course not found.");
@@ -54,7 +71,12 @@ public class GroupService {
         return groupRepository.findByCourseId(courseId);
     }
 
-    // Studenten zu einer Gruppe hinzufügen
+    /**
+     * Fügt einen Studenten zu einer bestimmten Gruppe hinzu.
+     * Überprüft, ob der Student im Kurs eingeschrieben ist und ob er bereits in einer anderen Gruppe ist.
+     * @param groupId Die ID der Gruppe, zu der der Student hinzugefügt werden soll.
+     * @param studentId Die ID des Studenten, der hinzugefügt werden soll.
+     */
     public void addStudentToGroup(Long groupId, Long studentId) {
         Group group = groupRepository.findById(groupId)
                 .orElseThrow(() -> new IllegalArgumentException("Group not found."));
@@ -80,7 +102,11 @@ public class GroupService {
         groupRepository.save(group);
     }
 
-    // Studenten aus einer Gruppe entfernen
+    /**
+     * Entfernt einen Studenten aus einer Gruppe.
+     * @param groupId Die ID der Gruppe, aus der der Student entfernt werden soll.
+     * @param studentId Die ID des Studenten, der entfernt werden soll.
+     */
     public void removeStudentFromGroup(Long groupId, Long studentId) {
         Group group = groupRepository.findById(groupId)
                 .orElseThrow(() -> new IllegalArgumentException("Group not found."));
@@ -90,6 +116,10 @@ public class GroupService {
         groupRepository.save(group);
     }
 
+    /**
+     * Weist einem Kurs eine Bewertung zu, basierend auf dem Bewertungsschema des Kurses.
+     * @param group Die Gruppe, die die Bewertungsschemata zugewiesen bekommen soll.
+     */
     public void assignEvaluationSchemaToGroup(Group group) {
         List<Bewertungsschema> evagroup =  bewertungsschemaRepository.findByCourseId(group.getCourse().getId());
         for (Bewertungsschema bewertungsschema : evagroup) {
@@ -102,6 +132,11 @@ public class GroupService {
         groupRepository.save(group);
     }
 
+    /**
+     * Speichert die Bewertungen für eine Gruppe.
+     * @param groupId Die ID der Gruppe, deren Bewertungen gespeichert werden sollen.
+     * @param evaluations Eine Liste von Bewertungen, die gespeichert werden.
+     */
     public void saveEvaluations(Long groupId, List<GroupEvaluationDTO> evaluations) {
 
         Group group = groupRepository.findById(groupId)
@@ -121,6 +156,11 @@ public class GroupService {
         groupRepository.save(group);
     }
 
+    /**
+     * Holt alle Bewertungen für eine Gruppe.
+     * @param groupId Die ID der Gruppe, deren Bewertungen abgerufen werden sollen.
+     * @return Eine Liste von Gruppenbewertungen.
+     */
     public List<GroupEvaluation> getGroupEvaluations(Long groupId) {
         Group group = groupRepository.findById(groupId)
                 .orElseThrow(() -> new IllegalArgumentException("Group not found"));
@@ -129,6 +169,12 @@ public class GroupService {
     }
 
     // Aufgabe 22 - Sprint 5
+    /**
+     * Berechnet die Gesamtbewertung für eine Gruppe basierend auf den Gewichtungen der Bewertungen.
+     * Gibt die berechneten Ergebnisse als Map zurück.
+     * @param groupId Die ID der Gruppe, für die die Gesamtbewertung berechnet werden soll.
+     * @return Eine Map mit der Gesamtpunktzahl, der Note und der Farbe der Note.
+     */
     public Map<String, Object> calculateGroupOverallEvaluation(Long groupId) {
         Group group = groupRepository.findById(groupId)
                 .orElseThrow(() -> new IllegalArgumentException("Group not found."));
@@ -170,6 +216,11 @@ public class GroupService {
         return evaluationResult;
     }
 
+    /**
+     * Bestimmt die Farbe für eine Note, um sie farblich darzustellen.
+     * @param grade Die Note, für die die Farbe bestimmt werden soll.
+     * @return Die Farbe, die der Note zugeordnet ist.
+     */
     private String getColorForGrade(String grade) {
         switch (grade) {
             case "1.0":

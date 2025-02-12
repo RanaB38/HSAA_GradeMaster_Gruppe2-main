@@ -11,11 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
-
-import java.security.Principal;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -29,6 +25,13 @@ public class GroupController {
     private final CourseRepository courseRepository;
     private final UserRepository userRepository;
 
+    /**
+     * Konstruktor für den GroupController.
+     * @param groupService Der Service, der für die Logik von Gruppen verantwortlich ist.
+     * @param groupRepository Das Repository zum Speichern und Abrufen von Gruppen.
+     * @param courseRepository Das Repository zum Speichern und Abrufen von Kursen.
+     * @param userRepository Das Repository zum Speichern und Abrufen von Benutzern.
+     */
     @Autowired
     public GroupController(GroupService groupService, GroupRepository groupRepository, CourseRepository courseRepository, UserRepository userRepository) {
         this.groupService = groupService;
@@ -37,7 +40,12 @@ public class GroupController {
         this.userRepository = userRepository;
     }
 
-    //Gruppe zu einem Kurs hinzufügen
+    /**
+     * Erzeugt eine neue Gruppe für einen bestimmten Kurs.
+     * @param courseId Die ID des Kurses, dem die Gruppe zugeordnet wird.
+     * @param group Die zu erstellende Gruppe.
+     * @return Eine Antwort mit dem Statuscode und einer Nachricht.
+     */
     @PostMapping("/course/{courseId}")
     public ResponseEntity<String> createGroup(@PathVariable Long courseId, @RequestBody Group group) {
         try {
@@ -56,7 +64,11 @@ public class GroupController {
         }
     }
 
-    //Alle Gruppen eines Kurses abrufen
+    /**
+     * Ruft alle Gruppen für einen bestimmten Kurs ab.
+     * @param courseId Die ID des Kurses.
+     * @return Eine Liste von DTOs, die die Gruppen repräsentieren.
+     */
     @GetMapping("/course/{courseId}")
     public ResponseEntity<List<GroupDTO>> getGroupsByCourse(@PathVariable Long courseId) {
         try {
@@ -88,7 +100,12 @@ public class GroupController {
         }
     }
 
-    //Studenten zu einer Gruppe hinzufügen
+    /**
+     * Fügt einem bestimmten Studenten eine Gruppe hinzu.
+     * @param groupId Die ID der Gruppe.
+     * @param studentId Die ID des Studenten, der hinzugefügt werden soll.
+     * @return Eine Antwort mit dem Statuscode und einer Nachricht.
+     */
     @PostMapping("/{groupId}/add-student/{studentId}")
     public ResponseEntity<String> addStudentToGroup(@PathVariable Long groupId, @PathVariable Long studentId) {
         try {
@@ -110,7 +127,12 @@ public class GroupController {
 
     }
 
-    //Studenten aus einer Gruppe entfernen
+    /**
+     * Entfernt einen Studenten aus einer Gruppe.
+     * @param groupId Die ID der Gruppe.
+     * @param studentId Die ID des Studenten, der entfernt werden soll.
+     * @return Eine Antwort mit dem Statuscode und einer Nachricht.
+     */
     @DeleteMapping("/{groupId}/remove-student/{studentId}")
     public ResponseEntity<String> removeStudentFromGroup(@PathVariable Long groupId, @PathVariable Long studentId) {
         groupService.removeStudentFromGroup(groupId, studentId);
@@ -118,6 +140,11 @@ public class GroupController {
     }
 
     //Aufgabe 12
+    /**
+     * Ruft eine Gruppe anhand ihrer ID ab.
+     * @param groupId Die ID der Gruppe.
+     * @return Ein DTO, das die Gruppeninformationen enthält.
+     */
     @GetMapping("/{groupId}")
     public ResponseEntity<GroupDTO> getGroupById(@PathVariable Long groupId) {
         Group group = groupRepository.findById(groupId)
@@ -143,6 +170,11 @@ public class GroupController {
         return ResponseEntity.ok(groupDTO);
     }
 
+    /**
+     * Ruft alle Studenten einer bestimmten Gruppe ab.
+     * @param groupId Die ID der Gruppe.
+     * @return Eine Liste von Studenten, die zur Gruppe gehören.
+     */
     @GetMapping("/{groupId}/students")
     public ResponseEntity<List<Student>> getStudentsInGroup(@PathVariable Long groupId) {
         Group group = groupRepository.findById(groupId)
@@ -150,6 +182,11 @@ public class GroupController {
         return ResponseEntity.ok(group.getStudents());
     }
 
+    /**
+     * Löscht eine Gruppe anhand ihrer ID.
+     * @param groupId Die ID der zu löschenden Gruppe.
+     * @return Eine Antwort mit dem Statuscode und einer Nachricht.
+     */
     @DeleteMapping("/{groupId}")
     public ResponseEntity<String> deleteGroup(@PathVariable Long groupId) {
         if (!groupRepository.existsById(groupId)) {
@@ -159,6 +196,11 @@ public class GroupController {
         return ResponseEntity.status(HttpStatus.NO_CONTENT).body("Group deleted successfully.");
     }
 
+    /**
+     * Weist einer Gruppe ein Bewertungsschema zu.
+     * @param groupId Die ID der Gruppe, der das Bewertungsschema zugewiesen werden soll.
+     * @return Eine Antwort mit dem Statuscode.
+     */
     @PutMapping("/assigneEvaluation/{groupId}")
     public ResponseEntity<Void> assignEvaluationSchemaToGroup(@PathVariable Long groupId) {
         try {
@@ -173,6 +215,11 @@ public class GroupController {
         }
     }
 
+    /**
+     * Ruft alle Bewertungen einer Gruppe ab.
+     * @param groupId Die ID der Gruppe.
+     * @return Eine Liste von DTOs, die die Bewertungen der Gruppe repräsentieren.
+     */
     @GetMapping("/evaluations/{groupId}")
     public ResponseEntity<List<GroupEvaluationDTO>> getGroupEvaluations(@PathVariable Long groupId) {
         try {
@@ -189,6 +236,12 @@ public class GroupController {
         }
     }
 
+    /**
+     * Speichert neue Bewertungen für eine Gruppe.
+     * @param groupId Die ID der Gruppe.
+     * @param evaluations Die neuen Bewertungen, die gespeichert werden sollen.
+     * @return Eine Antwort mit dem Statuscode.
+     */
     @PutMapping("/{groupId}/evaluations")
     public ResponseEntity<Void> saveGroupEvaluations(@PathVariable Long groupId, @RequestBody List<GroupEvaluationDTO> evaluations) {
         try {
@@ -202,6 +255,11 @@ public class GroupController {
     }
 
     // Aufgabe 22 - Sprint 5
+    /**
+     * Berechnet die Gesamtbewertung einer Gruppe.
+     * @param groupId Die ID der Gruppe, deren Gesamtbewertung berechnet werden soll.
+     * @return Eine Antwort mit der Gesamtbewertung der Gruppe.
+     */
     @GetMapping("/{groupId}/overall-evaluation")
     @PreAuthorize("hasRole('LECTURER')")
     public ResponseEntity<Map<String, Object>> getGroupOverallEvaluation(@PathVariable Long groupId) {

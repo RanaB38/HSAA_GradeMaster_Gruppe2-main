@@ -20,6 +20,11 @@ public class UserController {
 
     private final UserRepository userRepository;
 
+    /**
+     * Authentifiziert den Benutzer und gibt die Benutzerdaten zurück, wenn die Authentifizierung erfolgreich ist.
+     * @param principle Das `Principal`-Objekt, das Informationen über den aktuellen Benutzer enthält.
+     * @return Eine ResponseEntity mit den Benutzerdaten als WebUserDTO oder einer Fehlerantwort.
+     */
     @GetMapping(path = "/auth")
     public ResponseEntity<WebUserDTO> login(Principal principle) {
         if (principle == null) {
@@ -36,3 +41,5 @@ public class UserController {
     }
 
 }
+
+

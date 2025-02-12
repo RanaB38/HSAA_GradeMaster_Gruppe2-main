@@ -32,7 +32,10 @@ public class CourseController {
         this.groupService = groupService;
     }
 
-    //Liste aller Kurse aus der DB
+    /**
+     * Holt die Liste aller Kurse aus der Datenbank.
+     * @return Eine Liste von CourseDTOs
+     */
     @GetMapping
     public List<CourseDTO> getCourse() {
 
@@ -58,8 +61,11 @@ public class CourseController {
         return ResponseEntity.ok(coursesDTO).getBody();
     }
 
-
-    //Fehlerbehandlung für das Hinzufügen eines neuen Kurses mit doppeltem Namen
+    /**
+     * Fügt einen neuen Kus hinzu, mit Fehlerbehandlung für doppelte Namen
+     * @param course Das hinzuzufügende Kursobjekt.
+     * @return Eine HTTP-Response mit Statuscode.
+     */
     @PostMapping
     public ResponseEntity<String> registerNewCourse(@RequestBody Course course) {
         // Überprüfen auf leere Felder, damit Name  vorhanden ist
@@ -79,7 +85,11 @@ public class CourseController {
         }
     }
 
-    //Fehlerbehandlung für das Löschen eines Kurses mit nicht vorhandener Id
+    /**
+     * Löscht einen Kurs anhand seiner ID mit Fehlerbehandlung
+     * @param courseId Die ID des zu löschenden Kurses
+     * @return Eine HTTP-Response mit Statuscode
+     */
     @DeleteMapping(path = "{courseId}")
     public ResponseEntity<String> deleteCourse(@PathVariable("courseId") Long courseId) {
 
@@ -94,7 +104,11 @@ public class CourseController {
     }
 
 
-    //Kurs nach ID finden
+    /**
+     * Ruft einen Kurs anhand der ID ab.
+     * @param courseId Die ID des Kurses.
+     * @return Das gefundene Kursobjekt
+     */
     @GetMapping(path = "{courseId}")
     public ResponseEntity<Course> getCourseById(@PathVariable("courseId") Long courseId) {
 
@@ -105,7 +119,12 @@ public class CourseController {
 
     //Aufgabe 03 - Zuweisung
 
-    // POST-Endpunkt, um einen Studenten zu einem Kurs hinzuzufügen
+    /**
+     * Weist einem Kurs einen Studenten zu.
+     * @param courseId Die ID des Kurses.
+     * @param studentId Die ID des Studenten.
+     * @return Eine HTTP-Response mit Statuscode.
+     */
     @PostMapping("/{courseId}/student/{studentId}")
     public ResponseEntity<String> assignStudentToCourse(@PathVariable Long courseId, @PathVariable Long studentId) {
         try {
@@ -117,7 +136,11 @@ public class CourseController {
         }
     }
 
-    // GET-Endpunkt, um alle Studenten eines bestimmten Kurses zu erhalten
+    /**
+     * Ruft alle Studenten eines bestimmten Kurses ab.
+     * @param courseId Die ID des Kurses.
+     * @return Eine Liste von Studenten mit Bewertungen.
+     */
     @GetMapping("/{courseId}/students")
     public ResponseEntity<List<StudentWithGradeDTO>> getStudentsInCourse(@PathVariable Long courseId) {
 
@@ -137,12 +160,12 @@ public class CourseController {
             }
 
             if(studentGroup != null){
-               try {
-                   Map<String, Object> evaluationResult = groupService.calculateGroupOverallEvaluation(studentGroup.getId());
-                   grade = (String) evaluationResult.get("grade");
-               }catch (Exception e){
-                   grade = "Noch nicht Bewertet";
-               }
+                try {
+                    Map<String, Object> evaluationResult = groupService.calculateGroupOverallEvaluation(studentGroup.getId());
+                    grade = (String) evaluationResult.get("grade");
+                }catch (Exception e){
+                    grade = "Noch nicht Bewertet";
+                }
 
 
             }
@@ -152,6 +175,12 @@ public class CourseController {
         return ResponseEntity.ok(studentWithGradeDTOS);                                     // Gibt die Liste der Studenten zurück
     }
 
+    /**
+     * Aktualisiert die Informationen eines bestehenden Kurses.
+     * @param courseId Die ID des Kurses.
+     * @param course   Das aktualisierte Kursobjekt.
+     * @return HTTP 200 bei Erfolg oder HTTP 404 bei Fehler.
+     */
     @PutMapping(path = "{courseId}")
     public ResponseEntity<String> updateCourse(@PathVariable("courseId") Long courseId, @RequestBody Course course) {
         try {
@@ -166,17 +195,35 @@ public class CourseController {
     }
 
     //Aufgabe 15 - Sprint 4
+    /**
+     * Holt das Bewertungsschema eines bestimmten Kurses.
+     * @param courseId Die ID des Kurses.
+     * @return Eine Liste von Bewertungsschemata.
+     */
     @GetMapping("/{courseId}/bewertungsschema")
     public List<Bewertungsschema> getBewertungsschema(@PathVariable Long courseId) {
         return courseService.getBewertungsschemaForCourse(courseId);
     }
 
+
+    /**
+     * Fügt ein neues Bewertungsschema zu einem Kurs hinzu.
+     * @param courseId Die ID des Kurses.
+     * @param bewertungsschema  Das neue Bewertungsschema.
+     * @return HTTP 201 bei Erfolg.
+     */
     @PostMapping("/{courseId}/bewertungsschema")
     public ResponseEntity<String> addBewertungsschema(@PathVariable Long courseId, @RequestBody Bewertungsschema bewertungsschema) {
         courseService.addBewertungsschemaToCourse(courseId, bewertungsschema);
         return ResponseEntity.status(HttpStatus.CREATED).body("Bewertungsschema hinzugefügt.");
     }
 
+    /**
+     * Löscht ein Bewertungsschema von einem Kurs.
+     * @param courseId Die ID des Kurses.
+     * @param bewertungsschemaId Die ID des Bewertungsschemas.
+     * @return HTTP 204 bei Erfolg.
+     */
     @DeleteMapping("/{courseId}/bewertungsschema/{bewertungsschemaId}")
     public ResponseEntity<String> deleteBewertungsschema(@PathVariable Long courseId, @PathVariable Long bewertungsschemaId) {
         courseService.removeBewertungsschemaFromCourse(courseId, bewertungsschemaId);

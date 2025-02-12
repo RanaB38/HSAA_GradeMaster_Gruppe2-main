@@ -11,11 +11,19 @@ import java.util.List;
 public class NotenspiegelService {
     private final NotenspiegelRepository notenspiegelRepository;
 
+    /**
+     * Konstruktor, der das Repository für den Notenspiegel injiziert.
+     * @param notenspiegelRepository Repository, das die Notenspiegel-Daten verwaltet.
+     */
     @Autowired
     public NotenspiegelService(NotenspiegelRepository notenspiegelRepository) {
         this.notenspiegelRepository = notenspiegelRepository;
     }
 
+    /**
+     * Initialisiert den Notenspiegel mit Standardwerten, wenn noch keine Notenspiegel in der Datenbank vorhanden sind.
+     * Die Standardwerte umfassen verschiedene Notenbereiche und die zugehörigen Notenbezeichner.
+     */
     public void initializeNotenspiegel() {
         if (notenspiegelRepository.count() == 0) {
             List<Notenspiegel> defaultEntries = List.of(
@@ -35,6 +43,10 @@ public class NotenspiegelService {
         }
     }
 
+    /**
+     * Holt alle Notenspiegel-Einträge aus der Datenbank.
+     * @return Eine Liste aller Notenspiegel-Einträge.
+     */
     public List<Notenspiegel> getAllNotenspiegel() {
         return notenspiegelRepository.findAll();
     }
