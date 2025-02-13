@@ -38,7 +38,7 @@ Um GradeMaster lokal auszuführen, sind folgende Systemanforderungen erforderlic
    ```bash
    git clone https://github.com/RanaB38/HSAA_GradeMaster_Gruppe2-main.git
    ```
-2. **Nächster Schritt**
+2. **Nächster Schritt den Pfad öffnen**
 
    HSAA_GradeMaster_Gruppe2-main\HSAA_GradeMaster_TeamName-main\grade-master-           service\src\main\java\de\hsaalen\grademaster\grademasterservice\GradeMasterServiceApplication.java
 
