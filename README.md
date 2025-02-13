@@ -43,10 +43,11 @@ Um GradeMaster lokal auszuführen, sind folgende Systemanforderungen erforderlic
 
    
 3. **Starten mit GradeMasterServiceApplication**
-      public static void main(String[] args) {
+
+   public static void main(String[] args) {
            SpringApplication.run(GradeMasterServiceApplication.class, args);
    
-4. **Backend testen:**
+5. **Backend testen:**
    Die REST-API ist unter `http://localhost:8080` erreichbar. Beispielendpunkte:
 - `GET /courses`
 - `POST /students`
