@@ -6,7 +6,7 @@ import { Course } from "../../../../lib/domain/course.interfaces";
 import { MaterialColor } from "../../../../lib/enums/material-color";
 import { Observable } from "rxjs";
 import { CourseCoreService } from "../../../../lib/core-services/course-core.service";
-import { ActivatedRoute, Router, RouterOutlet } from "@angular/router";
+import {ActivatedRoute, Router, RouterLink, RouterOutlet} from "@angular/router";
 import { HttpClient } from "@angular/common/http";
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -40,12 +40,15 @@ import { StudentWithGrade } from "../../../../lib/domain/studentWithGrade.interf
     NgForOf,
     MatButton,
     RouterOutlet,
+    RouterLink,
   ],
   templateUrl: './course-detail.component.html',
   styleUrls: ['./course-detail.component.scss']
 })
 
 export class CourseDetailComponent {
+
+  groupId!: number; // ID der Gruppe
 
   /** Der Kurs, dessen Details angezeigt werden. */
   public dataSource$!: Course | undefined;
