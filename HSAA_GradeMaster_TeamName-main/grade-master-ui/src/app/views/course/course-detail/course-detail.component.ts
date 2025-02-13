@@ -47,7 +47,7 @@ import { StudentWithGrade } from "../../../../lib/domain/studentWithGrade.interf
 })
 
 export class CourseDetailComponent {
-
+  /** Der Kurs, dessen Details angezeigt werden. */
   groupId!: number; // ID der Gruppe
 
   /** Der Kurs, dessen Details angezeigt werden. */

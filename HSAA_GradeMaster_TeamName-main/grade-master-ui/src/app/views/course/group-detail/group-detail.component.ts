@@ -190,7 +190,6 @@ export class GroupDetailComponent implements OnInit {
       this.evaluations, { headers: this.authService.getAuthHeaders() })
       .subscribe(
         () => {
-          alert('Evaluations saved successfully!');
           this.loadOverallEvaluation(this.groupId);
         },
         error => {
