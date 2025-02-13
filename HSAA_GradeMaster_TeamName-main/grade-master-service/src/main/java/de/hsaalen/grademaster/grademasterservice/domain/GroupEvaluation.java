@@ -2,6 +2,8 @@ package de.hsaalen.grademaster.grademasterservice.domain;
 
 import jakarta.persistence.*;
 import lombok.*;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 
 /**
  * Repräsentiert eine Bewertung für eine Gruppe innerhalb eines Kurses.
@@ -37,6 +39,7 @@ public class GroupEvaluation {
      */
     @ManyToOne
     @JoinColumn(name = "evaluation_id", nullable = false)
+    @OnDelete(action = OnDeleteAction.CASCADE)
     private Bewertungsschema evaluation;
 
     /**
