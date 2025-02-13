@@ -132,7 +132,7 @@ export class BewertungsschemaEditComponent {
         next: () => {
           // Erfolgreiches Speichern: Zurück zur Kurs-Detailseite
           this.errorMessage = null; // Fehler zurücksetzen
-          this.router.navigate([`/courses/${this.courseId}`]);
+          this.router.navigate([`/courses/${this.courseId}/details`]);
         },
         error: (err) => {
           console.error('Fehler beim Speichern:', err);

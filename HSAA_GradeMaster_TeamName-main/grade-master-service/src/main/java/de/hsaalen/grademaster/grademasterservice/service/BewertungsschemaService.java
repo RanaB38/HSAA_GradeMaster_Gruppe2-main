@@ -2,10 +2,12 @@ package de.hsaalen.grademaster.grademasterservice.service;
 
 import de.hsaalen.grademaster.grademasterservice.domain.Bewertungsschema;
 import de.hsaalen.grademaster.grademasterservice.domain.Course;
+import de.hsaalen.grademaster.grademasterservice.domain.Group;
 import de.hsaalen.grademaster.grademasterservice.domain.GroupEvaluation;
 import de.hsaalen.grademaster.grademasterservice.repository.BewertungsschemaRepository;
 import de.hsaalen.grademaster.grademasterservice.repository.CourseRepository;
 import de.hsaalen.grademaster.grademasterservice.repository.GroupEvaluationRepository;
+import de.hsaalen.grademaster.grademasterservice.repository.GroupRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
@@ -22,6 +24,7 @@ public class BewertungsschemaService {
     private final BewertungsschemaRepository bewertungsschemaRepository;
     private final CourseRepository courseRepository;
     private final GroupEvaluationRepository groupEvaluationRepository;
+    private final GroupRepository groupRepository;
 
     /**
      * Konstruktor für den `BewertungsschemaService`, der die notwendigen Repositories injiziert.
@@ -29,10 +32,11 @@ public class BewertungsschemaService {
      * @param courseRepository Das Repository für die Kurse.
      */
     @Autowired
-    public BewertungsschemaService(BewertungsschemaRepository bewertungsschemaRepository, CourseRepository courseRepository, GroupEvaluationRepository groupEvaluationRepository) {
+    public BewertungsschemaService(BewertungsschemaRepository bewertungsschemaRepository, CourseRepository courseRepository, GroupEvaluationRepository groupEvaluationRepository, GroupRepository groupRepository) {
         this.bewertungsschemaRepository = bewertungsschemaRepository;
         this.courseRepository = courseRepository;
         this.groupEvaluationRepository = groupEvaluationRepository;
+        this.groupRepository = groupRepository;
     }
 
     /**
@@ -102,6 +106,20 @@ public class BewertungsschemaService {
             schema.setId(null);
             schema.setCourse(course);
             bewertungsschemaRepository.save(schema);
+        }
+
+        // Gruppen des Kurses holen
+        List<Group> groupsList = groupRepository.findByCourseId(courseId);
+
+        //Jede Gruppe das neue Bewertungsschema zuweisen
+        for (Group group : groupsList) {
+            for(Bewertungsschema bewertungsschema : bewertungsschemaList) {
+                GroupEvaluation groupEvaluation = new GroupEvaluation();
+                groupEvaluation.setGroup(group);
+                groupEvaluation.setEvaluation(bewertungsschema);
+                groupEvaluation.setScore(0.0);
+                groupEvaluationRepository.save(groupEvaluation);
+            }
         }
 
     }
