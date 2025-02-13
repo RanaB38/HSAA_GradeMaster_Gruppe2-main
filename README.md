@@ -36,21 +36,17 @@ Um GradeMaster lokal auszuführen, sind folgende Systemanforderungen erforderlic
 
 1. **Repository klonen:**
    ```bash
-   git clone <repository-url>
+   git clone https://github.com/RanaB38/HSAA_GradeMaster_Gruppe2-main.git
    cd backend
    ```
-2. **Abhängigkeiten installieren:**
-   ```bash
-   ./mvnw clean install
-   ```
-3. **Anwendung starten:**
-   ```bash
-   java -jar target/grade-master-service-0.0.1-SNAPSHOT.jar
-   ```
-   Alternativ kann die Anwendung über Maven gestartet werden:
-   ```bash
-   ./mvnw spring-boot:run
-   ```
+2. **Nächster Schritt**
+   -> HSAA_GradeMaster_Gruppe2-main\HSAA_GradeMaster_TeamName-main\grade-master- service\src\main\java\de\hsaalen\grademaster\grademasterservice\GradeMasterServiceApplication.java
+
+   
+3. **Starten mit GradeMasterServiceApplication**
+      public static void main(String[] args) {
+           SpringApplication.run(GradeMasterServiceApplication.class, args);
+   
 4. **Backend testen:**
    Die REST-API ist unter `http://localhost:8080` erreichbar. Beispielendpunkte:
 - `GET /courses`
