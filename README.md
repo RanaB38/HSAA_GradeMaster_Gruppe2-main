@@ -37,7 +37,6 @@ Um GradeMaster lokal auszuführen, sind folgende Systemanforderungen erforderlic
 1. **Repository klonen:**
    ```bash
    git clone https://github.com/RanaB38/HSAA_GradeMaster_Gruppe2-main.git
-   cd backend
    ```
 2. **Nächster Schritt**
    -> HSAA_GradeMaster_Gruppe2-main\HSAA_GradeMaster_TeamName-main\grade-master- service\src\main\java\de\hsaalen\grademaster\grademasterservice\GradeMasterServiceApplication.java
