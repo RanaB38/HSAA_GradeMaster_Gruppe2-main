@@ -1,221 +1,233 @@
-# GradeMasterUi
+# GradeMaster
 
-## Inhalt
+GradeMaster ist eine Webanwendung zur Verwaltung von Kursen, Studenten und Gruppenzuweisungen. Die Anwendung unterstützt Dozenten und Studenten bei der Organisation und Bewertung von Kursen.
 
-### UI Elemente
+---
 
-Alle aufwändigeren UI-Elemente wurden mit [Angular Material](https://material.angular.io/) umgesetzt. (Guides, Tutorial und Beispiele)
+## Projektteam
 
-- Toolbar: `mat-toolbar` - https://material.angular.io/components/toolbar/overview
+| Name            | Matrikelnummer | E-Mail                           |
+|-----------------|----------------|-----------------------------------|
+| Rana Beyaz      | 85905          | 85905@studmail.htw-aalen.de      |
+| Fatme Khraizat  | 85910          | 85910@studmail.htw-aalen.de      |
+| Emre Hirka      | 86169          | 86169@studmail.htw-aalen.de      |
+| Emre Tülü       | 83128          | 83128@studmail.htw-aalen.de      |
+| Evren Kacar     | 83061          | 83061@studmail.htw-aalen.de      |
 
-  - `course` und `student` component
+---
 
-- Tabelle: `table` / `mat-table` - https://material.angular.io/components/table/overview
+## Systemanforderungen
 
-  - `student-list` component
-  - ![alt text](image-3.png)
+Um GradeMaster lokal auszuführen, sind folgende Systemanforderungen erforderlich:
 
-- Buttons: `buttons` / `mat-button` - https://material.angular.io/components/button/overview
-
-  - `student-list`, `course-overview` und `menu-bar`
-  - ![alt text](image-1.png)
-  - ![alt text](image-2.png)
-
-- Dialoge: `MatDialogModule` / `MatMatDialogRef`, ... - https://material.angular.io/components/dialog/overview
-
-  - `student-dialog` und `course-dialog`
-  - ![alt text](image.png)
-  - "...am besten die Beispiele konsumieren"
-
-- Cards: `mat-card`, `mat-card-header`, ... - https://material.angular.io/components/card/overview
-
-  - `course-overview`
-  - ![alt text](image-4.png)
-
-- Forms: `mat-form-field` / `mat-label` - https://material.angular.io/components/form-field/overview
-  - `student-dialog` und `course-dialog` in Form von `inputs`, `labels`, `textarea`, ...
-
-### Patterns / Best Practices
-
-- eine Art der 3-Schichten Struktur:
-  - Components (Views)
-  - Domain (Models)
-  - Core-Sevices (Business Layer)
-  - Provider-Services (Data Access Layer)
-  ```
-            +-------------------+                      +----------------------+
-            |                   |                       |                      |
-            |    Externe        |<=====================>|  Provider-Services   |
-            | Model-Entities    |                       |                      |
-            |                   |                       +----------------------+
-            +-------------------+                                      ^
-                                                                       |
-                +------------------------------------------------------+
-                |
-                v
-    +--------------------------------+       +-----------------------------+
-    |                                |       |                             |
-    |           Core-Services        |<----->|         Models              |
-    |                                |       | (Shared by Core and Views)  |
-    |    - Business-Logik            |       |                             |
-    |    - Zugriff auf Models        |       |                             |
-    +--------------------------------+       +-----------------------------+
-                    ^
-                    |
-                    |
-                    v
-    +----------------------------------+
-    |                                  |
-    |        Components / Views        |
-    |                                  |
-    |    - Präsentation & UI-Logik     |
-    |    - Nutzung von Core-Services   |
-    |                                  |
-    +----------------------------------+
-  ```
-
-### Routing
-
-- `app.routes.ts`: Definition der Routen
-
-- Möglichkeiten des Aufrufs aus dem HTML-Coder heraus (Template) oder aus dem Typescript-Code ("Code behind" / Component Logic):
-  - Typescript
-    ```ts
-    this.route.navigate(...)
-    ```
-  - HTML
-    ```html
-    <button [routerLink]="['../', id, 'details']"></button>
-    ```
-- `auxiliary-routes` oder auch `secondary-routes` genannt (kurz: `aux-routes`) sind eine Möglichkeit parallel andere routing-trees aufzubauen:
-
-  - Definition in `app.routes.ts`:
-  - Deklaration:
-
-    ```html
-    <!-- app.component.ts -->
-    <div class="header">
-      <app-menu-bar [title]="title" [menuBarItems]="menuItems" />
-    </div>
-    <div class="content">
-      <!-- normale route -->
-      <router-outlet></router-outlet>
-      <!-- aux route -->
-      <router-outlet name="dialog"></router-outlet>
-    </div>
-    ```
-
-  - Möglichkeiten des Aufrufs: (bspw. auch in `ourse-overview` component)
-
-    - HTML
-
-      ```html
-      <!-- normale route -->
-      <button mat-button [routerLink]="['../', card.id, 'details']">Details</button>
-
-      <!-- aux route -->
-      <button mat-button [routerLink]="[{ outlets: { dialog: ['dialog'] } }]">Bearbeiten</button>
-      ```
-
-    - Typescript
-
-      ```ts
-      // normale route
-      this.router.navigate(["/courses", card.id, "details"]);
-
-      // aux route
-      this.router.navigate([{ outlets: { dialog: ["dialog"] } }]);
-      ```
-
-### Formulare
-
-Umsetzung via `ReactiveForms` welches fester Bestandteil des Angular Frameworks ist:
-
-- Features:
-
-  - Built in Validatoren wie `required`, `email`, ...
-  - FormState abfragbar / manipulierbar: `this.form.valid` / `this.form.setValue(...)`
-
-- Integration in Template und Typescript Code
-
-  - Template
-
-    ```html
-    <form [formGroup]="form">
-      <mat-form-field appearance="fill" style="width: 100%; margin-bottom: 20px">
-        <mat-label>Name</mat-label>
-        <input matInput formControlName="name" />
-      </mat-form-field>
-
-      <mat-form-field appearance="fill" style="width: 100%; margin-bottom: 20px">
-        <mat-label>E-Mail</mat-label>
-        <input matInput formControlName="email" />
-      </mat-form-field>
-
-      <div mat-dialog-actions align="end">
-        <button mat-button mat-dialog-close>Abbrechen</button>
-        <button mat-button (click)="onSubmit()" [mat-dialog-close]="form.value" [disabled]="form.invalid">OK</button>
-      </div>
-    </form>
-    ```
-
-    - Typescript
-
-    ```ts
-
-    export class ... {
+- **Maven**: Version 3.8 oder höher
+- **Java**: Version 17 oder höher
+- **Node.js**: Version 18 oder höher
+- **Angular CLI**: Version 15 oder höher
+- **Datenbank**: H2 (In-Memory-Datenbank, integriert in der Spring Boot Anwendung)
+- **IDE**: IntelliJ IDEA (empfohlen) oder jede andere IDE mit Unterstützung für Java und Angular
+- **Webbrowser**: Ein moderner Browser wie Google Chrome, Firefox oder Edge
 
 
-        form: FormGroup;
 
-        constructor(
-            private fb: FormBuilder,
-            ...
-        ) {
+## Installation und Vorbereitung
 
-            this.form = this.fb.group({
-                name: ['', Validators.required],
-                email: ['', [Validators.required, Validators.email]]
-            });
+### Backend (Spring Boot):
 
-        }
+1. **Repository klonen:**
+   ```bash
+   git clone <repository-url>
+   cd backend
+   ```
+2. **Abhängigkeiten installieren:**
+   ```bash
+   ./mvnw clean install
+   ```
+3. **Anwendung starten:**
+   ```bash
+   java -jar target/grade-master-service-0.0.1-SNAPSHOT.jar
+   ```
+   Alternativ kann die Anwendung über Maven gestartet werden:
+   ```bash
+   ./mvnw spring-boot:run
+   ```
+4. **Backend testen:**
+   Die REST-API ist unter `http://localhost:8080` erreichbar. Beispielendpunkte:
+  - `GET /courses`
+  - `POST /students`
 
-        onSubmit() {
-            ...
-        }
-    }
-    ```
+### Frontend (Angular):
+1. **In das Frontend-Verzeichnis wechseln:**
+   ```bash
+   cd HSAA_GradeMaster_TeamName-main
+    cd grade-master-ui
+   ```
+2. **Abhängigkeiten installieren:**
+   ```bash
+   npm install
+   ```
+3. **Angular-Anwendung starten:**
+   ```bash
+   ng serve
+   ```
+4. **Frontend aufrufen:**
+   Die Anwendung ist unter `http://localhost:4200` erreichbar.
 
-###
+---
+Screenshots der Anwendung
 
-## Entwicklung
+## 1. Login-Formular
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 18.0.2.
+![Login.png](Login.png)
 
-### Development server
+## 2. Menubar
 
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The application will automatically reload if you change any of the source files.
+![Menubar.png](Prog%20Bilder/Menubar.png)
 
-### Code scaffolding
+## 3. Homepage
 
-Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
+![Homepage.png](Prog%20Bilder/Homepage.png)
 
-### Build
+## 4. Kurs und Dialog Kurs erstellen
 
-Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory.
+![Kurs.png](Prog%20Bilder/Kurs.png)
 
-### Running unit tests
+Button zum öffnen des Dialogs
 
-Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
+![Öffnen Dialog.png](Prog%20Bilder/%C3%96ffnen%20Dialog.png) 
 
-### Running end-to-end tests
+Dialog
 
-Run `ng e2e` to execute the end-to-end tests via a platform of your choice. To use this command, you need to first add a package that implements end-to-end testing capabilities.
+![Dialog_Kurs.png](Prog%20Bilder/Dialog_Kurs.png)
 
-### Further help
+## 5. Kursdetails und Dialoge
 
-To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
+![Studentenlist_Kursdetails.png](Prog%20Bilder/Studentenlist_Kursdetails.png)
 
-```
+Dialog Student zu Kurs hinzufügen
 
-```
+![Dialog_Studentzukurs.png](Prog%20Bilder/Dialog_Studentzukurs.png)
+
+## Gruppe:
+
+![Gruppe.png](Prog%20Bilder/Gruppe.png)
+
+Dialog Gruppe hinzufügen
+
+![Dialog_Gruppe.png](Prog%20Bilder/Dialog_Gruppe.png)
+
+## Bewertungsschema:
+
+![Bewertungsschema.png](Prog%20Bilder/Bewertungsschema.png)
+
+Bewertungsschema Editieren
+
+![Bewertungsschema_bearbeiten.png](Prog%20Bilder/Bewertungsschema_bearbeiten.png)
+
+
+## 5.Studentenlist und Dialog Studenten hinzufügen
+
+![Studentliste.png](Prog%20Bilder/Studentliste.png)
+
+Button zum öffnen des Dialogs
+
+![Öffnen Dialog.png](Prog%20Bilder/%C3%96ffnen%20Dialog.png)
+
+Dialog (Nummer eingeben API -> Suchen -> API übermittelt Daten)
+
+![Dialog_Student.png](Prog%20Bilder/Dialog_Student.png)
+
+
+## Nutzung der Anwendung
+
+1. **Login:**
+  - Standardnutzer:
+    - Dozent(Lecturer):   Benutzername `user2`, Passwort `password`
+    - Student:            Benutzername `user1`, Passwort `password`
+    - Die Login-Seite ist standardmäßig erreichbar unter `http://localhost:4200`.
+
+2. **Kurse verwalten:**
+  - Kurse können auf der Kurs-Seite hinzugefügt, bearbeitet und gelöscht werden.
+  - Beispiel:
+    - `Projektseminar Programmierprojekt` ist als Standardkurs vorab in der Datenbank hinterlegt.
+
+
+3. **Studenten verwalten:**
+  - Studenten können auf der Studenten-Seite hinzugefügt und in Kurse/Gruppen eingeteilt werden.
+  - Beim Hinzufügen eines Studenten werden die Felder Name und E-Mail automatisch ausgefüllt, sofern die Matrikelnummer korrekt eingegeben wurde (Von der API)
+
+4. **Gruppen erstellen und verwalten:**
+  - Auf der Kursdetail-Seite können Gruppen erstellt und Studenten zugewiesen werden.
+  - Gruppen können bewertet werden, wobei das Bewertungsschema individuell anpassbar ist.
+
+5. **Notenspiegel:**
+  - Der Notenspiegel zeigt die Notenverteilung anhand der prozentualen Leistung.
+  - Beispiel:
+    - 100 - 94,9 % = 1,0 (Sehr gut)
+    - < 50,0 % = 5,0 (Nicht bestanden)
+
+---
+
+## Technische Details
+
+### Sicherheitskonfiguration
+- Authentifizierung erfolgt per HTTP Basic Auth.
+- Rollen:
+  - **STUDENT**: Lesezugriff auf private API-Endpunkte.
+  - **LECTURER**: Lese- und Schreibzugriff auf private API-Endpunkte.
+- Zugriffsbeschränkungen:
+  - `/h2/**` und `/public/**` sind ohne Authentifizierung zugänglich.
+  - Private Endpunkte (z. B. `/api/private/**`) erfordern die entsprechende Rolle.
+
+### CORS-Konfiguration
+- Zugelassener Ursprung: `http://localhost:4200`.
+- Zugelassene Methoden: `GET`, `POST`, `PUT`, `DELETE`.
+
+### Datenbankkonfiguration
+- **Datenbank:** H2 (In-Memory).
+- **Benutzername:** `Gruppe2`, **Passwort:** (leer).
+- H2 Console ist erreichbar unter `http://localhost:8080/h2`.
+- Beim Start werden Beispieldaten aus der Datei `data.sql` geladen.
+
+### Fehlerbehandlung und Logging
+- Ausführliche Fehlermeldungen sind aktiviert (`server.error.include-message=always`).
+- Sicherheitsbezogene Ereignisse werden im Debug-Modus protokolliert (`logging.level.org.springframework.security=DEBUG`).
+
+
+### Lokale Datenbank
+- Die Anwendung nutzt eine H2-Datenbank (In-Memory).
+- Beispieldaten werden beim Start der Anwendung automatisch geladen.
+
+### Angular Services und Komponenten
+- **`auth.service.ts`**: Verantwortlich für die Authentifizierung und Autorisierung der Benutzer.
+- **`course-core.service.ts`**: Kommuniziert mit dem Backend zur Verwaltung von Kursen.
+- **`group-core.service.ts`**: Verwaltet Gruppenfunktionen wie Zuweisung und Bearbeitung.
+- **`notenspiegel-core.service.ts`**: Bezieht und verarbeitet die Daten des Notenspiegels.
+- **`student-core.service.ts`**: Verwaltung der Studenten und deren Zuweisung zu Kursen oder Gruppen.
+- **`course-provider.service.ts`**: Bereitstellung von Kursdaten für die Komponenten.
+- **`notenspiegel-provider.service.ts`**: Liefert Notenspiegel-Daten an die Frontend-Komponenten.
+- **`student-provider.service.ts`**: Unterstützt die Frontend-Komponenten bei der Anzeige von Studentendaten.
+- **`course.component.ts`**: Steuert die Darstellung und Interaktion der Kursansicht.
+- **`student.component.ts`**: Verantwortlich für die Anzeige und Verwaltung von Studenten.
+- **`student-detail.component`**: Zeigt die Details eines Studenten an, einschließlich Matrikelnummer, Name und E-Mail.
+- **`student-dialog.component`**: Ermöglicht das Hinzufügen eines neuen Studenten, inklusive Validierung und API-Suche.
+- **`student-list.component`**: Listet alle Studenten in einer Tabelle auf, mit Funktionen zum Hinzufügen und Auswählen eines Studenten.
+- **`app.component.ts`**: Hauptkomponente der Angular-Anwendung, die als Einstiegspunkt dient.
+
+---
+
+## Weitere Hinweise
+
+- **Fallback-System:**
+  - Falls die API zur Studentensuche nicht verfügbar ist, wird ein lokaler Speicher (Map) zur Simulation der Studentendaten verwendet.
+
+- **Code-Dokumentation:**
+  - Javadoc (für Java) und JSDoc (für JavaScript) sind integriert, um den Code leicht verständlich zu machen.
+
+- **Bekannte Einschränkungen:**
+  - Der erste API-Aufruf kann länger dauern, da der Service möglicherweise inaktiv ist.
+
+---
+
+## Kontakt
+Für weitere Informationen oder Rückfragen zum Projekt wenden Sie sich bitte an die Mitglieder der Projektgruppe.
