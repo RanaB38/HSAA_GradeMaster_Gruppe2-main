@@ -8,14 +8,23 @@ import { BehaviorSubject, Observable } from 'rxjs';
 })
 export class NotenspiegelCoreService {
 
+  /** BehaviorSubject zur Speicherung der Notenspiegel-Daten */
   private notenspiegelSubject: BehaviorSubject<Notenspiegel[]> = new BehaviorSubject<Notenspiegel[]>([]);
+
+  /** Observable für Notenspiegel-Daten */
   public notenspiegel$: Observable<Notenspiegel[]> = this.notenspiegelSubject.asObservable();
 
+  /**
+   * Konstruktor injiziert den NotenspiegelProviderService und lädt initial die Notenspiegel-Daten.
+   * @param {NotenspiegelProviderService} notenspiegelService - Service zur Bereitstellung der Notenspiegel-Daten.
+   */
   constructor(private notenspiegelService: NotenspiegelProviderService) {
-    // Initialisiere das Laden der Notenspiegel-Daten
     this.loadNotenspiegel();
   }
 
+  /**
+   * Lädt die Notenspiegel-Daten aus dem ProviderService und aktualisiert das BehaviorSubject.
+   */
   private loadNotenspiegel(): void {
     this.notenspiegelService.getAllNotenspiegel().subscribe({
       next: (notenspiegel) => {
@@ -23,17 +32,24 @@ export class NotenspiegelCoreService {
         this.notenspiegelSubject.next(notenspiegel);
       },
       error: (err) => {
-        console.error('Fehler beim Laden des Notenspiegel:', err);
+        console.error('Fehler beim Laden des Notenspiegels:', err);
       }
     });
   }
 
-  // Methode zum Abrufen der Notenspiegel-Daten
+  /**
+   * Gibt ein Observable der aktuellen Notenspiegel-Daten zurück.
+   * @returns {Observable<Notenspiegel[]>} Ein Observable mit der Notenspiegel-Liste.
+   */
   getNotenspiegel(): Observable<Notenspiegel[]> {
     return this.notenspiegel$;
   }
 
-  // Beispiel: Eine Methode zum Hinzufügen eines Notenspiegels (falls gewünscht)
+  /**
+   * Fügt einen neuen Notenspiegel hinzu.
+   * Diese Methode aktualisiert nur das lokale Subject, keine Backend-Synchronisierung.
+   * @param {Notenspiegel} newNotenspiegel - Der hinzuzufügende Notenspiegel-Eintrag.
+   */
   addNotenspiegel(newNotenspiegel: Notenspiegel): void {
     const currentNotenspiegel = this.notenspiegelSubject.value;
     const updatedNotenspiegel = [...currentNotenspiegel, newNotenspiegel];

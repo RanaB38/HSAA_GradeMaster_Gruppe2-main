@@ -1,14 +1,19 @@
 import { Component } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { ActivatedRoute, Router } from '@angular/router';
-import {MatFormField} from "@angular/material/form-field";
-import {FormsModule} from "@angular/forms";
+import { MatFormField } from "@angular/material/form-field";
+import { FormsModule } from "@angular/forms";
 import { CommonModule } from '@angular/common';
-import {MatButtonModule} from "@angular/material/button";
-import {MatInputModule} from "@angular/material/input";
-import {AuthService} from "../../../../lib/provider-services/auth.service";
+import { MatButtonModule } from "@angular/material/button";
+import { MatInputModule } from "@angular/material/input";
+import { AuthService } from "../../../../lib/provider-services/auth.service";
 
-
+/**
+ * Component zum Bearbeiten des Bewertungsschemas eines Kurses.
+ * Ermöglicht das Laden, Bearbeiten und Speichern eines Bewertungsschemas.
+ *
+ * @component
+ */
 @Component({
   selector: 'app-bewertungsschema-edit',
   templateUrl: './bewertungsschema-edit.component.html',
@@ -23,11 +28,24 @@ import {AuthService} from "../../../../lib/provider-services/auth.service";
   styleUrls: ['./bewertungsschema-edit.component.scss']
 })
 export class BewertungsschemaEditComponent {
-  public bewertungsschema: {
-    topic: string; percentage: number; id: number}[] = [];
+
+  /** Das Bewertungsschema des Kurses. */
+  public bewertungsschema: { topic: string; percentage: number; id: number }[] = [];
+
+  /** Fehlermeldung, falls beim Laden oder Speichern ein Fehler auftritt. */
   public errorMessage: string | null = null;
+
+  /** Die Kurs-ID, die zur Identifikation des Kurses dient. */
   public courseId!: number;
 
+  /**
+   * Erzeugt eine Instanz des BewertungsschemaEditComponents.
+   *
+   * @param http - Der HTTP-Client, um API-Anfragen zu senden.
+   * @param route - Der Router, um auf Routenparameter zuzugreifen.
+   * @param router - Der Router, um zur Kurs-Detailseite zu navigieren.
+   * @param authService - Der Authentifizierungsdienst, um die Auth-Header zu erhalten.
+   */
   constructor(
     private http: HttpClient,
     private route: ActivatedRoute,
@@ -35,11 +53,21 @@ export class BewertungsschemaEditComponent {
     private authService: AuthService
   ) {}
 
+  /**
+   * Initialisiert das Komponent und lädt das Bewertungsschema des Kurses.
+   *
+   * @returns {void}
+   */
   ngOnInit(): void {
     this.courseId = +this.route.snapshot.paramMap.get('courseId')!;
     this.loadSchema();
   }
 
+  /**
+   * Lädt das Bewertungsschema für den angegebenen Kurs.
+   *
+   * @returns {void}
+   */
   loadSchema(): void {
     this.http
       .get<{ topic: string; percentage: number; id: number }[]>(
@@ -58,6 +86,12 @@ export class BewertungsschemaEditComponent {
       });
   }
 
+  /**
+   * Speichert das Bewertungsschema.
+   * Überprüft, ob alle Felder korrekt ausgefüllt sind, bevor es gespeichert wird.
+   *
+   * @returns {void}
+   */
   save(): void {
     // Überprüfen, ob alle Topics gefüllt sind
     if (this.bewertungsschema.some(item => !item.topic || item.topic.trim() === '')) {
@@ -108,12 +142,23 @@ export class BewertungsschemaEditComponent {
       });
   }
 
+  /**
+   * Fügt eine neue Zeile zum Bewertungsschema hinzu.
+   *
+   * @returns {void}
+   */
   addRow(): void {
     const newIndex = this.bewertungsschema.length + 1;
     const newId = new Date().getTime();
     this.bewertungsschema.push({ topic: `Topic #${newIndex}`, percentage: 0 , id: newId });
   }
 
+  /**
+   * Löscht ein Bewertungsschema mit der angegebenen ID.
+   *
+   * @param bewertungsschemaId - Die ID des zu löschenden Bewertungsschemas.
+   * @returns {void}
+   */
   deleteBewertungsschema(bewertungsschemaId: number): void {
     if (this.bewertungsschema.length === 1) {
       this.errorMessage = 'Es muss mindestens ein Topic vorhanden bleiben.';

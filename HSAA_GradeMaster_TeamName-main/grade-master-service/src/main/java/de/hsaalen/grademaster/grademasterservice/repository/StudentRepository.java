@@ -14,7 +14,7 @@ import java.util.Optional;
 public interface StudentRepository
         extends JpaRepository<Student, Long> {
     /**
-     * Methode ucht einen Studenten anhand der ID.
+     * Methode sucht einen Studenten anhand der ID.
      * @return Optional mit dem gefundenen Studenten, falls vorhanden
      */
 

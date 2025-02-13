@@ -1,5 +1,8 @@
 import { Component } from '@angular/core';
 
+/**
+ * Die CardComponent stellt eine generische Kartenkomponente dar.
+ */
 @Component({
   selector: 'app-card',
   standalone: true,
@@ -8,6 +11,7 @@ import { Component } from '@angular/core';
   styleUrl: './card.component.scss'
 })
 export class CardComponent {
-  // Könnte eine generische Implementierung sein
-
+  /**
+   * Platzhalter für zukünftige Implementierungen der Kartenlogik.
+   */
 }

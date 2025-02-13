@@ -26,7 +26,11 @@ import { MenuBarComponent } from '../lib/components/menu-bar/menu-bar.component'
   styleUrls: ['./app.component.scss'],
 })
 export class AppComponent implements OnInit {
+
+  // Titel der Anwendung
   title = 'GRADE MASTER';
+
+  // eintäge für die Navigation
   public menuItems: MenuBarItem[] = [
     { name: 'Home', routePath: 'home', visible: of(true), icon: 'home' },
     { name: 'Kurse', routePath: 'courses', visible: of(true) },
@@ -34,18 +38,29 @@ export class AppComponent implements OnInit {
     { name: 'Notenspiegel', routePath: 'notenspiegel', visible: of(true) },
   ];
 
+  // Benutzerinformationen
   username: string = '';
   role: string = '';
-  profileImageUrl: string = 'https://www.example.com/path/to/profile-image.jpg'; // Beispiel URL für das Profilbild
 
+  // Standard-Profilbild-URL
+  profileImageUrl: string = 'https://www.example.com/path/to/profile-image.jpg';
+
+  /**
+   * Erstellt eine Instanz der AppComponent.
+   * @param {AuthService} authService - Service zur Authentifizierung und Benutzerverwaltung.
+   */
   constructor(private authService: AuthService) {}
 
+  /**
+   * Lifecycle Hook: Wird beim Initialisieren der Komponente aufgerufen.
+   * Lädt Benutzerdaten aus dem AuthService.
+   */
   ngOnInit() {
     // Benutzerdaten aus dem AuthService abrufen
     this.username = this.authService.getUsername();
     this.role = this.authService.getUserRole();
 
-    // Hier kannst du das Profilbild-URL aus dem AuthService abrufen, wenn es dynamisch ist
+    // Falls das Profilbild dynamisch ist, kann es hier gesetzt werden
     // this.profileImageUrl = this.authService.getUserProfileImageUrl();
   }
 }

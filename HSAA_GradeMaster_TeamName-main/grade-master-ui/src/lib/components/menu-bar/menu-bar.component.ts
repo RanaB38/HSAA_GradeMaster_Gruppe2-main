@@ -8,6 +8,10 @@ import { LayoutModule } from '@angular/cdk/layout';
 import { Router, ActivatedRoute, RouterModule } from '@angular/router';
 import { MenuBarItem } from './menu-bar.interfaces';
 
+/**
+ * Die `MenuBarComponent` stellt eine Navigationsleiste bereit,
+ * die verschiedene Menüeinträge enthält und Benutzerdaten anzeigen kann.
+ */
 @Component({
   selector: 'app-menu-bar',
   standalone: true,
@@ -24,17 +28,38 @@ import { MenuBarItem } from './menu-bar.interfaces';
   styleUrls: ['./menu-bar.component.scss'],
 })
 export class MenuBarComponent {
-  @Input() title: string = '';
-  @Input() menuBarItems: MenuBarItem[] = [];
-  @Input() username: string = '';  // Benutzername wird als Input erwartet
-  @Input() role: string = '';  // Rolle wird als Input erwartet
 
+  /** Der Titel der Menüleiste */
+  @Input() title: string = '';
+
+  /** Liste der Menüeinträge */
+  @Input() menuBarItems: MenuBarItem[] = [];
+
+  /** Der Benutzername des aktuell eingeloggten Nutzers */
+  @Input() username: string = '';
+
+  /** Die Rolle des aktuell eingeloggten Nutzers */
+  @Input() role: string = '';
+
+  /**
+   * Konstruktor für `MenuBarComponent`.
+   * @param router - Router für die Navigation
+   * @param activatedRoute - Aktivierte Route für relative Navigation
+   */
   constructor(private router: Router, private activatedRoute: ActivatedRoute) {}
 
+  /**
+   * Navigiert zur Startseite der Anwendung.
+   */
   routerHome() {
     this.router.navigateByUrl('');
   }
 
+  /**
+   * Navigiert zu einer angegebenen Route.
+   *
+   * @param routeLink - Der Pfad der Zielroute
+   */
   routeTo(routeLink: string) {
     this.router.navigate([routeLink], { relativeTo: this.activatedRoute });
   }

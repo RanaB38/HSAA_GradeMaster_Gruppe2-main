@@ -16,7 +16,14 @@ import { MaterialColor } from '../../../lib/enums/material-color';
   styleUrls: ['./student.component.scss']
 })
 export class StudentComponent {
+
+  // Basis-URL für API-Anfragen (derzeit nicht verwendet)
   private baseUrl = "http://localhost:8080/api/private/v1/student";
+
+  // Titel der Komponente
   public title = 'Studenten';
+
+  // Farbe des UI-Elements, standardmäßig 'accent'
   public color: MaterialColor = 'accent';
+
 }

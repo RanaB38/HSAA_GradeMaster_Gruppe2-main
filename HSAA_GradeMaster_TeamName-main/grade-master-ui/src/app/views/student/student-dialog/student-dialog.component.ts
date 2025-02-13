@@ -22,17 +22,29 @@ import { StudentCoreService } from '../../../../lib/core-services/student-core.s
   styleUrl: './student-dialog.component.scss'
 })
 export class StudentDialogComponent {
+
+  // Gibt an, ob der gesuchte Student gefunden wurde
   isStudentFound: boolean = false;
+
+  // Speichert eine Fehlermeldung, falls der Student nicht gefunden wird
   errorMessage: string = '';
+
+  // Formular für die Studenteneingabe
   form: FormGroup;
 
+  /**
+   * Erstellt eine Instanz des StudentDialogComponents.
+   * @param {FormBuilder} fb - FormBuilder zur Erstellung des Formulars.
+   * @param {MatDialogRef<StudentDialogComponent>} dialogRef - Referenz zum aktuellen Dialogfenster.
+   * @param {StudentCoreService} coreService - Service zur Verwaltung von Studentendaten.
+   */
   constructor(
     private fb: FormBuilder,
     private dialogRef: MatDialogRef<StudentDialogComponent>,
     private coreService: StudentCoreService
   ) {
 
-    // Erstellen der Formulardaten -> "form" wird dann im template verknüpft
+    // Initialisierung des Formulars mit Validierungen
     this.form = this.fb.group({
       id: ['', Validators.required],
       name: [{ value: '', disabled: true }, Validators.required],
@@ -41,8 +53,13 @@ export class StudentDialogComponent {
 
   }
 
+  /**
+   * Sucht einen Studenten anhand der eingegebenen ID.
+   * Falls gefunden, werden die Daten in das Formular eingetragen.
+   */
   searchStudent() {
     const idNumber = this.form.get('id')?.value;
+
     if (idNumber !== null && idNumber !== '') {
       this.coreService.getStudentData(idNumber).subscribe({
         next: (student) => {
@@ -54,7 +71,7 @@ export class StudentDialogComponent {
           this.errorMessage = '';
         },
         error: () => {
-          // Fehler nicht gefunden
+          // Fehlerbehandlung, wenn kein Student gefunden wurde
           this.isStudentFound = false;
           this.errorMessage = "Es wurde kein Student gefunden";
         }
@@ -62,10 +79,13 @@ export class StudentDialogComponent {
     }
   }
 
+  /**
+   * Verarbeitet das Formular beim Absenden.
+   * Falls das Formular gültig ist, werden die Daten verarbeitet und der Dialog geschlossen.
+   */
   onSubmit() {
-    // Prüfen ob Formular in einem "valid" state is
     if (this.form.valid) {
-      // Daten verarbeiten
+      // Datenverarbeitung
       const formData = this.form.value;
       console.log('Formulardaten verarbeitet:', formData);
 

@@ -14,27 +14,32 @@ import { Student } from '../../../../lib/domain/student.interfaces';
 })
 export class StudentDetailComponent implements OnInit {
 
+  // Speichert die Details des Studenten
   public student: Student | undefined;
-  // public student!: Student;
 
+  /**
+   * Erstellt eine Instanz der StudentDetailComponent.
+   * @param {ActivatedRoute} route - Ermöglicht den Zugriff auf Routing-Parameter.
+   * @param {StudentCoreService} coreService - Service zur Verwaltung von Studentendaten.
+   */
   constructor(
-    private route: ActivatedRoute, // Um Routing-Parameter auszulesen
-    private coreService: StudentCoreService) {
+    private route: ActivatedRoute,
+    private coreService: StudentCoreService) {}
 
-      // wie in ngOnInit()
-  }
-
+  /**
+   * Lifecycle Hook: Wird beim Initialisieren der Komponente aufgerufen.
+   * Holt die Studentendaten basierend auf der ID aus der URL.
+   */
   ngOnInit() {
     const id = this.route.snapshot.paramMap.get('id');
 
     if (id) {
-      // Eine Möglichkeit die Filterung nach Student-Id direkt in der detail-component vorzunehmen.
-      // Eine andere Möglichkeit wäre das Ganze über den Core-Service bis in den Provider-Service zu geben.
-      // Hier würde dann die Filterung über die REST-API gehen.
+      // Filterung der Studentenliste nach ID innerhalb der Detail-Komponente.
+      // Alternativ könnte die Filterung auch über den Core- oder Provider-Service erfolgen,
+      // um die Daten direkt von der REST-API gefiltert zu beziehen.
       this.coreService.getStudents().subscribe((students) => {
         this.student = students.find((student) => student.id === +id);
       });
     }
   }
-
 }

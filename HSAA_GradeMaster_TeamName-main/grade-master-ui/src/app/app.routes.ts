@@ -8,7 +8,7 @@ import { HomeComponent } from './views/home/home.component'; // Home-Komponente 
 export const routes: Routes = [
   {
     path: '',
-    redirectTo: 'login', // Standardroute zur Home-Seite umleiten
+    redirectTo: 'login', // Standardroute zur Login-Seite umleiten
     pathMatch: 'full',
   },
   {
@@ -50,7 +50,7 @@ export const routes: Routes = [
           ),
       },
       {
-        path: ':courseId/bewertungsschema', //Bewertungsschema Edit
+        path: ':courseId/bewertungsschema', // Bewertungsschema bearbeiten
         loadComponent: () =>
           import('./views/course/bewertungsschema-edit/bewertungsschema-edit.component').then(
             (mod) => mod.BewertungsschemaEditComponent
@@ -95,6 +95,9 @@ export const routes: Routes = [
   },
   {
     path: 'notenspiegel',
-    loadComponent: () => import('./views/notenspiegel/notenspiegel.component').then((mod) => mod.NotenspiegelComponent),
-  }
+    loadComponent: () =>
+      import('./views/notenspiegel/notenspiegel.component').then(
+        (mod) => mod.NotenspiegelComponent
+      ),
+  },
 ];

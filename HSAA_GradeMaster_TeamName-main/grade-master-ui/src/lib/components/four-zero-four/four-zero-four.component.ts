@@ -7,9 +7,12 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
 import { MatToolbarModule } from '@angular/material/toolbar';
 
-// This component is used to display a 404 error page.
-// It is used in the app-routing.module.ts.
-// It is a standalone component.
+/**
+ * Diese Komponente stellt eine 404-Fehlerseite dar.
+ * Sie wird verwendet, wenn eine ungültige Route aufgerufen wird.
+ *
+ * @usage Wird in der `app-routing.module.ts` definiert.
+ */
 @Component({
   selector: 'app-four-zero-four',
   standalone: true,
@@ -25,4 +28,9 @@ import { MatToolbarModule } from '@angular/material/toolbar';
   templateUrl: './four-zero-four.component.html',
   styleUrl: './four-zero-four.component.scss',
 })
-export class FourZeroFourComponent {}
+export class FourZeroFourComponent {
+  /**
+   * Diese Komponente enthält keine spezifische Logik,
+   * sondern dient nur zur Anzeige der Fehlerseite.
+   */
+}
