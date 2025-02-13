@@ -2,16 +2,16 @@ package de.hsaalen.grademaster.grademasterservice.service;
 
 import de.hsaalen.grademaster.grademasterservice.domain.Bewertungsschema;
 import de.hsaalen.grademaster.grademasterservice.domain.Course;
+import de.hsaalen.grademaster.grademasterservice.domain.GroupEvaluation;
 import de.hsaalen.grademaster.grademasterservice.repository.BewertungsschemaRepository;
 import de.hsaalen.grademaster.grademasterservice.repository.CourseRepository;
+import de.hsaalen.grademaster.grademasterservice.repository.GroupEvaluationRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 /**
  * Der `BewertungsschemaService` verwaltet die Bewertungsschemas und deren Interaktionen mit den Kursen.
@@ -21,6 +21,7 @@ import java.util.Optional;
 public class BewertungsschemaService {
     private final BewertungsschemaRepository bewertungsschemaRepository;
     private final CourseRepository courseRepository;
+    private final GroupEvaluationRepository groupEvaluationRepository;
 
     /**
      * Konstruktor für den `BewertungsschemaService`, der die notwendigen Repositories injiziert.
@@ -28,9 +29,10 @@ public class BewertungsschemaService {
      * @param courseRepository Das Repository für die Kurse.
      */
     @Autowired
-    public BewertungsschemaService(BewertungsschemaRepository bewertungsschemaRepository, CourseRepository courseRepository) {
+    public BewertungsschemaService(BewertungsschemaRepository bewertungsschemaRepository, CourseRepository courseRepository, GroupEvaluationRepository groupEvaluationRepository) {
         this.bewertungsschemaRepository = bewertungsschemaRepository;
         this.courseRepository = courseRepository;
+        this.groupEvaluationRepository = groupEvaluationRepository;
     }
 
     /**
@@ -101,6 +103,7 @@ public class BewertungsschemaService {
             schema.setCourse(course);
             bewertungsschemaRepository.save(schema);
         }
+
     }
 
     // Aufgabe 20 - Sprint 5
