@@ -78,63 +78,63 @@ Screenshots der Anwendung
 
 ## 1. Login-Formular
 
-![Login.png](Login.png)
+![Login.png](HSAA_GradeMaster_TeamName-main/grade-master-ui/Login.png)
 
 ## 2. Menubar
 
-![Menubar.png](Menubar.png)
+![Menubar.png](HSAA_GradeMaster_TeamName-main/grade-master-ui/Menubar.png)
 
 ## 3. Homepage
 
-![Homepage.png](Homepage.png)
+![Homepage.png](HSAA_GradeMaster_TeamName-main/grade-master-ui/Homepage.png)
 
 ## 4. Kurs und Dialog Kurs erstellen
 
-![Kurs.png](Kurs.png)
+![Kurs.png](HSAA_GradeMaster_TeamName-main/grade-master-ui/Kurs.png)
 
 Button zum öffnen des Dialogs
 
-![Öffnen Dialog.png](%C3%96ffnen%20Dialog.png)
+![Öffnen Dialog.png](HSAA_GradeMaster_TeamName-main/grade-master-ui/Öffnen%20Dialog.png)
 
 Dialog
 
-![Dialog_Kurs.png](Dialog_Kurs.png)
+![Dialog_Kurs.png](HSAA_GradeMaster_TeamName-main/grade-master-ui/Dialog_Kurs.png)
 
 ## 5. Kursdetails und Dialoge
 
-![Studentenlist_Kursdetails.png](Studentenlist_Kursdetails.png)
+![Studentenlist_Kursdetails.png](HSAA_GradeMaster_TeamName-main/grade-master-ui/Studentenlist_Kursdetails.png)
 
 Dialog Student zu Kurs hinzufügen
 
-![Dialog_Studentzukurs.png](Dialog_Studentzukurs.png)
+![Dialog_Studentzukurs.png](HSAA_GradeMaster_TeamName-main/grade-master-ui/Dialog_Studentzukurs.png)
 
 ## Gruppe:
 
-![Gruppe.png](Gruppe.png)
+![Gruppe.png](HSAA_GradeMaster_TeamName-main/grade-master-ui/Gruppe.png)
 
 Dialog Gruppe hinzufügen
 
-![Dialog_Gruppe.png](Dialog_Gruppe.png)
+![Dialog_Gruppe.png](HSAA_GradeMaster_TeamName-main/grade-master-ui/Dialog_Gruppe.png)
 
 ## Bewertungsschema:
 
-![Bewertungsschema.png](Bewertungsschema.png)
+![Bewertungsschema.png](HSAA_GradeMaster_TeamName-main/grade-master-ui/Bewertungsschema.png)
 
 Bewertungsschema Editieren
 
-![Bewertungsschema_bearbeiten.png](Bewertungsschema_bearbeiten.png)
+![Bewertungsschema_bearbeiten.png](HSAA_GradeMaster_TeamName-main/grade-master-ui/Bewertungsschema_bearbeiten.png)
 
 ## 5.Studentenlist und Dialog Studenten hinzufügen
 
-![Studentliste.png](Studentliste.png)
+![Studentliste.png](HSAA_GradeMaster_TeamName-main/grade-master-ui/Studentliste.png)
 
 Button zum öffnen des Dialogs
 
-![Öffnen Dialog.png](%C3%96ffnen%20Dialog.png)
+![Öffnen Dialog.png](HSAA_GradeMaster_TeamName-main/grade-master-ui/Öffnen%20Dialog.png)
 
 Dialog (Nummer eingeben API -> Suchen -> API übermittelt Daten)
 
-![Dialog_Student.png](Dialog_Student.png)
+![Dialog_Student.png](HSAA_GradeMaster_TeamName-main/grade-master-ui/Dialog_Student.png)
 
 
 ## Nutzung der Anwendung
