@@ -1,5 +1,11 @@
+<nav class="breadcrumbs">
+  <a [routerLink]="['/courses/1/details']">Kursdetails</a>  >
+  <span>Gruppe: {{ (group$|async)?.name }}</span>
+</nav>
+
 <div class="container">
   <h1>Bewertungsschema bearbeiten</h1>
+
 
   <!-- Tabelle für das Schema -->
   <table>

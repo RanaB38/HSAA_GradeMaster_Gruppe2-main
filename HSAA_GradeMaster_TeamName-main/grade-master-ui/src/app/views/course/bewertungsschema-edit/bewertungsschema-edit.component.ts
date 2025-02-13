@@ -1,12 +1,13 @@
 import { Component } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { ActivatedRoute, Router } from '@angular/router';
+import {ActivatedRoute, Router, RouterLink} from '@angular/router';
 import { MatFormField } from "@angular/material/form-field";
 import { FormsModule } from "@angular/forms";
 import { CommonModule } from '@angular/common';
 import { MatButtonModule } from "@angular/material/button";
 import { MatInputModule } from "@angular/material/input";
 import { AuthService } from "../../../../lib/provider-services/auth.service";
+import {Observable} from "rxjs";
 
 /**
  * Component zum Bearbeiten des Bewertungsschemas eines Kurses.
@@ -23,7 +24,8 @@ import { AuthService } from "../../../../lib/provider-services/auth.service";
     FormsModule,
     CommonModule,
     MatButtonModule,
-    MatInputModule
+    MatInputModule,
+    RouterLink
   ],
   styleUrls: ['./bewertungsschema-edit.component.scss']
 })
@@ -62,7 +64,8 @@ export class BewertungsschemaEditComponent {
     this.courseId = +this.route.snapshot.paramMap.get('courseId')!;
     this.loadSchema();
   }
-
+  group$!: Observable<any>; // Observable für Gruppendaten
+  courseName!: string; // Name des Kurses
   /**
    * Lädt das Bewertungsschema für den angegebenen Kurs.
    *
