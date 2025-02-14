@@ -33,22 +33,28 @@ Um GradeMaster lokal auszuführen, sind folgende Systemanforderungen erforderlic
 ## Installation und Vorbereitung
 
 ### Backend (Spring Boot):
-
 1. **Repository klonen:**
    ```bash
    git clone https://github.com/RanaB38/HSAA_GradeMaster_Gruppe2-main.git
    ```
-2. **Nächster Schritt den Pfad öffnen**
-
-   HSAA_GradeMaster_Gruppe2-main\HSAA_GradeMaster_TeamName-main\grade-master-           service\src\main\java\de\hsaalen\grademaster\grademasterservice\GradeMasterServiceApplication.java
-
+2. **In das Backend-Verzeichnis wechseln:**
+   ```bash
+   cd HSAA_GradeMaster_Gruppe2-main
+   cd HSAA_GradeMaster_TeamName-main
+   cd grade-master-service
+   ```
+3. **Abhängigkeiten installieren und das Projekt bauen:**
+   ```bash
+   mvn clean install
+   ```
+4. **Spring Boot Anwendung starten:**
+   ```bash
+   mvn spring-boot:run
+   ```
+5. **Backend aufrufen:**
+   Die Anwendung läuft unter `http://localhost:8080`.
    
-3. **Starten mit GradeMasterServiceApplication**
-
-   public static void main(String[] args) {
-           SpringApplication.run(GradeMasterServiceApplication.class, args);
-   
-5. **Backend testen:**
+6. **Backend testen:**
    Die REST-API ist unter `http://localhost:8080` erreichbar. Beispielendpunkte:
 - `GET /courses`
 - `POST /students`
@@ -68,7 +74,7 @@ Um GradeMaster lokal auszuführen, sind folgende Systemanforderungen erforderlic
    ng serve
    ```
 4. **Frontend aufrufen:**
-   Die Anwendung ist unter `http://localhost:4200` erreichbar.
+   Die Anwendung ist unter `http://localhost:4200` erreichbar
 
 ---
 Screenshots der Anwendung
